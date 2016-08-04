@@ -20,3 +20,11 @@ Run in console:
 ~~~bash
 make run
 ~~~
+
+## Testing
+
+Use `db_loader` to populate the database with test data.
+
+~~~bash
+make populate
+~~~

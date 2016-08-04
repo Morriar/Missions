@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-build:
-	mkdir -p bin
-	nitc src/app.nit -o bin/app
+import model
 
-populate:
-	mkdir -p bin
-	nitc src/db_loader.nit -o bin/db_loader
-	bin/db_loader
+var opts = new AppOptions.from_args(args)
+var config = new AppConfig.from_options(opts)
 
-run:
-	bin/app
+# clean bd
+config.tracks.clear
 
-clean:
-	rm -rf bin
+# load some tracks
+for i in [1..15] do
+	config.tracks.save new Track("Track {i}", "desc {i}")
+end
+print "Loaded {config.tracks.find_all.length} tracks"
