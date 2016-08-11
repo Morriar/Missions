@@ -14,4 +14,6 @@
 
 module api
 
+import api::api_auth
 import api::api_players
+import api::api_tracks
