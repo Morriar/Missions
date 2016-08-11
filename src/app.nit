@@ -13,7 +13,10 @@
 # limitations under the License.
 
 import popcorn
+import popcorn::pop_config
 
+var opts = new AppOptions.from_args(args)
+var config = new AppConfig.from_options(opts)
 var app = new App
 
 app.use_before("/*", new SessionInit)
@@ -21,4 +24,4 @@ app.use("/*", new StaticHandler("www", "index.html"))
 
 app.use_after("/*", new ConsoleLog)
 
-app.listen("localhost", 3000)
+app.listen(config.app_host, config.app_port)
