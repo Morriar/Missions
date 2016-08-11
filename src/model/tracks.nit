@@ -12,6 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module model
+module tracks
 
-import model::tracks
+import players
+
+redef class AppConfig
+	var tracks = new TrackRepo(db.collection("tracks")) is lazy
+end
+
+class Track
+	serialize
+	super Jsonable
+
+	var id: String = (new MongoObjectId).id is serialize_as "_id"
+	var title: String
+	var desc: String
+
+	redef fun to_s do return title
+	redef fun ==(o) do return o isa SELF and id == o.id
+	redef fun hash do return id.hash
+	redef fun to_json do return serialize_to_json
+end
+
+class TrackRepo
+	super MongoRepository[Track]
+end
