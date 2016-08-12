@@ -1,0 +1,17 @@
+<div class='container-fluid'>
+	<div class='col-xs-3 col-md-2'>
+		<player-sidebar player='{{player}}' />
+	</div>
+	<div class='col-xs-9 col-md-10'>
+		<ul class='nav nav-tabs'>
+			<li role='presentation'>
+				<a href='#'><span class='glyphicon glyphicon-tasks' /> Tracks</a>
+			</li>
+		</ul>
+		<div class='tab-content'>
+			<div role='tabpanel' class='tab-pane active' id='tracks'>
+				<player-tracks player='{{player}}' />
+			</div>
+		</div>
+	</div>
+</div>

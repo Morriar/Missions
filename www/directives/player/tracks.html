@@ -1,0 +1,26 @@
+<div ng-init='playerCtrl.loadTracksStatus()'>
+	<br>
+	<table class='table'>
+		<tr>
+			<th width='15%'>Track</th>
+			<th colspan='2'>Missions</th>
+		</tr>
+		<tr ng-repeat='status in tracks_status'>
+			<td>
+				<a href='/players/{{player._id}}/tracks/{{status.track._id}}'>
+					{{status.track.title}}
+				</a>
+			</td>
+			<td>
+				<div class='progress'
+					ng-init='progress = status.missions_closed / status.missions_count * 100'>
+					<div class='progress-bar progress-bar-info progress-bar-striped'
+						style='width: {{progress | number: 0}}%'>
+					</div>
+				</div>
+			</td>
+			<td width='10%'>{{status.missions_closed}}/{{status.missions_count}}
+			</td>
+		</tr>
+	</div>
+</div>

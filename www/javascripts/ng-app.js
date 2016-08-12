@@ -30,6 +30,10 @@
 				templateUrl: 'views/players.html',
 				controller: 'PlayersCtrl'
 			})
+			.when('/players/:login', {
+				templateUrl: 'views/player.html',
+				controller : 'PlayerHome'
+			})
 			.otherwise({
 				redirectTo: '/'
 			});

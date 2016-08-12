@@ -18,6 +18,12 @@
 	angular
 		.module('players', ['ngSanitize', 'model'])
 
+		.controller('PlayerHome', ['$routeParams', '$scope', function($routeParams, $scope) {
+			$scope.playerId = $routeParams.login;
+			$scope.trackId = $routeParams.tid;
+			$scope.missionId = $routeParams.mid;
+		}])
+
 		.controller('PlayersCtrl', ['Players', '$rootScope', function(Players, $scope) {
 			this.loadPlayers = function() {
 				Players.getPlayers(
@@ -29,5 +35,49 @@
 			};
 
 			this.loadPlayers();
+		}])
+
+		.controller('PlayerCtrl', ['Players', '$scope', function(Players, $scope) {
+			this.loadPlayer = function() {
+				Players.getPlayer($scope.playerId,
+					function(data) {
+						$scope.player = data;
+					}, function(err) {
+						$scope.error = err;
+					});
+			};
+
+			this.loadTracksStatus = function() {
+				Players.getTracksStatus($scope.playerId,
+					function(data) {
+						$scope.tracks_status = data;
+					}, function(err) {
+						$scope.error = err;
+					});
+			};
+
+
+
+		}])
+
+		.directive('playerSidebar', [function() {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/sidebar.html',
+				controller: 'PlayerCtrl',
+				controllerAs: 'playerCtrl'
+			};
+		}])
+
+		.directive('playerTracks', [function() {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/tracks.html',
+				controller: 'PlayerCtrl',
+				controllerAs: 'playerCtrl'
+			};
+
 		}])
 })();
