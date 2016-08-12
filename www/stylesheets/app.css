@@ -6,6 +6,28 @@ body {
 }
 
 /*
+ * Users
+ */
+
+.avatar {
+	border-radius: 2px;
+}
+
+.avatar-icon {
+	width: 18px;
+	height: 18px;
+}
+
+.glyphicon-github:before {
+    display: inline-block;
+	width: 14px;
+	height: 14px;
+    background-image: url('/images/gitHub-mark-32-light.png');
+    background-size: 14px 14px;
+	content: "";
+}
+
+/*
  * Trees
  */
 

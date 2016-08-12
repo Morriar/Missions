@@ -26,6 +26,18 @@
 			.when('/', {
 				templateUrl: 'views/index.html'
 			})
+			.when('/login', {
+				controller : function(){
+					window.location.replace('/auth/login');
+				},
+			    template : "<div></div>"
+			})
+			.when('/logout', {
+				controller : function(){
+					window.location.replace('/auth/logout');
+				},
+			    template : "<div></div>"
+			})
 			.when('/players', {
 				templateUrl: 'views/players.html',
 				controller: 'PlayersCtrl'

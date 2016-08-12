@@ -1,0 +1,19 @@
+<ul class='nav navbar-nav'>
+	<li ng-if='!player'>
+		<a href='/login'>
+			Login
+			<span class='glyphicon glyphicon-github' />
+		</a>
+	</li>
+	<li class="dropdown" ng-if='player'>
+		<a class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+			{{player.user.login}}
+			<img class='avatar avatar-icon' ng-src='{{player.user.avatar_url}}' />
+		</a>
+		<ul class="dropdown-menu dropdown-menu-right">
+			<li><a href="/player">Profile</a></li>
+			<li role="separator" class="divider"></li>
+			<li><a href="/logout">Logout</a></li>
+		</ul>
+	</li>
+</ul>

@@ -73,7 +73,29 @@
 						$scope.error = err;
 					});
 			};
+		}])
 
+		.controller('AuthCtrl', ['Players', '$rootScope', function(Players, $scope) {
+			this.loadPlayer = function() {
+				Players.getAuth(
+					function(data) {
+						$scope.player = data;
+					}, function(err) {
+						$scope.error = err;
+					});
+			};
+
+			this.loadPlayer();
+		}])
+
+		.directive('playerMenu', ['$rootScope', function($rootScope) {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/menu.html',
+				controller: 'AuthCtrl',
+				controllerAs: 'playerCtrl'
+			};
 		}])
 
 		.directive('playerSidebar', [function() {
