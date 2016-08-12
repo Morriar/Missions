@@ -1,0 +1,39 @@
+<div ng-controller='PlayerCtrl as playerCtrl' ng-init='playerCtrl.loadMissionStatus()'>
+	<div class='panel panel-default'>
+		<div class='panel-heading'>
+			<h3 class='panel-title'>
+				{{mission_status.mission.title}}
+			</h3>
+		</div>
+		<div class='panel-body'>
+			{{mission_status.mission.desc}}
+		</div>
+	</div>
+	<div class='col-xs-9 col-md-10'>
+		<h3>{{mission_status.mission.title}}</h3>
+
+		<table class='table'>
+			<tr>
+				<th>Status</th>
+				<th>
+					<span ng-if='mission_status.is_locked' class='glyphicon glyphicon-lock text-muted' />
+					<span ng-if='mission_status.is_open' class='glyphicon glyphicon-remove text-warning' />
+					<span ng-if='mission_status.is_success' class='glyphicon glyphicon-ok text-success' />
+					{{mission_status.status}}
+				</th>
+				<th>+ {{mission_status.mission.reward}} pts</th>
+			</tr>
+			<tr ng-repeat='star in mission_status.mission.stars.__items'>
+				<th ng-init='i = $index + 1' width='15%'>
+					<span class='glyphicon text-warning'
+						ng-repeat='self in [1, 2, 3]'
+						ng-class='{"glyphicon-star-empty": self > i, "glyphicon-star": self <= i}' />
+				</th>
+				<td width='15%'>+{{star.reward}}pts</td>
+				<td>{{star.title}}</td>
+			</tr>
+		</table>
+
+		{{mission_status.mission.desc}}
+	</div>
+</div>

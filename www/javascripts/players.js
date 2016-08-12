@@ -65,6 +65,14 @@
 					});
 			};
 
+			this.loadMissionStatus = function() {
+				Players.getMissionStatus($scope.playerId, $scope.missionId,
+					function(data) {
+						$scope.mission_status = data;
+					}, function(err) {
+						$scope.error = err;
+					});
+			};
 
 		}])
 
