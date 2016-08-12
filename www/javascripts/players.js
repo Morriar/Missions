@@ -56,6 +56,14 @@
 					});
 			};
 
+			this.loadTrackStatus = function() {
+				Players.getTrackStatus($scope.playerId, $scope.trackId,
+					function(data) {
+						$scope.status = data;
+					}, function(err) {
+						$scope.error = err;
+					});
+			};
 
 
 		}])
@@ -78,6 +86,15 @@
 				controller: 'PlayerCtrl',
 				controllerAs: 'playerCtrl'
 			};
+		}])
 
+		.directive('playerTrack', [function() {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/track.html',
+				controller: 'PlayerCtrl',
+				controllerAs: 'playerCtrl'
+			};
 		}])
 })();
