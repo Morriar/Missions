@@ -14,7 +14,7 @@
 
 build:
 	mkdir -p bin
-	nitserial src/app.nit -o src/app_serial.nit
+	#nitserial src/app.nit -o src/app_serial.nit
 	nitc src/app.nit -m src/app_serial.nit -o bin/app
 
 populate:

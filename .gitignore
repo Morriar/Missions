@@ -1,4 +1,4 @@
 bin/
 *.swp
 *.orig
-*_serial.nit
+db_loader_serial.nit
