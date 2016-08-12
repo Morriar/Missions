@@ -30,4 +30,10 @@ redef class AppConfig
 
 	# Mongo db instance
 	var db: MongoDb = client.database(app_db_name) is lazy
+
+	# Github client id used for Github OAuth login.
+	var gh_client_id: String is lazy do return value_or_default("github.client.id", "")
+
+	# Github client secret used for Github OAuth login.
+	var gh_client_secret: String is lazy do return value_or_default("github.client.secret", "")
 end

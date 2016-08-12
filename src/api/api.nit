@@ -12,18 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import api
+module api
 
-var opts = new AppOptions.from_args(args)
-var config = new AppConfig.from_options(opts)
-var app = new App
-
-app.use_before("/*", new SessionInit)
-
-app.use("/auth", new AuthRouter(config))
-app.use("/api", new APIRouter(config))
-app.use("/*", new StaticHandler("www", "index.html"))
-
-app.use_after("/*", new ConsoleLog)
-
-app.listen(config.app_host, config.app_port)
+import api::api_auth
