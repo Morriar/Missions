@@ -19,9 +19,22 @@ var config = new AppConfig.from_options(opts)
 
 # clean bd
 config.tracks.clear
+config.missions.clear
 
-# load some tracks
+# load some tracks and missions
 for i in [1..15] do
-	config.tracks.save new Track("Track {i}", "desc {i}")
+	var track = new Track("Track {i}", "desc {i}")
+	config.tracks.save track
+	var last_missions = new Array[Mission]
+	for j in [1..15] do
+		var mission = new Mission(track, "Mission {i}-{j}", "desc {j}")
+		if last_missions.not_empty then
+			mission.parents.add last_missions.last.id
+		end
+		last_missions.add mission
+		config.missions.save mission
+	end
 end
+
 print "Loaded {config.tracks.find_all.length} tracks"
+print "Loaded {config.missions.find_all.length} missions"
