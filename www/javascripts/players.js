@@ -107,6 +107,17 @@
 			}
 		}])
 
+		.directive('playerLink', [function() {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/link.html',
+				controller: 'PlayerCtrl',
+				controllerAs: 'playerCtrl',
+				scope: { 'player': '=', 'noavatar': '=' }
+			};
+		}])
+
 		.directive('playerMenu', ['$rootScope', function($rootScope) {
 			return {
 				restrict: 'E',
