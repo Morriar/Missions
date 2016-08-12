@@ -14,11 +14,13 @@
 
 build:
 	mkdir -p bin
-	nitc src/app.nit -o bin/app
+	nitserial src/app.nit -o src/app_serial.nit
+	nitc src/app.nit -m src/app_serial.nit -o bin/app
 
 populate:
 	mkdir -p bin
-	nitc src/db_loader.nit -o bin/db_loader
+	nitserial src/db_loader.nit -o src/db_loader_serial.nit
+	nitc src/db_loader.nit -m src/db_loader_serial.nit -o bin/db_loader
 	bin/db_loader
 
 run:
@@ -26,3 +28,5 @@ run:
 
 clean:
 	rm -rf bin
+	rm -rf src/app_serial.nit
+	rm -rf src/db_loader_serial.nit

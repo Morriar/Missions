@@ -1,3 +1,4 @@
 bin/
 *.swp
 *.orig
+*_serial.nit
