@@ -24,6 +24,12 @@
 			$scope.missionId = $routeParams.mid;
 		}])
 
+		.controller('PlayerAuth', ['$routeParams', '$rootScope', '$scope', function($routeParams, $rootScope, $scope) {
+			$scope.fromAuth = true;
+			$scope.trackId = $routeParams.tid;
+			$scope.missionId = $routeParams.mid;
+		}])
+
 		.controller('PlayersCtrl', ['Players', '$rootScope', function(Players, $scope) {
 			this.loadPlayers = function() {
 				Players.getPlayers(
@@ -75,17 +81,22 @@
 			};
 		}])
 
-		.controller('AuthCtrl', ['Players', '$rootScope', function(Players, $scope) {
+		.controller('AuthCtrl', ['Players', '$rootScope', '$controller', function(Players, $rootScope, $controller) {
+			$controller('PlayerCtrl', {$scope: $rootScope});
+
 			this.loadPlayer = function() {
 				Players.getAuth(
 					function(data) {
-						$scope.player = data;
+						$rootScope.player = data;
+						$rootScope.playerId = data._id;
 					}, function(err) {
-						$scope.error = err;
+						$rootScope.error = err;
 					});
 			};
 
-			this.loadPlayer();
+			if(!$rootScope.player) {
+				this.loadPlayer();
+			}
 		}])
 
 		.directive('playerMenu', ['$rootScope', function($rootScope) {

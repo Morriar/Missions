@@ -24,7 +24,8 @@
 	.config(function($routeProvider, $locationProvider) {
 		$routeProvider
 			.when('/', {
-				templateUrl: 'views/index.html'
+				templateUrl: 'views/index.html',
+				controller: 'PlayersCtrl'
 			})
 			.when('/login', {
 				controller : function(){
@@ -33,14 +34,23 @@
 			    template : "<div></div>"
 			})
 			.when('/logout', {
-				controller : function(){
+				controller : [ '$rootScope', function($rootScope){
+					$rootScope.player = null;
 					window.location.replace('/auth/logout');
-				},
+				}],
 			    template : "<div></div>"
 			})
-			.when('/players', {
-				templateUrl: 'views/players.html',
-				controller: 'PlayersCtrl'
+			.when('/player/', {
+				templateUrl: 'views/player.html',
+				controller : 'PlayerAuth'
+			})
+			.when('/player/tracks/:tid', {
+				templateUrl: 'views/player/track.html',
+				controller : 'PlayerAuth'
+			})
+			.when('/player/missions/:mid', {
+				templateUrl: 'views/player/mission.html',
+				controller : 'PlayerAuth'
 			})
 			.when('/players/:login', {
 				templateUrl: 'views/player.html',
