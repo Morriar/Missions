@@ -24,14 +24,26 @@ config.missions.clear
 config.missions_status.clear
 
 # load some tracks and missions
-for i in [1..15] do
+for i in [1..10] do
 	var track = new Track("Track {i}", "desc {i}")
 	config.tracks.save track
 	var last_missions = new Array[Mission]
-	for j in [1..15] do
+	for j in [1..10] do
 		var mission = new Mission(track, "Mission {i}-{j}", "desc {j}")
 		if last_missions.not_empty then
-			mission.parents.add last_missions.last.id
+			if 100.rand > 75 then
+				mission.parents.add last_missions.last.id
+			else
+				mission.parents.add last_missions.rand.id
+			end
+			if 100.rand > 50 then
+				var rand = last_missions.rand.id
+				if not mission.parents.has(rand) then mission.parents.add rand
+			end
+		end
+		var stars = [1..3].rand
+		for s in [1..stars] do
+			mission.add_star(new MissionStar("star{s} explanation", 100.rand))
 		end
 		last_missions.add mission
 		config.missions.save mission
@@ -43,9 +55,16 @@ var player = new Player(new User("", "Morriar", avatar_url= "https://avatars.git
 config.players.save player
 
 # load some statuses
-var statuses = ["locked", "open", "closed"]
 for mission in config.missions.find_all do
-	config.missions_status.save new MissionStatus(mission, player, mission.track, statuses.rand)
+	var status = new MissionStatus(mission, player, mission.track)
+	if mission.is_unlocked_for_player(config, player) or 100.rand > 25 then
+		status.status = "open"
+		for star in mission.stars do
+			if 100.rand > 50 then status.stars.add star
+		end
+	end
+	if status.stars.not_empty then status.status = "success"
+	config.missions_status.save status
 end
 
 print "Loaded {config.tracks.find_all.length} tracks"
