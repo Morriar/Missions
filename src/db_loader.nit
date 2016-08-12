@@ -18,8 +18,10 @@ var opts = new AppOptions.from_args(args)
 var config = new AppConfig.from_options(opts)
 
 # clean bd
+config.players.clear
 config.tracks.clear
 config.missions.clear
+config.missions_status.clear
 
 # load some tracks and missions
 for i in [1..15] do
@@ -36,5 +38,17 @@ for i in [1..15] do
 	end
 end
 
+# load some players
+var player = new Player(new User("", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3"))
+config.players.save player
+
+# load some statuses
+var statuses = ["locked", "open", "closed"]
+for mission in config.missions.find_all do
+	config.missions_status.save new MissionStatus(mission, player, mission.track, statuses.rand)
+end
+
 print "Loaded {config.tracks.find_all.length} tracks"
 print "Loaded {config.missions.find_all.length} missions"
+print "Loaded {config.players.find_all.length} players"
+print "Loaded {config.missions_status.find_all.length} missions status"
