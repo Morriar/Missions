@@ -12,9 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module api
+module api_missions
 
-import api::api_auth
-import api::api_players
+import model
 import api::api_tracks
-import api::api_missions
+
+redef class APIRouter
+	redef init do
+		super
+		use("/missions", new APIMissions(config))
+		use("/missions/:mid", new APIMission(config))
+	end
+end
+
+class APIMissions
+	super APIHandler
+
+	redef fun get(req, res) do
+		res.json new JsonArray.from(config.missions.find_all)
+	end
+end
+
+class APIMission
+	super MissionHandler
+
+	redef fun get(req, res) do
+		var mission = get_mission(req, res)
+		if mission == null then return
+		res.json mission
+	end
+end
