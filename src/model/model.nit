@@ -14,4 +14,4 @@
 
 module model
 
-import model::missions
+import model::status
