@@ -39,7 +39,9 @@ redef class Player
 			status.missions_count += 1
 			if mission_status.is_locked then status.missions_locked += 1
 			if mission_status.is_open then status.missions_open += 1
-			if mission_status.is_closed then status.missions_closed += 1
+			if mission_status.is_success then status.missions_success += 1
+			status.stars_count += mission.stars.length
+			status.stars_unlocked += mission_status.stars.length
 			status.missions.add mission_status
 		end
 
@@ -49,7 +51,26 @@ redef class Player
 	fun mission_status(config: AppConfig, mission: Mission): MissionStatus do
 		var status = config.missions_status.find_by_mission_and_player(mission, self)
 		if status != null then return status
-		return new MissionStatus(mission, self, mission.track, "locked")
+		status = new MissionStatus(mission, self, mission.track)
+		if mission.is_unlocked_for_player(config, self) then
+			status.status = "open"
+		end
+		return status
+	end
+end
+
+redef class Mission
+
+	# Is a mission available for a player depending on the mission parents status
+	fun is_unlocked_for_player(config: AppConfig, player: Player): Bool do
+		if parents.is_empty then return true
+		for parent_id in parents do
+			var parent = config.missions.find_by_id(parent_id)
+			if parent == null then continue
+			var status = player.mission_status(config, parent)
+			if not status.is_success then return false
+		end
+		return true
 	end
 end
 
@@ -67,7 +88,9 @@ class TrackStatus
 	var missions_count: Int = 0
 	var missions_locked: Int = 0
 	var missions_open: Int = 0
-	var missions_closed: Int = 0
+	var missions_success: Int = 0
+	var stars_count = 0
+	var stars_unlocked = 0
 
 	redef fun to_s do return id
 	redef fun ==(o) do return o isa SELF and id == o.id
@@ -86,20 +109,23 @@ class MissionStatus
 	var player: Player
 	var track: nullable Track
 
+	# Unlocked stars
+	var stars = new Array[MissionStar]
+
 	# `mission` status for `player`
 	#
 	# Can be one of:
 	# * `locked`: the mission cannot be played
 	# * `open`: the mission can be played
-	# * `closed`: the mission is a success
+	# * `success`: the mission is a success
 	#
 	# If no status exists for a couple Mission & Player, one should assume
 	# that the mission is locked and check the parents dependencies.
-	var status: String
+	var status: String = "locked" is writable
 
-	var is_locked: Bool is lazy, serialize_as "is_locked" do return status == "locked"
-	var is_open: Bool is lazy, serialize_as "is_open" do return status == "open"
-	var is_closed: Bool is lazy, serialize_as "is_closed" do return status == "closed"
+	var is_locked: Bool is lazy do return status == "locked"
+	var is_open: Bool is lazy do return status == "open"
+	var is_success: Bool is lazy do return status == "success"
 
 	redef fun to_s do return id
 	redef fun ==(o) do return o isa SELF and id == o.id

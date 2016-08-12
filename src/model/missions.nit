@@ -35,7 +35,16 @@ class Mission
 	var track: nullable Track
 	var title: String
 	var desc: String
-	var parents = new Array[String] is serialize_as "parents"
+	var parents = new Array[String]
+	var stars = new Array[MissionStar]
+
+	fun add_star(star: MissionStar) do stars.add star
+
+	var reward: Int is lazy do
+		var r = 0
+		for star in stars do r += star.reward
+		return r
+	end
 
 	redef fun to_s do return title
 	redef fun ==(o) do return o isa SELF and id == o.id
@@ -50,4 +59,23 @@ class MissionRepo
 		if track == null then return find_all
 		return find_all((new MongoMatch).eq("track._id", track.id))
 	end
+end
+
+# Mission requirements
+class MissionStar
+	serialize
+	super Jsonable
+
+	var id: String = (new MongoObjectId).id is serialize_as "_id"
+
+	# The star explanation
+	var title: String
+
+	# The reward (in points) accorded when this star is unlocked
+	var reward: Int
+
+	redef fun to_s do return title
+	redef fun ==(o) do return o isa SELF and id == o.id
+	redef fun hash do return id.hash
+	redef fun to_json do return serialize_to_json
 end
