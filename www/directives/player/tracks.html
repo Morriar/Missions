@@ -12,7 +12,7 @@
 			</th>
 			<td title='{{status.missions_success}}/{{status.missions_count}} missions accomplished'>
 				<div class='progress'
-					ng-init='progress = status.missions_closed / status.missions_count * 100'>
+					ng-init='progress = status.missions_success / status.missions_count * 100'>
 					<div class='progress-bar progress-bar-info progress-bar-striped'
 						style='width: {{progress | number: 0}}%'>
 						<span>{{status.missions_success}}/{{status.missions_count}}</span>

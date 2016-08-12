@@ -79,6 +79,14 @@
 						$scope.error = err;
 					});
 			};
+
+			$scope.hasStar = function(star, stars) {
+				for(var i = 0; i < stars.__items.length; i++) {
+					var s = stars.__items[i]
+					if(s._id == star._id) return true;
+				}
+				return false;
+			}
 		}])
 
 		.controller('AuthCtrl', ['Players', '$rootScope', '$controller', function(Players, $rootScope, $controller) {
