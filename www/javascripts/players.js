@@ -185,7 +185,7 @@
 						var g = new dagreD3.graphlib.Graph()
 							.setGraph({
 								nodesep: 20,
-								ranksep: 40,
+								ranksep: 50,
 								rankdir: "LR",
 								marginx: 10,
 								marginy: 10
@@ -194,10 +194,10 @@
 
 						function draw(isUpdate) {
 							var map = $scope.buildMap(missionsStatus);
-							missionsStatus.forEach(function(status) {
+							missionsStatus.forEach(function(status, index) {
 								g.setNode(status.mission._id, {
 									labelType: "html",
-									label: "<div class=''>" + status.mission.title + "</div>",
+									label: "<p class='number'>" + (index + 1) + "</p>",
 									rx: 5,
 									ry: 5,
 									padding: 0,
@@ -206,13 +206,47 @@
 								});
 								status.mission.parents.__items.forEach(function(parent) {
 									g.setEdge(parent, status.mission._id, {
-										width: 40,
 										class: map[parent].status
 									});
 								});
 							});
 
+							var hasStar = function(star, stars) {
+								for(var i = 0; i < stars.__items.length; i++) {
+									var s = stars.__items[i]
+									if(s._id == star._id) return true;
+								}
+								return false;
+							}
+
 							render(inner, g);
+
+							$("svg .node").tipsy({
+								gravity: $.fn.tipsy.autoNS,
+								fade: true,
+								html: true,
+								title: function() {
+									var status = map[this.id];
+									var html = ''
+									html += "<div class='mission-tip " + status.status + "'>" +
+												"<h3>" + status.mission.title + "</h3>" +
+												"<p>" + status.mission.reward + " pts</p>"
+									for(var i in status.mission.stars.__items) {
+										var star = status.mission.stars.__items[i];
+										if(hasStar(star, status.stars)) {
+											html += "<span class='glyphicon glyphicon-star' />";
+										} else {
+											html += "<span class='glyphicon glyphicon-star-empty' />";
+										}
+									}
+									html += "</div>"
+									return html;
+								}
+							});
+							$("svg .node").click(function() {
+								var status = map[this.id];
+								window.location.href = "/players/" + status.player._id + "/missions/" + this.id;
+							});
 
 							// Zoom and scale to fit
 							var graphWidth = g.graph().width;

@@ -5,6 +5,8 @@ body {
 	margin-bottom: 70px;
 }
 
+.progress { margin-bottom: 0 }
+
 /*
  * Users
  */
@@ -33,7 +35,7 @@ body {
 
 .track-tree {
 	width: 100%;
-	height: 100%;
+	height: 300px;
 }
 
 .track-tree text {
@@ -48,51 +50,34 @@ body {
 	cursor: pointer;
 }
 
-.track-tree .node rect {
+.track-tree .node rect,
+.track-tree .edgePath path {
 	stroke-width: 2px;
 	stroke: #bbb;
 	fill: #666;
 }
 
-.track-tree .node.closed rect {
-	stroke: rgba(0, 255, 0, 0.80);
-	fill: rgba(0, 255, 0, 0.50);
+.track-tree .node.success rect,
+.track-tree .edgePath.success path {
+	fill: rgba(60, 200, 0, 1);
+	stroke: rgba(30, 150, 0, 1);
 }
 
-.track-tree .node.open rect {
-	stroke: rgba(255, 0, 0, 0.80);
-	fill: rgba(255, 0, 0, 0.50);
-}
-
-.track-tree .node.locked rect {
-	stroke: rgba(150, 150, 150, 0.80);
-	fill: rgba(150, 150, 150, 0.50);
-}
-
-.track-tree .edgePath path {
-	stroke-width: 2px;
-	stroke: #bbb;
-	fill: rgba(0, 0, 0, 0.80);
-}
-
-.track-tree .edgePath.closed path {
-	stroke: rgba(0, 255, 0, 0.80);
-	fill: rgba(0, 255, 0, 0.80);
-}
-
+.track-tree .node.open rect,
 .track-tree .edgePath.open path {
-	stroke: rgba(255, 0, 0, 0.80);
-	fill: rgba(255, 0, 0, 0.80);
+	fill: rgba(255, 200, 0, 1);
+	stroke: rgba(175, 130, 0, 1);
 }
 
+.track-tree .node.locked rect,
 .track-tree .edgePath.locked path {
-	stroke: rgba(150, 150, 150, 0.80);
-	fill: rgba(150, 150, 150, 0.80);
+	fill: rgba(150, 150, 150, 1);
+	stroke: rgba(100, 100, 100, 1);
 }
 
 .track-tree .number {
 	line-height: 40px;
-	font-size: 12px;
+	font-size: 20px;
 }
 
 .track-tree .glyphicon {
@@ -101,4 +86,24 @@ body {
 	line-height: 40px;
 	padding-left: 0.1em;
 	color: rgba(30, 30, 30, 0.5)
+}
+
+.mission-tip {
+	font-size: 16px;
+}
+
+.mission-tip h3 {
+	margin: 5px;
+}
+
+.mission-tip.open h3 { color: #c83127; }
+.mission-tip.open .tip-status { color: #c83127; }
+.mission-tip.success h3 { color: #3c763d; }
+.mission-tip.success .tip-status { color: #3c763d; }
+.mission-tip.locked h3 { color: #777; }
+.mission-tip.locked .tip-status { color: #777; }
+.mission-tip .tip-reward { color: green; }
+
+.mission-icon {
+	width: 100%;
 }
