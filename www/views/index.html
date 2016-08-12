@@ -1,1 +1,19 @@
-hello world
+<div class='panel panel-default'>
+	<div class='panel-body'>
+		<h1>Welcome to Missions</h1>
+
+		<p>Here you can train your CS skills by accomplishing missions.</p>
+		<p>Please <a href='/login'>login</a> to start.</p>
+	</div>
+</div>
+
+<div class='panel panel-default'>
+	<div class='panel-heading'>
+		<h4 class='panel-title'>Players</h4>
+	</div>
+	<table class='table'>
+		<tr ng-repeat='player in players'>
+			<td><player-link player='player' /></td>
+		</tr>
+	</table>
+</div>

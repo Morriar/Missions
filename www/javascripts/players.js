@@ -15,24 +15,19 @@
  */
 
 (function() {
-	angular.module('ng-app', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'players'])
+	angular
+		.module('players', ['ngSanitize', 'model'])
 
-	.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-		cfpLoadingBarProvider.includeSpinner = false;
-	}])
+		.controller('PlayersCtrl', ['Players', '$rootScope', function(Players, $scope) {
+			this.loadPlayers = function() {
+				Players.getPlayers(
+					function(data) {
+						$scope.players = data;
+					}, function(err) {
+						$scope.error = err;
+					});
+			};
 
-	.config(function($routeProvider, $locationProvider) {
-		$routeProvider
-			.when('/', {
-				templateUrl: 'views/index.html'
-			})
-			.when('/players', {
-				templateUrl: 'views/players.html',
-				controller: 'PlayersCtrl'
-			})
-			.otherwise({
-				redirectTo: '/'
-			});
-		$locationProvider.html5Mode(true);
-	});
+			this.loadPlayers();
+		}])
 })();
