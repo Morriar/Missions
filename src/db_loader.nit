@@ -55,6 +55,7 @@ end
 var aurl = "https://avatars.githubusercontent.com/u/2577044?v=3"
 var players = [
 	new Player("Morriar", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3"),
+	new Player("privat", "privat", avatar_url= "https://avatars2.githubusercontent.com/u/135828?v=3"),
 	new Player("P1", "Player 1", avatar_url=aurl),
 	new Player("P2", "Player 2", avatar_url=aurl),
 	new Player("P3", "Player 3", avatar_url=aurl),
