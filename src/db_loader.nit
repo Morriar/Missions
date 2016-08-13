@@ -14,6 +14,8 @@
 
 import model
 
+import model::loader
+
 var opts = new AppOptions.from_args(args)
 var config = new AppConfig.from_options(opts)
 
@@ -50,6 +52,10 @@ for i in [1..10] do
 		config.missions.save mission
 	end
 end
+
+var t = new Track("Nit", "Learn Nit")
+config.tracks.save t
+t.load_missions(config, "tracks/nit")
 
 # load some players
 var aurl = "https://avatars.githubusercontent.com/u/2577044?v=3"
