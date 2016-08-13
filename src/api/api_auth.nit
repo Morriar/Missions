@@ -50,6 +50,8 @@ class MissionsGithubOAuthCallBack
 		var player = config.players.find_by_id(id)
 		if player == null then
 			player = new Player(id)
+			player.name = user.login
+			player.avatar_url = user.avatar_url
 			config.players.save player
 		end
 		session.player = player

@@ -53,12 +53,12 @@ end
 # load some players
 var aurl = "https://avatars.githubusercontent.com/u/2577044?v=3"
 var players = [
-	new Player(new User("", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3")),
-	new Player(new User("", "Player 1", avatar_url=aurl)),
-	new Player(new User("", "Player 2", avatar_url=aurl)),
-	new Player(new User("", "Player 3", avatar_url=aurl)),
-	new Player(new User("", "Player 4", avatar_url=aurl)),
-	new Player(new User("", "Player 5", avatar_url=aurl))
+	new Player("Morriar", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3"),
+	new Player("P1", "Player 1", avatar_url=aurl),
+	new Player("P2", "Player 2", avatar_url=aurl),
+	new Player("P3", "Player 3", avatar_url=aurl),
+	new Player("P4", "Player 4", avatar_url=aurl),
+	new Player("P5", "Player 5", avatar_url=aurl)
 ]
 
 for player in players do

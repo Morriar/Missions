@@ -29,6 +29,14 @@ class Player
 	# Should include the origin to avoid collision. eg `github:Morriar`
 	var id: String is serialize_as "_id"
 
+	# The screen name
+	var name: nullable String is writable
+
+	# The email
+	var email: nullable String is writable
+
+	# The image to use as avatar
+	var avatar_url: nullable String is writable
 
 	redef fun to_s do return id
 	redef fun ==(o) do return o isa SELF and id == o.id
