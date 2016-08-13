@@ -25,6 +25,7 @@ redef class APIRouter
 		use("/players/:login/tracks/", new APIPlayerTracksStatus(config))
 		use("/players/:login/tracks/:tid", new APIPlayerTrackStatus(config))
 		use("/players/:login/missions/:mid", new APIPlayerMissionStatus(config))
+		use("/players/:login/stats/", new APIPlayerStats(config))
 		use("/player", new APIPlayerAuth(config))
 	end
 end
@@ -33,7 +34,7 @@ class APIPlayers
 	super APIHandler
 
 	redef fun get(req, res) do
-		res.json new JsonArray.from(config.players.find_all)
+		res.json new JsonArray.from(config.players_ranking)
 	end
 end
 
@@ -90,5 +91,15 @@ class APIPlayerMissionStatus
 		var mission = get_mission(req, res)
 		if mission == null then return
 		res.json config.missions_status.find_by_mission_and_player(mission, player)
+	end
+end
+
+class APIPlayerStats
+	super PlayerHandler
+
+	redef fun get(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		res.json player.stats(config)
 	end
 end
