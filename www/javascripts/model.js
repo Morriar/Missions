@@ -37,6 +37,26 @@
 						.success(cb)
 						.error(cbErr);
 				},
+				getNotifications: function(cb, cbErr) {
+					$http.get(apiUrl + '/player/notifications')
+						.success(cb)
+						.error(cbErr);
+				},
+				deleteNotifications: function(cb, cbErr) {
+					$http.delete(apiUrl + '/player/notifications')
+						.success(cb)
+						.error(cbErr);
+				},
+				getNotification: function(nid, cb, cbErr) {
+					$http.get(apiUrl + '/player/notifications/' + nid)
+						.success(cb)
+						.error(cbErr);
+				},
+				deleteNotification: function(nid, cb, cbErr) {
+					$http.delete(apiUrl + '/player/notifications/' + nid)
+						.success(cb)
+						.error(cbErr);
+				},
 				getStats: function(login, cb, cbErr) {
 					$http.get(apiUrl + '/players/' + login + '/stats')
 						.success(cb)

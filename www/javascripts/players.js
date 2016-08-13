@@ -28,6 +28,7 @@
 			$scope.fromAuth = true;
 			$scope.trackId = $routeParams.tid;
 			$scope.missionId = $routeParams.mid;
+			$rootScope.notifId = $routeParams.nid;
 		}])
 
 		.controller('PlayersCtrl', ['Players', '$rootScope', function(Players, $scope) {
@@ -96,8 +97,9 @@
 			}
 		}])
 
-		.controller('AuthCtrl', ['Players', '$rootScope', '$controller', function(Players, $rootScope, $controller) {
+		.controller('AuthCtrl', ['Players', '$rootScope', '$controller', '$location', function(Players, $rootScope, $controller, $location) {
 			$controller('PlayerCtrl', {$scope: $rootScope});
+			$ctrl = this;
 
 			this.loadPlayer = function() {
 				Players.getAuth(
@@ -108,6 +110,45 @@
 						$rootScope.error = err;
 					});
 			};
+
+			this.loadNotifications = function() {
+				Players.getNotifications(
+					function(data) {
+						$rootScope.notifications = data;
+					}, function(err) {
+						$rootScope.error = err;
+					});
+			};
+
+			this.clearNotifications = function() {
+				Players.deleteNotifications(
+					function(data) {
+						$rootScope.notifications = data;
+					}, function(err) {
+						$rootScope.error = err;
+					});
+			};
+
+			this.loadNotification = function() {
+				Players.getNotification($rootScope.notifId,
+					function(data) {
+						$rootScope.notification = data;
+					}, function(err) {
+						$rootScope.error = err;
+					});
+			};
+
+			this.clearNotification = function() {
+				Players.deleteNotification($rootScope.notifId,
+					function(data) {
+						$rootScope.notification = data;
+						$location.path('/player/notifications');
+						$ctrl.loadNotifications();
+					}, function(err) {
+						$rootScope.error = err;
+					});
+			};
+			$rootScope.clearNotification = this.clearNotification;
 
 			if(!$rootScope.player) {
 				this.loadPlayer();
@@ -150,6 +191,16 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/menu.html',
+				controller: 'AuthCtrl',
+				controllerAs: 'playerCtrl'
+			};
+		}])
+
+		.directive('playerNotificationsMenu', ['$rootScope', function($rootScope) {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/notifications-menu.html',
 				controller: 'AuthCtrl',
 				controllerAs: 'playerCtrl'
 			};
