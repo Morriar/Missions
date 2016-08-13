@@ -15,23 +15,28 @@
 module players
 
 import config
-import popcorn::pop_auth
 
 redef class AppConfig
 	var players = new PlayerRepo(db.collection("players")) is lazy
 end
 
 # Player representation
-#
-# Each player is linked to a Github user
 class Player
 	serialize
 	super Jsonable
 
-	var id: String is lazy, serialize_as "_id" do return user.login
+	# The uniq id.
+	# Should include the origin to avoid collision. eg `github:Morriar`
+	var id: String is serialize_as "_id"
 
-	# github user linked to this player
-	var user: User
+	# The screen name
+	var name: nullable String is writable
+
+	# The email
+	var email: nullable String is writable
+
+	# The image to use as avatar
+	var avatar_url: nullable String is writable
 
 	redef fun to_s do return id
 	redef fun ==(o) do return o isa SELF and id == o.id
@@ -41,6 +46,4 @@ end
 
 class PlayerRepo
 	super MongoRepository[Player]
-
-	fun find_by_user(user: User): nullable Player do return find_by_id(user.login)
 end
