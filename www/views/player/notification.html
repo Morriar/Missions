@@ -1,14 +1,8 @@
-<div class='container-fluid' ng-init='playerCtrl.loadNotification()'>
-	<div class='col-xs-3 col-md-2'>
-		<player-sidebar player='{{player}}' />
+<div class='container-fluid' ng-controller='PlayerCtrl as playerCtrl' ng-init='playerCtrl.loadPlayer(playerId)'>
+	<div class='col-xs-3 col-md-2' ng-init='playerCtrl.loadStats(playerId)'>
+		<player-sidebar stats='playerCtrl.stats' />
 	</div>
 	<div class='col-xs-9 col-md-10'>
-		<h3><span class='glyphicon glyphicon-envelope text-muted' /> New message</h3>
-		<p class='text-muted'>
-			received {{notification.timestamp * 1000 | date: 'dd, MMM, yyyy HH:MM:ss a'}}
-		</p>
-		<blockquote>{{notification.message}}</blockquote>
-
-		<a class='btn btn-danger' ng-click='clearNotification()'>Delete</a>
+		<player-notification notif-id='notifId' />
 	</div>
 </div>

@@ -1,12 +1,9 @@
-<div ng-init='playerCtrl.loadTracksStatus()'>
+<div>
 	<h3>Overall progress</h3>
 	<table class='table'>
-		<tr ng-repeat='status in tracks_status'>
+		<tr ng-repeat='status in tracksStatus'>
 			<th width='30%'>
-				<a href='/players/{{player._id}}/tracks/{{status.track._id}}' ng-if='!fromAuth'>
-					{{status.track.title}}
-				</a>
-				<a href='/player/tracks/{{status.track._id}}' ng-if='fromAuth'>
+				<a href='{{playerUrl}}/tracks/{{status.track._id}}'>
 					{{status.track.title}}
 				</a>
 			</th>

@@ -1,54 +1,51 @@
-<div ng-init='playerCtrl.loadTrackStatus()'>
-	<h3>{{status.track.title}}</h3>
+<div>
+	<h3>{{trackStatus.track.title}}</h3>
 
 	<table class='table'>
 		<tr>
 			<td width='60%'>
 				<div class='progress'>
 					<div class='progress-bar progress-bar-info progress-bar-striped'
-						style='width: {{status.missions_success / status.missions_count * 100 | number: 0}}%'>
-						<span>{{status.missions_success}} / {{status.missions_count}}</span>
+						style='width: {{trackStatus.missions_success / trackStatus.missions_count * 100 | number: 0}}%'>
+						<span>{{trackStatus.missions_success}} / {{trackStatus.missions_count}}</span>
 					</div>
 				</div>
 			</td>
 			<td>
-				{{status.missions_success}} / {{status.missions_count}} mission accomplished
+				{{trackStatus.missions_success}} / {{trackStatus.missions_count}} mission accomplished
 			</td>
 		</tr>
 		<tr>
 			<td width='60%'>
 				<div class='progress'>
 					<div class='progress-bar progress-bar-warning progress-bar-striped'
-						style='width: {{status.stars_unlocked / status.stars_count * 100 | number: 0}}%'>
-						<span>{{status.stars_unlocked}} / {{status.stars_count}}</span>
+						style='width: {{trackStatus.stars_unlocked / trackStatus.stars_count * 100 | number: 0}}%'>
+						<span>{{trackStatus.stars_unlocked}} / {{trackStatus.stars_count}}</span>
 					</div>
 				</div>
 			</td>
 			<td>
-				{{status.stars_unlocked}} / {{status.stars_count}} stars unlocked
+				{{trackStatus.stars_unlocked}} / {{trackStatus.stars_count}} stars unlocked
 			</td>
 		</tr>
 	</table>
 
-	<div>{{status.track.desc}}</div>
+	<div>{{trackStatus.track.desc}}</div>
 	<hr>
 
 	<h4>Missions</h4>
-	<track-tree missions-status='status.missions.__items' />
+	<track-tree missions-status='trackStatus.missions.__items' />
 	<br><br>
 
 	<table class='table'>
-		<tr ng-repeat='ms in status.missions.__items'>
+		<tr ng-repeat='ms in trackStatus.missions.__items'>
 			<th width='3%'>
 				<span ng-if='ms.is_locked' class='glyphicon glyphicon-lock text-muted' />
 				<span ng-if='ms.is_open' class='glyphicon glyphicon-remove text-warning' />
 				<span ng-if='ms.is_success' class='glyphicon glyphicon-ok text-success' />
 			</th>
 			<th width='30%'>
-				<a href='/players/{{player._id}}/missions/{{ms.mission._id}}' ng-if='!fromAuth'>
-					{{ms.mission.title}}
-				</a>
-				<a href='/player/missions/{{ms.mission._id}}' ng-if='fromAuth'>
+				<a href='{{playerUrl}}/missions/{{ms.mission._id}}'>
 					{{ms.mission.title}}
 				</a>
 			</th>

@@ -1,0 +1,9 @@
+<div ng-init='notifsCtrl.loadNotification(notifId)'>
+	<h3><span class='glyphicon glyphicon-envelope text-muted' /> New message</h3>
+	<p class='text-muted'>
+		received {{notification.timestamp * 1000 | date: 'dd, MMM, yyyy HH:MM:ss a'}}
+	</p>
+	<blockquote>{{notification.message}}</blockquote>
+
+	<a class='btn btn-danger' ng-click='notifsCtrl.clearNotification(notifId)'>Delete</a>
+</div>

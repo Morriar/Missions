@@ -1,8 +1,8 @@
-<div class='container-fluid' ng-controller='PlayerCtrl as playerCtrl'>
-	<div class='col-xs-3 col-md-2'>
-		<player-sidebar player='{{player}}' />
+<div class='container-fluid' ng-controller='PlayerCtrl as playerCtrl' ng-init='playerCtrl.loadPlayer(playerId)'>
+	<div class='col-xs-3 col-md-2' ng-init='playerCtrl.loadStats(playerId)'>
+		<player-sidebar stats='playerCtrl.stats' />
 	</div>
-	<div class='col-xs-9 col-md-10'>
-		<player-track player='{{player}}' />
+	<div class='col-xs-9 col-md-10' ng-init='playerCtrl.loadTrackStatus(playerId, trackId)'>
+		<player-track player-url='playerUrl' track-status='playerCtrl.trackStatus' />
 	</div>
 </div>

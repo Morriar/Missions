@@ -7,5 +7,7 @@
 	</div>
 </div>
 
-<players-podium />
-<players-list />
+<div ng-controller='PlayersCtrl as playersCtrl' ng-init='playersCtrl.loadPlayers()'>
+	<players-podium players='playersCtrl.players' />
+	<players-list players='playersCtrl.players'  />
+</div>
