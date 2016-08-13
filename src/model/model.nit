@@ -14,4 +14,4 @@
 
 module model
 
-import model::status
+import model::stats
