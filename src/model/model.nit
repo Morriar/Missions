@@ -14,4 +14,5 @@
 
 module model
 
+import model::notifications
 import model::stats
