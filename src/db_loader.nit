@@ -51,20 +51,31 @@ for i in [1..10] do
 end
 
 # load some players
-var player = new Player(new User("", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3"))
-config.players.save player
+var aurl = "https://avatars.githubusercontent.com/u/2577044?v=3"
+var players = [
+	new Player(new User("", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3")),
+	new Player(new User("", "Player 1", avatar_url=aurl)),
+	new Player(new User("", "Player 2", avatar_url=aurl)),
+	new Player(new User("", "Player 3", avatar_url=aurl)),
+	new Player(new User("", "Player 4", avatar_url=aurl)),
+	new Player(new User("", "Player 5", avatar_url=aurl))
+]
 
-# load some statuses
-for mission in config.missions.find_all do
-	var status = new MissionStatus(mission, player, mission.track)
-	if mission.is_unlocked_for_player(config, player) or 100.rand > 25 then
-		status.status = "open"
-		for star in mission.stars do
-			if 100.rand > 50 then status.stars.add star
+for player in players do
+	config.players.save player
+
+	# load some statuses
+	for mission in config.missions.find_all do
+		var status = new MissionStatus(mission, player, mission.track)
+		if mission.is_unlocked_for_player(config, player) or 100.rand > 25 then
+			status.status = "open"
+			for star in mission.stars do
+				if 100.rand > 50 then status.stars.add star
+			end
 		end
+		if status.stars.not_empty then status.status = "success"
+		config.missions_status.save status
 	end
-	if status.stars.not_empty then status.status = "success"
-	config.missions_status.save status
 end
 
 print "Loaded {config.tracks.find_all.length} tracks"
