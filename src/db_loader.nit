@@ -19,6 +19,7 @@ var config = new AppConfig.from_options(opts)
 
 # clean bd
 config.players.clear
+config.notifications.clear
 config.tracks.clear
 config.missions.clear
 config.missions_status.clear
@@ -76,6 +77,9 @@ for player in players do
 		if status.stars.not_empty then status.status = "success"
 		config.missions_status.save status
 	end
+
+	config.notifications.save new PlayerNotification(player, "Hello {player.id}")
+	config.notifications.save new PlayerNotification(player, "Hello2 {player.id}")
 end
 
 print "Loaded {config.tracks.find_all.length} tracks"
