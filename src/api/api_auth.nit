@@ -15,6 +15,7 @@
 module api_auth
 
 import api_base
+import popcorn::pop_auth
 
 class AuthRouter
 	super Router
@@ -45,9 +46,10 @@ class MissionsGithubOAuthCallBack
 		if session == null then return
 		var user = session.user
 		if user == null then return
-		var player = config.players.find_by_user(user)
+		var id = user.login
+		var player = config.players.find_by_id(id)
 		if player == null then
-			player = new Player(user)
+			player = new Player(id)
 			config.players.save player
 		end
 		session.player = player
