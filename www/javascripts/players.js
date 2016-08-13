@@ -20,103 +20,103 @@
 
 		.controller('PlayerHome', ['$routeParams', '$scope', function($routeParams, $scope) {
 			$scope.playerId = $routeParams.login;
+			$scope.playerUrl = '/players/' + $scope.playerId;
 			$scope.trackId = $routeParams.tid;
 			$scope.missionId = $routeParams.mid;
 		}])
 
 		.controller('PlayerAuth', ['$routeParams', '$rootScope', '$scope', function($routeParams, $rootScope, $scope) {
-			$scope.fromAuth = true;
+
+			$scope.playerId = $rootScope.session._id;
+			$scope.playerUrl = '/player';
 			$scope.trackId = $routeParams.tid;
 			$scope.missionId = $routeParams.mid;
-			$rootScope.notifId = $routeParams.nid;
+			$scope.notifId = $routeParams.nid;
 		}])
 
-		.controller('PlayersCtrl', ['Players', '$rootScope', function(Players, $scope) {
+		.controller('PlayersCtrl', ['Players', function(Players) {
+			$controller = this;
+
 			this.loadPlayers = function() {
 				Players.getPlayers(
 					function(data) {
-						$scope.players = data;
+						$controller.players = data;
 					}, function(err) {
-						$scope.error = err;
+						$controller.error = err;
 					});
 			};
 		}])
 
-		.controller('PlayerCtrl', ['Players', '$scope', function(Players, $scope) {
-			this.loadPlayer = function() {
-				Players.getPlayer($scope.playerId,
+		.controller('PlayerCtrl', ['Players', function(Players) {
+			$controller = this;
+
+			this.loadPlayer = function(playerId) {
+				Players.getPlayer(playerId,
 					function(data) {
-						$scope.player = data;
+						$controller.player = data;
 					}, function(err) {
-						$scope.error = err;
+						$controller.error = err;
 					});
 			};
 
-			this.loadStats = function() {
-				Players.getStats($scope.playerId,
+			this.loadStats = function(playerId) {
+				Players.getStats(playerId,
 					function(data) {
-						$scope.stats = data;
+						$controller.stats = data;
 					}, function(err) {
-						$scope.error = err;
+						$controller.error = err;
 					});
 			};
 
-			this.loadTracksStatus = function() {
-				Players.getTracksStatus($scope.playerId,
+			this.loadTracksStatus = function(playerId) {
+				Players.getTracksStatus(playerId,
 					function(data) {
-						$scope.tracks_status = data;
+						$controller.tracksStatus = data;
 					}, function(err) {
-						$scope.error = err;
+						$controller.error = err;
 					});
 			};
 
-			this.loadTrackStatus = function() {
-				Players.getTrackStatus($scope.playerId, $scope.trackId,
+			this.loadTrackStatus = function(playerId, trackId) {
+				Players.getTrackStatus(playerId, trackId,
 					function(data) {
-						$scope.status = data;
+						$controller.trackStatus = data;
 					}, function(err) {
-						$scope.error = err;
+						$controller.error = err;
 					});
 			};
 
-			this.loadMissionStatus = function() {
-				Players.getMissionStatus($scope.playerId, $scope.missionId,
+			this.loadMissionStatus = function(playerId, missionId) {
+				Players.getMissionStatus(playerId, missionId,
 					function(data) {
-						$scope.mission_status = data;
+						$controller.missionStatus = data;
 					}, function(err) {
-						$scope.error = err;
+						$controller.error = err;
 					});
 			};
-
-			$scope.hasStar = function(star, stars) {
-				for(var i = 0; i < stars.__items.length; i++) {
-					var s = stars.__items[i]
-					if(s._id == star._id) return true;
-				}
-				return false;
-			}
 		}])
 
-		.controller('AuthCtrl', ['Players', '$rootScope', '$controller', '$location', function(Players, $rootScope, $controller, $location) {
-			$controller('PlayerCtrl', {$scope: $rootScope});
-			$ctrl = this;
+		.controller('AuthCtrl', ['Players', '$rootScope', '$location', function(Players, $rootScope, $location) {
 
-			this.loadPlayer = function() {
+			this.loadSession = function() {
 				Players.getAuth(
 					function(data) {
-						$rootScope.player = data;
-						$rootScope.playerId = data._id;
+						$rootScope.session = data;
 					}, function(err) {
 						$rootScope.error = err;
 					});
 			};
+		}])
+
+		.controller('NotifsCtrl', ['Players', '$location', '$rootScope', '$scope', function(Players, $location, $rootScope, $scope) {
+			$notifsCtrl = this;
 
 			this.loadNotifications = function() {
 				Players.getNotifications(
 					function(data) {
 						$rootScope.notifications = data;
 					}, function(err) {
-						$rootScope.error = err;
+						$notifsCtrl.error = err;
 					});
 			};
 
@@ -129,30 +129,25 @@
 					});
 			};
 
-			this.loadNotification = function() {
-				Players.getNotification($rootScope.notifId,
+			this.loadNotification = function(notifId) {
+				Players.getNotification(notifId,
 					function(data) {
-						$rootScope.notification = data;
+						$scope.notification = data;
 					}, function(err) {
-						$rootScope.error = err;
+						$notifsCtrl.error = err;
 					});
 			};
 
-			this.clearNotification = function() {
-				Players.deleteNotification($rootScope.notifId,
+			this.clearNotification = function(notifId) {
+				Players.deleteNotification(notifId,
 					function(data) {
-						$rootScope.notification = data;
+						$scope.notification = data;
 						$location.path('/player/notifications');
-						$ctrl.loadNotifications();
+						$notifsCtrl.loadNotifications();
 					}, function(err) {
 						$rootScope.error = err;
 					});
 			};
-			$rootScope.clearNotification = this.clearNotification;
-
-			if(!$rootScope.player) {
-				this.loadPlayer();
-			}
 		}])
 
 		.directive('playersList', [function() {
@@ -160,8 +155,7 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/list.html',
-				controller: 'PlayersCtrl',
-				controllerAs: 'playersCtrl'
+				scope: { players: '=' }
 			};
 		}])
 
@@ -170,8 +164,7 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/podium.html',
-				controller: 'PlayersCtrl',
-				controllerAs: 'playersCtrl'
+				scope: { players: '=' }
 			};
 		}])
 
@@ -180,9 +173,7 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/link.html',
-				controller: 'PlayerCtrl',
-				controllerAs: 'playerCtrl',
-				scope: { 'player': '=', 'noavatar': '=' }
+				scope: { player: '=', noavatar: '=' }
 			};
 		}])
 
@@ -191,18 +182,38 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/menu.html',
-				controller: 'AuthCtrl',
-				controllerAs: 'playerCtrl'
+				scope: { player: '=' }
 			};
 		}])
 
-		.directive('playerNotificationsMenu', ['$rootScope', function($rootScope) {
+		.directive('playerNotificationsMenu', [function() {
 			return {
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/notifications-menu.html',
-				controller: 'AuthCtrl',
-				controllerAs: 'playerCtrl'
+				controller: 'NotifsCtrl',
+				controllerAs: 'notifsCtrl'
+			};
+		}])
+
+		.directive('playerNotifications', [function() {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/notifications-list.html',
+				controller: 'NotifsCtrl',
+				controllerAs: 'notifsCtrl'
+			};
+		}])
+
+		.directive('playerNotification', [function() {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/notification.html',
+				controller: 'NotifsCtrl',
+				controllerAs: 'notifsCtrl',
+				scope: { notifId: '=' }
 			};
 		}])
 
@@ -211,8 +222,7 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/sidebar.html',
-				controller: 'PlayerCtrl',
-				controllerAs: 'playerCtrl'
+				scope: { stats: '=' }
 			};
 		}])
 
@@ -221,8 +231,7 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/tracks.html',
-				controller: 'PlayerCtrl',
-				controllerAs: 'playerCtrl'
+				scope: { playerUrl: '=', tracksStatus: '=' }
 			};
 		}])
 
@@ -231,8 +240,16 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/track.html',
-				controller: 'PlayerCtrl',
-				controllerAs: 'playerCtrl'
+				scope: { playerUrl: '=', trackStatus: '=' },
+				controller: function ($scope) {
+					$scope.hasStar = function(star, stars) {
+						for(var i = 0; i < stars.__items.length; i++) {
+							var s = stars.__items[i]
+							if(s._id == star._id) return true;
+						}
+						return false;
+					};
+				}
 			};
 		}])
 
@@ -243,8 +260,6 @@
 				scope: {
 					missionsStatus: '='
 				},
-				controller: 'PlayerCtrl',
-				controllerAs: 'playerCtrl',
 				templateUrl: '/directives/track-tree.html',
 				link: function ($scope, element, attrs) {
 					$scope.buildMap = function(missionsStatus) {

@@ -1,19 +1,7 @@
-<div class='container-fluid' ng-init='playerCtrl.loadNotification()'>
-	<div class='col-xs-3 col-md-2'>
-		<player-sidebar player='{{player}}' />
+<div class='container-fluid' ng-controller='PlayerCtrl as playerCtrl' ng-init='playerCtrl.loadPlayer(playerId)'>
+	<div class='col-xs-3 col-md-2' ng-init='playerCtrl.loadStats(playerId)'>
+		<player-sidebar stats='playerCtrl.stats' />
 	</div>
 	<div class='col-xs-9 col-md-10'>
-		<h3>Notifications</h3>
-		<table class='table'>
-			<tr ng-repeat='notification in notifications'>
-				<th width='3%'>
-					<span class='glyphicon glyphicon-envelope text-muted' />
-				</th>
-				<th><a href='/player/notifications/{{notification._id}}'>New message</a></th>
-				<td class='text-muted'>
-					received {{notification.timestamp * 1000 | date: 'dd, MMM, yyyy HH:MM:ss a'}}
-				</td>
-			</tr>
-		</table>
-	</div>
+		<player-notifications />
 </div>

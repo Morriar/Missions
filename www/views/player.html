@@ -1,6 +1,6 @@
-<div class='container-fluid'>
-	<div class='col-xs-3 col-md-2'>
-		<player-sidebar player='{{player}}' />
+<div class='container-fluid' ng-controller='PlayerCtrl as playerCtrl' ng-init='playerCtrl.loadPlayer(playerId)'>
+	<div class='col-xs-3 col-md-2' ng-init='playerCtrl.loadStats(playerId)'>
+		<player-sidebar stats='playerCtrl.stats' />
 	</div>
 	<div class='col-xs-9 col-md-10'>
 		<ul class='nav nav-tabs'>
@@ -8,9 +8,9 @@
 				<a href='#'><span class='glyphicon glyphicon-tasks' /> Tracks</a>
 			</li>
 		</ul>
-		<div class='tab-content'>
+		<div class='tab-content' ng-init='playerCtrl.loadTracksStatus(playerId)'>
 			<div role='tabpanel' class='tab-pane active' id='tracks'>
-				<player-tracks player='{{player}}' />
+				<player-tracks player-url='playerUrl' tracks-status='playerCtrl.tracksStatus' />
 			</div>
 		</div>
 	</div>

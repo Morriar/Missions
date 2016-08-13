@@ -1,13 +1,13 @@
-<div class='panel panel-default' ng-init='playersCtrl.loadPlayers()'>
+<div class='panel panel-default'>
 	<div class='panel-heading'>
 		<h3 class='panel-title'>
 			<span class='glyphicon glyphicon-stats'></span>&nbsp;&nbsp;Hall of fame
 		</h3>
 	</div>
-	<div class='panel-body' ng-if='players.empty'>
+	<div class='panel-body' ng-if='players.length == 0'>
 		<em>No players yet...</em>
 	</div>
-	<div class='panel-body' ng-if='!players.empty'>
+	<div class='panel-body' ng-if='players.length > 0'>
 		<div class='container-fluid container-sm-height text-center'>
 			<div id='podium' class='row row-sm-height'>
 				<div class='col-xs-2 col-xs-height col-bottom'
@@ -22,7 +22,8 @@
 						<p><player-link player='stats.player' noavatar='true' /></p>
 						<p>{{stats.score}}</p>
 						<div class='progress-bar-warning progress-bar-striped'
-							style='height: {{stats.score * 300 / players[0].score}}px'></div>
+							style='height: {{stats.score * 300 / players[0].score}}px'>
+						</div>
 					</div>
 				</div>
 			</div>

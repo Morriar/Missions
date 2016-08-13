@@ -28,9 +28,9 @@
 						<a class='navbar-brand' ng-href='/'>Missions</a>
 					</div>
 				</div>
-				<div class='col-xs-4'>
-					<player-menu></player-menu>
-					<player-notifications-menu></player-notifications-menu>
+				<div class='col-xs-4' ng-controller='AuthCtrl as authCtrl' ng-init='authCtrl.loadSession()'>
+					<player-menu player='session'></player-menu>
+					<player-notifications-menu player='session' ng-if='session'></player-notifications-menu>
 				</div>
 			</div>
 		</nav>
