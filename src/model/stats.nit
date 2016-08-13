@@ -50,12 +50,10 @@ end
 
 class PlayerStats
 	super Comparable
-	super Jsonable
+	super Entity
 	serialize
 
 	redef type OTHER: PlayerStats
-
-	var id: String is lazy do return "{player.id}-stats"
 
 	var player: Player
 
@@ -68,9 +66,4 @@ class PlayerStats
 	var stars_unlocked = 0
 
 	redef fun <=>(o) do return o.score <=> score
-
-	redef fun to_s do return id
-	redef fun ==(o) do return o isa SELF and id == o.id
-	redef fun hash do return id.hash
-	redef fun to_json do return serialize_to_json
 end

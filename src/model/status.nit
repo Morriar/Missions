@@ -75,10 +75,8 @@ redef class Mission
 end
 
 class TrackStatus
-	super Jsonable
+	super Entity
 	serialize
-
-	var id: String is lazy do return "{track.id}-{player.id}"
 
 	var player: Player
 	var track: Track
@@ -91,19 +89,12 @@ class TrackStatus
 	var missions_success: Int = 0
 	var stars_count = 0
 	var stars_unlocked = 0
-
-	redef fun to_s do return id
-	redef fun ==(o) do return o isa SELF and id == o.id
-	redef fun hash do return id.hash
-	redef fun to_json do return serialize_to_json
 end
 
 # The link between a Player and a Mission
 class MissionStatus
+	super Entity
 	serialize
-	super Jsonable
-
-	var id: String is lazy, serialize_as "_id" do return "{mission.id}-{player.id}"
 
 	var mission: Mission
 	var player: Player
@@ -126,11 +117,6 @@ class MissionStatus
 	var is_locked: Bool is lazy do return status == "locked"
 	var is_open: Bool is lazy do return status == "open"
 	var is_success: Bool is lazy do return status == "success"
-
-	redef fun to_s do return id
-	redef fun ==(o) do return o isa SELF and id == o.id
-	redef fun hash do return id.hash
-	redef fun to_json do return serialize_to_json
 end
 
 class MissionStatusRepo

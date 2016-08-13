@@ -14,7 +14,7 @@
 
 module players
 
-import config
+import model::model_base
 
 redef class AppConfig
 	var players = new PlayerRepo(db.collection("players")) is lazy
@@ -22,12 +22,11 @@ end
 
 # Player representation
 class Player
+	super Entity
 	serialize
-	super Jsonable
+	autoinit id, name, email, avatar_url
 
-	# The uniq id.
-	# Should include the origin to avoid collision. eg `github:Morriar`
-	var id: String is serialize_as "_id"
+	redef var id
 
 	# The screen name
 	var name: nullable String is writable
@@ -37,11 +36,6 @@ class Player
 
 	# The image to use as avatar
 	var avatar_url: nullable String is writable
-
-	redef fun to_s do return id
-	redef fun ==(o) do return o isa SELF and id == o.id
-	redef fun hash do return id.hash
-	redef fun to_json do return serialize_to_json
 end
 
 class PlayerRepo

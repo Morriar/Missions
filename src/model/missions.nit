@@ -28,10 +28,9 @@ redef class Track
 end
 
 class Mission
+	super Entity
 	serialize
-	super Jsonable
 
-	var id: String = (new MongoObjectId).id is serialize_as "_id"
 	var track: nullable Track
 	var title: String
 	var desc: String
@@ -47,9 +46,6 @@ class Mission
 	end
 
 	redef fun to_s do return title
-	redef fun ==(o) do return o isa SELF and id == o.id
-	redef fun hash do return id.hash
-	redef fun to_json do return serialize_to_json
 end
 
 class MissionRepo
@@ -63,19 +59,12 @@ end
 
 # Mission requirements
 class MissionStar
+	super Entity
 	serialize
-	super Jsonable
-
-	var id: String = (new MongoObjectId).id is serialize_as "_id"
 
 	# The star explanation
 	var title: String
 
 	# The reward (in points) accorded when this star is unlocked
 	var reward: Int
-
-	redef fun to_s do return title
-	redef fun ==(o) do return o isa SELF and id == o.id
-	redef fun hash do return id.hash
-	redef fun to_json do return serialize_to_json
 end

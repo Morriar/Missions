@@ -12,24 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module tracks
+# Base model entities and services
+module model_base
 
-import players
+import config
 
-redef class AppConfig
-	var tracks = new TrackRepo(db.collection("tracks")) is lazy
-end
-
-class Track
-	super Entity
+# Base model entity
+#
+# All model entities are serializable to JSON.
+abstract class Entity
+	super Jsonable
 	serialize
 
-	var title: String
-	var desc: String
+	# `self` unique id.
+	var id: String = (new MongoObjectId).id is serialize_as "_id"
 
-	redef fun to_s do return title
-end
-
-class TrackRepo
-	super MongoRepository[Track]
+	redef fun to_s do return id
+	redef fun ==(o) do return o isa SELF and id == o.id
+	redef fun hash do return id.hash
+	redef fun to_json do return serialize_to_json
 end

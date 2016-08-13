@@ -39,18 +39,12 @@ end
 #
 # Each player is linked to a Github user
 class PlayerNotification
+	super Entity
 	serialize
-	super Jsonable
 
-	var id: String = (new MongoObjectId).id is serialize_as "_id"
 	var timestamp: Int = get_time
 	var player: Player
 	var message: String
-
-	redef fun to_s do return id
-	redef fun ==(o) do return o isa SELF and id == o.id
-	redef fun hash do return id.hash
-	redef fun to_json do return serialize_to_json
 end
 
 class PlayerNotificationRepo
