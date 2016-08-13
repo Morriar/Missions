@@ -1,6 +1,19 @@
-<div ng-init='playerCtrl.loadPlayer()'>
+<div ng-init='playerCtrl.loadStats()'>
 	<div>
-		<img class='avatar' ng-src='{{player.user.avatar_url}}' width='100%' />
+		<img class='avatar' ng-src='{{stats.player.user.avatar_url}}' width='100%' />
 	</div>
-	<h3><player-link player='player' noavatar='true' /></h3>
+	<h3><player-link player='stats.player' noavatar='true' /></h3>
+
+	<p class='lead'>{{stats.score}} points</p>
+
+	<ul class='list-unstyled'>
+		<li>
+			<b>{{stats.missions_success}} / {{stats.missions_count}}</b>
+			<span class='glyphicon glyphicon-flag' title='missions accomplished' />
+		</li>
+		<li>
+			<b>{{stats.stars_unlocked}} / {{stats.stars_count}}</b>
+			<span class='glyphicon glyphicon-star' title='stars unlocked' />
+		</li>
+	</ul>
 </div>

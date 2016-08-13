@@ -1,0 +1,22 @@
+<div class='panel panel-default' ng-init='playersCtrl.loadPlayers()'>
+	<div class='panel-heading'>
+		<h3 class='panel-title'>
+			<span class='glyphicon glyphicon-user'></span>&nbsp;&nbsp;Players
+		</h3>
+	</div>
+	<table class='table'>
+		<tr ng-repeat='rank in players'>
+			<th># {{$index + 1}}</th>
+			<th><player-link player='rank.player' /></th>
+			<th>{{rank.score}} pts</th>
+			<th>
+				<span class='glyphicon glyphicon-flag' title='missions accomplished' />
+				{{rank.missions_success}} / {{rank.missions_count}}
+			</th>
+			<th>
+				<span class='glyphicon glyphicon-star' title='stars unlocked' />
+				{{rank.stars_unlocked}} / {{rank.stars_count}}
+			</th>
+		</tr>
+	</table>
+</div>

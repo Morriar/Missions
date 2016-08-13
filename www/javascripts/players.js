@@ -39,8 +39,6 @@
 						$scope.error = err;
 					});
 			};
-
-			this.loadPlayers();
 		}])
 
 		.controller('PlayerCtrl', ['Players', '$scope', function(Players, $scope) {
@@ -48,6 +46,15 @@
 				Players.getPlayer($scope.playerId,
 					function(data) {
 						$scope.player = data;
+					}, function(err) {
+						$scope.error = err;
+					});
+			};
+
+			this.loadStats = function() {
+				Players.getStats($scope.playerId,
+					function(data) {
+						$scope.stats = data;
 					}, function(err) {
 						$scope.error = err;
 					});
@@ -105,6 +112,26 @@
 			if(!$rootScope.player) {
 				this.loadPlayer();
 			}
+		}])
+
+		.directive('playersList', [function() {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/list.html',
+				controller: 'PlayersCtrl',
+				controllerAs: 'playersCtrl'
+			};
+		}])
+
+		.directive('playersPodium', [function() {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/podium.html',
+				controller: 'PlayersCtrl',
+				controllerAs: 'playersCtrl'
+			};
 		}])
 
 		.directive('playerLink', [function() {

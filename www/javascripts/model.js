@@ -37,6 +37,11 @@
 						.success(cb)
 						.error(cbErr);
 				},
+				getStats: function(login, cb, cbErr) {
+					$http.get(apiUrl + '/players/' + login + '/stats')
+						.success(cb)
+						.error(cbErr);
+				},
 				getTracksStatus: function(login, cb, cbErr) {
 					$http.get(apiUrl + '/players/' + login + '/tracks')
 						.success(cb)
