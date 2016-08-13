@@ -27,6 +27,8 @@ redef class APIRouter
 		use("/players/:login/missions/:mid", new APIPlayerMissionStatus(config))
 		use("/players/:login/stats/", new APIPlayerStats(config))
 		use("/player", new APIPlayerAuth(config))
+		use("/player/notifications", new APIPlayerNotifications(config))
+		use("/player/notifications/:nid", new APIPlayerNotification(config))
 	end
 end
 
@@ -101,5 +103,65 @@ class APIPlayerStats
 		var player = get_player(req, res)
 		if player == null then return
 		res.json player.stats(config)
+	end
+end
+
+class APIPlayerNotifications
+	super AuthHandler
+
+	redef fun get(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		res.json new JsonArray.from(player.notifications(config))
+	end
+
+	redef fun delete(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		player.clear_notifications(config)
+		res.json new JsonArray.from(player.notifications(config))
+	end
+end
+
+class APIPlayerNotification
+	super AuthHandler
+
+	fun get_notification(req: HttpRequest, res: HttpResponse): nullable PlayerNotification do
+		var nid = req.param("nid")
+		if nid == null then
+			res.error 400
+			return null
+		end
+		var notif = config.notifications.find_by_id(nid)
+		if notif == null then
+			res.error 404
+			return null
+		end
+		return notif
+	end
+
+	redef fun get(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var notif = get_notification(req, res)
+		if notif == null then return
+		if player.id != notif.player.id then
+			res.error 403
+			return
+		end
+		res.json notif
+	end
+
+	redef fun delete(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var notif = get_notification(req, res)
+		if notif == null then return
+		if player.id != notif.player.id then
+			res.error 403
+			return
+		end
+		player.clear_notification(config, notif)
+		res.json new JsonObject
 	end
 end
