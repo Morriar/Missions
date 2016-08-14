@@ -1,0 +1,7 @@
+<div>
+	<h3>Achievements</h3>
+	<achievement ng-repeat='achievement in achievementsCtrl.achievements' achievement='achievement' />
+	<p ng-if='achievementsCtrl.achievements.length == 0' class='text-muted'>
+		<em>No achievement yet...</em>
+	</p>
+</div>

@@ -71,6 +71,29 @@ body {
 }
 
 /*
+ * Achievements
+ */
+
+.achievement {
+	padding: 15px 5px 5px 5px;
+	-webkit-box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
+	-moz-box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
+	box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
+}
+
+.achievement .media-left .glyphicon {
+	font-size: 300%;
+	margin: 10px;
+}
+
+.achievement .media-left .badge {
+	position: absolute;
+	margin: -20px 0 0 20px;
+}
+
+.badge.badge-success { background-color: #5cb85c }
+
+/*
  * Trees
  */
 

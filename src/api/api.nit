@@ -18,3 +18,8 @@ import api::api_auth
 import api::api_players
 import api::api_tracks
 import api::api_missions
+import api::api_achievements
+
+redef class APIRouter
+	redef init do super
+end

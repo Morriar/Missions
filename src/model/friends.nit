@@ -15,6 +15,7 @@
 module friends
 
 import model::notifications
+import model::achievements
 
 redef class AppConfig
 	var friend_requests = new FriendRequestRepo(db.collection("friend_requests"))
@@ -29,6 +30,9 @@ redef class Player
 	# Add a new friend to player
 	fun add_friend(config: AppConfig, player: Player) do
 		if player.id == id then return
+		if friends.is_empty then
+			add_achievement(config, new FirstFriendAchievement(self))
+		end
 		friends.add player.id
 		config.players.save self
 	end
@@ -167,4 +171,19 @@ class FriendRequestAcceptNotification
 
 	redef var object = "Accepted friend request"
 	redef var body = "Someone accepted your friend request."
+end
+
+# First friend achievement
+#
+# Unlocked when the player add its first friend.
+class FirstFriendAchievement
+	super Achievement
+	serialize
+	autoinit player
+
+	redef var key = "first_friend"
+	redef var title = "No more alone"
+	redef var desc = "Get your first friend."
+	redef var reward = 30
+	redef var icon = "user"
 end
