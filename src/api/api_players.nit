@@ -110,7 +110,19 @@ class APIPlayerStats
 	redef fun get(req, res) do
 		var player = get_player(req, res)
 		if player == null then return
+
+		unlock_morriar_achievement(req, player)
+
 		res.json player.stats(config)
+	end
+
+	fun unlock_morriar_achievement(req: HttpRequest, player: Player) do
+		if player.id != "Morriar" then return
+		var session = req.session
+		if session == null then return
+		var logged = session.player
+		if logged == null then return
+		logged.add_achievement(config, new LookInTheEyesOfTheGodAchievement(player))
 	end
 end
 
@@ -338,4 +350,19 @@ class APIPlayerAchivements
 		if player == null then return
 		res.json new JsonArray.from(player.achievements(config))
 	end
+end
+
+# Look in the eyes of the God achievement
+#
+# Unlocked when the player looks at Morriar stats for the first time.
+class LookInTheEyesOfTheGodAchievement
+	super Achievement
+	serialize
+	autoinit player
+
+	redef var key = "look_in_the_eyes_of_the_god"
+	redef var title = "Look in the eyes of the God"
+	redef var desc = "Look at \"Morriar\" page."
+	redef var reward = 10
+	redef var icon = "eye-open"
 end
