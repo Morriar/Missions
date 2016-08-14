@@ -26,9 +26,15 @@ redef class APIRouter
 		use("/players/:login/tracks/:tid", new APIPlayerTrackStatus(config))
 		use("/players/:login/missions/:mid", new APIPlayerMissionStatus(config))
 		use("/players/:login/stats/", new APIPlayerStats(config))
+		use("/players/:login/friends/", new APIPlayerFriends(config))
 		use("/player", new APIPlayerAuth(config))
 		use("/player/notifications", new APIPlayerNotifications(config))
 		use("/player/notifications/:nid", new APIPlayerNotification(config))
+
+		use("/player/friends/:fid", new APIPlayerFriend(config))
+		use("/player/ask_friend/:fid", new APIPlayerAskFriend(config))
+		use("/player/friend_requests/", new APIPlayerFriendRequests(config))
+		use("/player/friend_requests/:fid", new APIPlayerFriendRequest(config))
 	end
 end
 
@@ -164,4 +170,160 @@ class APIPlayerNotification
 		player.clear_notification(config, notif)
 		res.json new JsonObject
 	end
+end
+
+class APIPlayerFriends
+	super PlayerHandler
+
+	redef fun get(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		res.json new JsonArray.from(player.load_friends(config))
+	end
+end
+
+class APIPlayerFriend
+	super AuthHandler
+
+	fun get_friend(req: HttpRequest, res: HttpResponse): nullable Player do
+		var fid = req.param("fid")
+		if fid == null then
+			res.error 400
+			return null
+		end
+		var friend = config.players.find_by_id(fid)
+		if friend == null then
+			res.error 404
+			return null
+		end
+		return friend
+	end
+
+	redef fun get(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var friend = get_friend(req, res)
+		if friend == null then return
+		if not player.has_friend(friend) then
+			res.error 404
+			return
+		end
+		res.json new JsonArray.from(player.load_friends(config))
+	end
+
+	redef fun delete(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var friend = get_friend(req, res)
+		if friend == null then return
+		if not player.has_friend(friend) then
+			res.error 404
+			return
+		end
+		player.remove_friend(config, friend)
+		friend.remove_friend(config, player)
+		res.json new JsonObject
+	end
+end
+
+class APIPlayerAskFriend
+	super APIPlayerFriend
+
+	# Create friend request
+	redef fun post(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var friend = get_friend(req, res)
+		if friend == null then return
+		if friend == player then
+			res.error 400
+			return
+		end
+		var friend_request = player.ask_friend(config, friend)
+		if friend_request == null then
+			res.error 400
+			return
+		end
+		res.json friend_request
+	end
+end
+
+class APIPlayerFriendRequests
+	super AuthHandler
+
+	redef fun get(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var obj = new JsonObject
+		obj["sent"] = new JsonArray.from(player.sent_friend_requests(config))
+		obj["received"] = new JsonArray.from(player.received_friend_requests(config))
+		res.json obj
+	end
+end
+
+class APIPlayerFriendRequest
+	super AuthHandler
+
+	fun get_friend_request(req: HttpRequest, res: HttpResponse): nullable FriendRequest do
+		var fid = req.param("fid")
+		if fid == null then
+			res.error 400
+			return null
+		end
+		var friend_request = config.friend_requests.find_by_id(fid)
+		if friend_request == null then
+			res.error 404
+			return null
+		end
+		return friend_request
+	end
+
+	# Review friend request
+	redef fun get(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var friend_request = get_friend_request(req, res)
+		if friend_request == null then return
+		if not friend_request.from.id == player.id or friend_request.to.id == player.id then
+			res.error 404
+			return
+		end
+		res.json friend_request
+	end
+
+	# Accept friend request
+	redef fun post(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var friend_request = get_friend_request(req, res)
+		if friend_request == null then return
+		if not friend_request.to.id == player.id then
+			res.error 404
+			return
+		end
+		if not player.accept_friend_request(config, friend_request) then
+			res.error 400
+			return
+		end
+		res.json new JsonObject
+	end
+
+	# Decline friend request
+	redef fun delete(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var friend_request = get_friend_request(req, res)
+		if friend_request == null then return
+		if not friend_request.to.id == player.id then
+			res.error 404
+			return
+		end
+		if not player.decline_friend_request(config, friend_request) then
+			res.error 400
+			return
+		end
+		res.json new JsonObject
+	end
+
+	# TODO accept friend request
 end
