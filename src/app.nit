@@ -19,6 +19,7 @@ var config = new AppConfig.from_options(opts)
 var app = new App
 
 app.use_before("/*", new SessionInit)
+app.use_before("/*", new SessionRefresh(config))
 
 app.use("/auth", new AuthRouter(config))
 app.use("/api", new APIRouter(config))

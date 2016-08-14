@@ -64,6 +64,20 @@ redef class Session
 	var player: nullable Player = null
 end
 
+# Reload session player from db between pages
+class SessionRefresh
+	super APIHandler
+
+	redef fun all(req, res) do
+		super
+		var session = req.session
+		if session == null then return
+		var player = session.player
+		if player == null then return
+		session.player = config.players.find_by_id(player.id)
+	end
+end
+
 redef class GithubLogout
 	redef fun get(req, res) do
 		var session = req.session
