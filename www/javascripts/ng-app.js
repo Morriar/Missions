@@ -44,14 +44,6 @@
 				templateUrl: 'views/player.html',
 				controller : 'PlayerAuth'
 			})
-			.when('/player/notifications', {
-				templateUrl: 'views/player/notifications.html',
-				controller : 'PlayerAuth'
-			})
-			.when('/player/notifications/:nid', {
-				templateUrl: 'views/player/notification.html',
-				controller : 'PlayerAuth'
-			})
 			.when('/player/tracks/:tid', {
 				templateUrl: 'views/player/track.html',
 				controller : 'PlayerAuth'

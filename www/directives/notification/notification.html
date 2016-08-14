@@ -1,0 +1,8 @@
+<div ng-switch='notification.__class'>
+	<div ng-switch-when='FriendRequestNotification'>
+		<div ng-include='"/directives/notification/FriendRequestNotification.html"' />
+	</div>
+	<div ng-switch-default='PlayerNotification'>
+		<div ng-include='"/directives/notification/PlayerNotification.html"' />
+	</div>
+</div>

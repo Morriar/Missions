@@ -132,7 +132,7 @@
 			this.loadNotification = function(notifId) {
 				Players.getNotification(notifId,
 					function(data) {
-						$scope.notification = data;
+						$notifsCtrl.notification = data;
 					}, function(err) {
 						$notifsCtrl.error = err;
 					});
@@ -142,7 +142,6 @@
 				Players.deleteNotification(notifId,
 					function(data) {
 						$scope.notification = data;
-						$location.path('/player/notifications');
 						$notifsCtrl.loadNotifications();
 					}, function(err) {
 						$rootScope.error = err;
@@ -190,30 +189,20 @@
 			return {
 				restrict: 'E',
 				replace: true,
-				templateUrl: '/directives/player/notifications-menu.html',
+				templateUrl: '/directives/notification/menu.html',
 				controller: 'NotifsCtrl',
 				controllerAs: 'notifsCtrl'
 			};
 		}])
 
-		.directive('playerNotifications', [function() {
+		.directive('notification', [function() {
 			return {
 				restrict: 'E',
 				replace: true,
-				templateUrl: '/directives/player/notifications-list.html',
-				controller: 'NotifsCtrl',
-				controllerAs: 'notifsCtrl'
-			};
-		}])
-
-		.directive('playerNotification', [function() {
-			return {
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/player/notification.html',
+				templateUrl: '/directives/notification/notification.html',
 				controller: 'NotifsCtrl',
 				controllerAs: 'notifsCtrl',
-				scope: { notifId: '=' }
+				scope: { notification: '=' }
 			};
 		}])
 

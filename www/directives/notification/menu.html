@@ -1,0 +1,21 @@
+<ul class='nav navbar-nav navbar-right' ng-init='notifsCtrl.loadNotifications()'>
+	<li class='dropdown'>
+		<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>
+			<span class='glyphicon glyphicon-bell' ng-class='{"text-danger": notifications.length > 0}' />
+		</a>
+		<div class='dropdown-menu dropdown-menu-right notifications' ng-if='notifications.length > 0'>
+			<p class='text-right clear-all'>
+				<a href='#' class='text-muted' ng-click='notifsCtrl.clearNotifications()'>
+					clear all
+				  <span class='glyphicon glyphicon-remove' />
+				</a>
+			</p>
+			<notification ng-repeat='notif in notifications' notification='notif' />
+		</div>
+		<ul class='dropdown-menu dropdown-menu-right' ng-if='notifications.length == 0'>
+			<li class='disabled'>
+				<a><em>No notification yet...</em></a>
+			</li>
+		</div>
+	</li>
+</ul>
