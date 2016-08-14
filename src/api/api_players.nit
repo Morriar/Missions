@@ -98,7 +98,7 @@ class APIPlayerMissionStatus
 		if player == null then return
 		var mission = get_mission(req, res)
 		if mission == null then return
-		res.json config.missions_status.find_by_mission_and_player(mission, player)
+		res.json player.mission_status(config, mission)
 	end
 end
 
