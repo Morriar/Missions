@@ -30,7 +30,7 @@
 				</div>
 				<div class='col-xs-4' ng-controller='AuthCtrl as authCtrl' ng-init='authCtrl.loadSession()'>
 					<player-menu player='session'></player-menu>
-					<player-notifications-menu player='session' ng-if='session'></player-notifications-menu>
+					<notifications-menu player='session' ng-if='session' />
 				</div>
 			</div>
 		</nav>
@@ -63,6 +63,7 @@
 		<script src='/javascripts/ng-app.js'></script>
 		<script src='/javascripts/model.js'></script>
 		<script src='/javascripts/players.js'></script>
-
+		<script src='/javascripts/notifications.js'></script>
+		<script src='/javascripts/friends.js'></script>
 	</body>
 </html>

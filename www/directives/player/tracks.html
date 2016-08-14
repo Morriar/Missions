@@ -1,9 +1,9 @@
 <div>
 	<h3>Overall progress</h3>
 	<table class='table'>
-		<tr ng-repeat='status in tracksStatus'>
+		<tr ng-repeat='status in tracksCtrl.tracksStatus'>
 			<th width='30%'>
-				<a href='{{playerUrl}}/tracks/{{status.track._id}}'>
+				<a href='{{tracksCtrl.playerUrl}}/tracks/{{status.track._id}}'>
 					{{status.track.title}}
 				</a>
 			</th>

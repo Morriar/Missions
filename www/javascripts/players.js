@@ -34,66 +34,12 @@
 			$scope.notifId = $routeParams.nid;
 		}])
 
-		.controller('PlayersCtrl', ['Players', function(Players) {
-			$controller = this;
-
-			this.loadPlayers = function() {
-				Players.getPlayers(
-					function(data) {
-						$controller.players = data;
-					}, function(err) {
-						$controller.error = err;
-					});
-			};
-		}])
-
-		.controller('PlayerCtrl', ['Players', function(Players) {
-			$controller = this;
-
-			this.loadPlayer = function(playerId) {
-				Players.getPlayer(playerId,
-					function(data) {
-						$controller.player = data;
-					}, function(err) {
-						$controller.error = err;
-					});
-			};
-
-			this.loadStats = function(playerId) {
-				Players.getStats(playerId,
-					function(data) {
-						$controller.stats = data;
-					}, function(err) {
-						$controller.error = err;
-					});
-			};
-
-			this.loadTracksStatus = function(playerId) {
-				Players.getTracksStatus(playerId,
-					function(data) {
-						$controller.tracksStatus = data;
-					}, function(err) {
-						$controller.error = err;
-					});
-			};
-
-			this.loadTrackStatus = function(playerId, trackId) {
-				Players.getTrackStatus(playerId, trackId,
-					function(data) {
-						$controller.trackStatus = data;
-					}, function(err) {
-						$controller.error = err;
-					});
-			};
-
-			this.loadMissionStatus = function(playerId, missionId) {
-				Players.getMissionStatus(playerId, missionId,
-					function(data) {
-						$controller.missionStatus = data;
-					}, function(err) {
-						$controller.error = err;
-					});
-			};
+		.factory('Errors', ['$rootScope', function($rootScope) {
+			return {
+				handleError: function(err) {
+					console.log(err);
+				}
+			}
 		}])
 
 		.controller('AuthCtrl', ['Players', '$rootScope', '$location', function(Players, $rootScope, $location) {
@@ -102,99 +48,27 @@
 				Players.getAuth(
 					function(data) {
 						$rootScope.session = data;
-					}, function(err) {
-						$rootScope.error = err;
-					});
+					}, function(err) {});
 			};
 		}])
 
-		.controller('NotifsCtrl', ['Players', '$location', '$rootScope', '$scope', function(Players, $location, $rootScope, $scope) {
-			$notifsCtrl = this;
-
-			this.loadNotifications = function() {
-				Players.getNotifications(
-					function(data) {
-						$rootScope.notifications = data;
-					}, function(err) {
-						$notifsCtrl.error = err;
-					});
-			};
-
-			this.clearNotifications = function() {
-				Players.deleteNotifications(
-					function(data) {
-						$rootScope.notifications = data;
-					}, function(err) {
-						$rootScope.error = err;
-					});
-			};
-
-			this.loadNotification = function(notifId) {
-				Players.getNotification(notifId,
-					function(data) {
-						$notifsCtrl.notification = data;
-					}, function(err) {
-						$notifsCtrl.error = err;
-					});
-			};
-
-			this.clearNotification = function(notifId) {
-				Players.deleteNotification(notifId,
-					function(data) {
-						$scope.notification = data;
-						$notifsCtrl.loadNotifications();
-					}, function(err) {
-						$rootScope.error = err;
-					});
-			};
-
-			this.acceptFriendRequest = function(notifId, frId) {
-				Players.acceptFriendRequest(frId,
-					function(data) {
-						$notifsCtrl.clearNotification(notifId);
-					}, function(err) {
-						$rootScope.error = err;
-					});
-			};
-
-			this.declineFriendRequest = function(notifId, frId) {
-				Players.declineFriendRequest(frId,
-					function(data) {
-						$notifsCtrl.clearNotification(notifId);
-					}, function(err) {
-						$rootScope.error = err;
-					});
+		.directive('playerMenu', ['$rootScope', function($rootScope) {
+			return {
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/menu.html',
+				scope: { player: '=' }
 			};
 		}])
 
-		.controller('SidebarCtrl', ['Players', function(Players) {
+		.controller('SidebarCtrl', ['Errors', 'Players', function(Errors, Players) {
 			$sidebarCtrl = this;
 
 			this.loadStats = function() {
 				Players.getStats(this.playerId,
 					function(data) {
 						$sidebarCtrl.stats = data;
-					}, function(err) {
-						$sidebarCtrl.error = err;
-					});
-			};
-
-			this.loadFriends = function() {
-				Players.getFriends(this.playerId,
-					function(data) {
-						$sidebarCtrl.friends = data;
-					}, function(err) {
-						$sidebarCtrl.error = err;
-					});
-			};
-
-			this.removeFriend = function(friendId) {
-				Players.removeFriend(friendId,
-					function(data) {
-						$sidebarCtrl.loadFriends();
-					}, function(err) {
-						$sidebarCtrl.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.hasFriend = function() {
@@ -202,19 +76,32 @@
 			};
 
 			this.loadStats();
-			this.loadFriends();
 		}])
 
-		.controller('FriendsCtrl', ['Players', '$scope', function(Players, $scope) {
-			$friendsCtrl = this;
+		.directive('playerSidebar', [function() {
+			return {
+				scope: {},
+				bindToController: {
+					session: '=',
+					playerId: '='
+				},
+				controller: 'SidebarCtrl',
+				controllerAs: 'sidebarCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/sidebar.html',
+				scope: { session: '=', stats: '=' }
+			};
+		}])
 
-			this.askFriend = function() {
-				if(this.asked) return;
-				$friendsCtrl.asked = true;
-				Players.askFriend(this.targetId,
+		.controller('PlayersCtrl', ['Errors', 'Players', function(Errors, Players) {
+			$controller = this;
+
+			this.loadPlayers = function() {
+				Players.getPlayers(
 					function(data) {
-					}, function(err) {
-					});
+						$controller.players = data;
+					}, Errors.handleError);
 			};
 		}])
 
@@ -245,91 +132,76 @@
 			};
 		}])
 
-		.directive('playerMenu', ['$rootScope', function($rootScope) {
-			return {
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/player/menu.html',
-				scope: { player: '=' }
-			};
-		}])
-
-		.directive('playerNotificationsMenu', [function() {
-			return {
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/notification/menu.html',
-				controller: 'NotifsCtrl',
-				controllerAs: 'notifsCtrl'
-			};
-		}])
-
-		.directive('notification', [function() {
-			return {
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/notification/notification.html',
-				controller: 'NotifsCtrl',
-				controllerAs: 'notifsCtrl',
-				scope: { notification: '=' }
-			};
-		}])
-
-		.directive('playerSidebar', [function() {
+		.directive('playerTracks', [function() {
 			return {
 				scope: {},
 				bindToController: {
-					session: '=',
+					playerUrl: '=',
 					playerId: '='
 				},
-				controller: 'SidebarCtrl',
-				controllerAs: 'sidebarCtrl',
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/player/sidebar.html',
-				scope: { session: '=', stats: '=' }
-			};
-		}])
-
-		.directive('playerTracks', [function() {
-			return {
+				controller: ['Errors', 'Players', function (Errors, Players) {
+					$playerTracksCtrl = this;
+					Players.getTracksStatus(this.playerId,
+						function(data) {
+							$playerTracksCtrl.tracksStatus = data;
+						}, Errors.handleError);
+				}],
+				controllerAs: 'tracksCtrl',
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/tracks.html',
-				scope: { playerUrl: '=', tracksStatus: '=' }
 			};
 		}])
 
 		.directive('playerTrack', [function() {
 			return {
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/player/track.html',
-				scope: { playerUrl: '=', trackStatus: '=' },
-				controller: function ($scope) {
-					$scope.hasStar = function(star, stars) {
+				scope: {},
+				bindToController: {
+					playerUrl: '=',
+					playerId: '=',
+					trackId: '='
+				},
+				controller: ['Errors', 'Players', function (Errors, Players) {
+					$playerTrackCtrl = this;
+					Players.getTrackStatus(this.playerId, this.trackId,
+						function(data) {
+							$playerTrackCtrl.trackStatus = data;
+						}, Errors.handleError);
+
+					this.hasStar = function(star, stars) {
 						for(var i = 0; i < stars.__items.length; i++) {
 							var s = stars.__items[i]
 							if(s._id == star._id) return true;
 						}
 						return false;
 					};
-				}
+				}],
+				controllerAs: 'trackCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/track.html',
 			};
 		}])
 
-		.directive('friendBtn', [function() {
+		.directive('playerMission', [function() {
 			return {
 				scope: {},
 				bindToController: {
-					session: '=',
-					targetId: '='
+					playerUrl: '=',
+					playerId: '=',
+					missionId: '='
 				},
-				controller: 'FriendsCtrl',
-				controllerAs: 'friendsCtrl',
+				controller: ['Errors', 'Players', function (Errors, Players) {
+					$playerMissionCtrl = this;
+					Players.getMissionStatus(this.playerId, this.missionId,
+						function(data) {
+							$playerMissionCtrl.missionStatus = data;
+						}, Errors.handleError);
+				}],
+				controllerAs: 'missionCtrl',
 				restrict: 'E',
 				replace: true,
-				templateUrl: '/directives/player/friend-btn.html',
+				templateUrl: '/directives/player/mission.html',
 			};
 		}])
 

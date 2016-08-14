@@ -1,0 +1,13 @@
+<div ng-init='friendsCtrl.loadFriends()'>
+	<h4>Friends</h4>
+	<ul class='list-unstyled'>
+		<li ng-repeat='friend in friendsCtrl.friends'>
+			<player-link player='friend' />
+			<a href='#' class='pull-right text-muted' title='Remove friend'
+				ng-click='friendsCtrl.removeFriend(friend._id)'
+				ng-if='friendsCtrl.session._id == friendsCtrl.playerId'>
+				<span class='glyphicon glyphicon-remove' />
+			</a>
+		</li>
+	</ul>
+</div>
