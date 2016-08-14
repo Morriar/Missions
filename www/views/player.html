@@ -1,4 +1,4 @@
-<div class='container-fluid' ng-controller='PlayerCtrl as playerCtrl'>
+<div class='container-fluid'>
 	<div class='col-xs-3 col-md-2'>
 		<player-sidebar player-id='playerId' session='session' />
 	</div>
@@ -8,9 +8,9 @@
 				<a href='#'><span class='glyphicon glyphicon-tasks' /> Tracks</a>
 			</li>
 		</ul>
-		<div class='tab-content' ng-init='playerCtrl.loadTracksStatus(playerId)'>
+		<div class='tab-content'>
 			<div role='tabpanel' class='tab-pane active' id='tracks'>
-				<player-tracks player-url='playerUrl' tracks-status='playerCtrl.tracksStatus' />
+				<player-tracks player-url='playerUrl' player-id='playerId' />
 			</div>
 		</div>
 	</div>
