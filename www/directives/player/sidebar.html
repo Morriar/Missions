@@ -1,19 +1,41 @@
 <div>
 	<div>
-		<img class='avatar' ng-src='{{stats.player.avatar_url}}' width='100%' />
+		<img class='avatar' ng-src='{{sidebarCtrl.stats.player.avatar_url}}' width='100%' />
 	</div>
-	<h3><player-link player='stats.player' noavatar='true' /></h3>
+	<h3><player-link player='sidebarCtrl.stats.player' noavatar='true' /></h3>
 
-	<p class='lead'>{{stats.score}} points</p>
+	<p class='lead'>{{sidebarCtrl.stats.score}} points</p>
 
 	<ul class='list-unstyled'>
 		<li>
-			<b>{{stats.missions_success}} / {{stats.missions_count}}</b>
-			<span class='glyphicon glyphicon-flag' title='missions accomplished' />
+			<span class='glyphicon glyphicon-user' title='friends' />
+			<b>{{sidebarCtrl.stats.player.friends.__items.length}}</b>
 		</li>
 		<li>
-			<b>{{stats.stars_unlocked}} / {{stats.stars_count}}</b>
+			<span class='glyphicon glyphicon-flag' title='missions accomplished' />
+			<b>{{sidebarCtrl.stats.missions_success}} / {{sidebarCtrl.stats.missions_count}}</b>
+		</li>
+		<li>
 			<span class='glyphicon glyphicon-star' title='stars unlocked' />
+			<b>{{sidebarCtrl.stats.stars_unlocked}} / {{sidebarCtrl.stats.stars_count}}</b>
 		</li>
 	</ul>
+
+	<hr>
+	<ul class='list-unstyled' ng-if='sidebarCtrl.session && sidebarCtrl.session._id != sidebarCtrl.stats.player._id && !sidebarCtrl.hasFriend()'>
+		<li>
+			<friend-btn session='sidebarCtrl.session' target-id='sidebarCtrl.stats.player._id' />
+		</li>
+	</ul>
+	<div ng-if='sidebarCtrl.friends.length > 0'>
+		<h4>Friends</h4>
+		<ul class='list-unstyled'>
+			<li ng-repeat='friend in sidebarCtrl.friends'>
+				<player-link player='friend' />
+				<a href='#' ng-click='sidebarCtrl.removeFriend(friend._id)' class='pull-right text-muted' title='Remove friend' ng-if='sidebarCtrl.session && sidebarCtrl.session._id == sidebarCtrl.playerId'>
+					<span class='glyphicon glyphicon-remove' />
+				</a>
+			</li>
+		</ul>
+	</div>
 </div>

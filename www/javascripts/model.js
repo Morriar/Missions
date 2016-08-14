@@ -81,6 +81,31 @@
 					$http.get(apiUrl + '/players/' + login + '/missions/' + missionId)
 						.success(cb)
 						.error(cbErr);
+				},
+				askFriend: function(targetId, cb, cbErr) {
+					$http.post(apiUrl + '/player/ask_friend/' + targetId)
+						.success(cb)
+						.error(cbErr);
+				},
+				acceptFriendRequest: function(fId, cb, cbErr) {
+					$http.post(apiUrl + '/player/friend_requests/' + fId)
+						.success(cb)
+						.error(cbErr);
+				},
+				declineFriendRequest: function(fId, cb, cbErr) {
+					$http.delete(apiUrl + '/player/friend_requests/' + fId)
+						.success(cb)
+						.error(cbErr);
+				},
+				getFriends: function(login, cb, cbErr) {
+					$http.get(apiUrl + '/players/' + login + '/friends')
+						.success(cb)
+						.error(cbErr);
+				},
+				removeFriend: function(fId, cb, cbErr) {
+					$http.delete(apiUrl + '/player/friends/' + fId)
+						.success(cb)
+						.error(cbErr);
 				}
 			}
 		}])

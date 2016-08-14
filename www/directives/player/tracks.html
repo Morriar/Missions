@@ -7,6 +7,9 @@
 					{{status.track.title}}
 				</a>
 			</th>
+			<td width='3%'>
+				<span class='glyphicon glyphicon-flag' />
+			</td>
 			<td title='{{status.missions_success}}/{{status.missions_count}} missions accomplished'>
 				<div class='progress'
 					ng-init='progress = status.missions_success / status.missions_count * 100'>
@@ -17,8 +20,8 @@
 				</div>
 			</td>
 			<td width='15%' title='{{status.stars_unlocked}}/{{status.stars_count}} stars unlocked'>
-				{{status.stars_unlocked}}/{{status.stars_count}}
 				<span class='glyphicon glyphicon-star' />
+				{{status.stars_unlocked}} / {{status.stars_count}}
 			</td>
 		</tr>
 	</div>

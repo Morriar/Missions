@@ -147,6 +147,75 @@
 						$rootScope.error = err;
 					});
 			};
+
+			this.acceptFriendRequest = function(notifId, frId) {
+				Players.acceptFriendRequest(frId,
+					function(data) {
+						$notifsCtrl.clearNotification(notifId);
+					}, function(err) {
+						$rootScope.error = err;
+					});
+			};
+
+			this.declineFriendRequest = function(notifId, frId) {
+				Players.declineFriendRequest(frId,
+					function(data) {
+						$notifsCtrl.clearNotification(notifId);
+					}, function(err) {
+						$rootScope.error = err;
+					});
+			};
+		}])
+
+		.controller('SidebarCtrl', ['Players', function(Players) {
+			$sidebarCtrl = this;
+
+			this.loadStats = function() {
+				Players.getStats(this.playerId,
+					function(data) {
+						$sidebarCtrl.stats = data;
+					}, function(err) {
+						$sidebarCtrl.error = err;
+					});
+			};
+
+			this.loadFriends = function() {
+				Players.getFriends(this.playerId,
+					function(data) {
+						$sidebarCtrl.friends = data;
+					}, function(err) {
+						$sidebarCtrl.error = err;
+					});
+			};
+
+			this.removeFriend = function(friendId) {
+				Players.removeFriend(friendId,
+					function(data) {
+						$sidebarCtrl.loadFriends();
+					}, function(err) {
+						$sidebarCtrl.error = err;
+					});
+			};
+
+			this.hasFriend = function() {
+				return this.session.friends.__items.indexOf(this.playerId) >= 0
+			};
+
+			this.loadStats();
+			this.loadFriends();
+		}])
+
+		.controller('FriendsCtrl', ['Players', '$scope', function(Players, $scope) {
+			$friendsCtrl = this;
+
+			this.askFriend = function() {
+				if(this.asked) return;
+				$friendsCtrl.asked = true;
+				Players.askFriend(this.targetId,
+					function(data) {
+					}, function(err) {
+					});
+			};
 		}])
 
 		.directive('playersList', [function() {
@@ -208,10 +277,17 @@
 
 		.directive('playerSidebar', [function() {
 			return {
+				scope: {},
+				bindToController: {
+					session: '=',
+					playerId: '='
+				},
+				controller: 'SidebarCtrl',
+				controllerAs: 'sidebarCtrl',
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/sidebar.html',
-				scope: { stats: '=' }
+				scope: { session: '=', stats: '=' }
 			};
 		}])
 
@@ -239,6 +315,21 @@
 						return false;
 					};
 				}
+			};
+		}])
+
+		.directive('friendBtn', [function() {
+			return {
+				scope: {},
+				bindToController: {
+					session: '=',
+					targetId: '='
+				},
+				controller: 'FriendsCtrl',
+				controllerAs: 'friendsCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/friend-btn.html',
 			};
 		}])
 

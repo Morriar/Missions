@@ -1,0 +1,11 @@
+<button class='btn btn-sm' title='Send a friend request to this player'
+	ng-click='friendsCtrl.askFriend()' ng-class='friendsCtrl.asked? "btn-success disabled" : "btn-primary"'>
+	<span ng-if='!friendsCtrl.asked'>
+		<span class='glyphicon glyphicon-user' />
+		Friend request
+	</span>
+	<span ng-if='friendsCtrl.asked'>
+		<span class='glyphicon glyphicon-ok' />
+		Request sent
+	</span>
+</button>

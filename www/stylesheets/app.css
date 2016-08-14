@@ -10,6 +10,13 @@ body {
 .dropdown-menu { min-width: 250px }
 .dropdown-menu>li>a { padding: 10px 20px }
 
+.btn-link.btn-muted { color: #777 }
+.btn-link.btn-primary { color: #337ab7 }
+.btn-link.btn-success { color: #3c763d }
+.btn-link.btn-info { color: #31708f }
+.btn-link.btn-warning { color: #8a6d3b }
+.btn-link.btn-danger { color: #a94442 }
+
 /*
  * Users
  */
