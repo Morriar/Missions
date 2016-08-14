@@ -102,53 +102,6 @@
 			};
 		}])
 
-		.controller('NotifsCtrl', ['Errors', 'Players', '$location', '$rootScope', '$scope', function(Errors, Players, $location, $rootScope, $scope) {
-			$notifsCtrl = this;
-
-			this.loadNotifications = function() {
-				Players.getNotifications(
-					function(data) {
-						$rootScope.notifications = data;
-					}, Errors.handleError);
-			};
-
-			this.clearNotifications = function() {
-				Players.deleteNotifications(
-					function(data) {
-						$rootScope.notifications = data;
-					}, Errors.handleError);
-			};
-
-			this.loadNotification = function(notifId) {
-				Players.getNotification(notifId,
-					function(data) {
-						$notifsCtrl.notification = data;
-					}, Errors.handleError);
-			};
-
-			this.clearNotification = function(notifId) {
-				Players.deleteNotification(notifId,
-					function(data) {
-						$scope.notification = data;
-						$notifsCtrl.loadNotifications();
-					}, Errors.handleError);
-			};
-
-			this.acceptFriendRequest = function(notifId, frId) {
-				Players.acceptFriendRequest(frId,
-					function(data) {
-						$notifsCtrl.clearNotification(notifId);
-					}, Errors.handleError);
-			};
-
-			this.declineFriendRequest = function(notifId, frId) {
-				Players.declineFriendRequest(frId,
-					function(data) {
-						$notifsCtrl.clearNotification(notifId);
-					}, Errors.handleError);
-			};
-		}])
-
 		.controller('SidebarCtrl', ['Errors', 'Players', function(Errors, Players) {
 			$sidebarCtrl = this;
 
@@ -226,27 +179,6 @@
 				replace: true,
 				templateUrl: '/directives/player/menu.html',
 				scope: { player: '=' }
-			};
-		}])
-
-		.directive('playerNotificationsMenu', [function() {
-			return {
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/notification/menu.html',
-				controller: 'NotifsCtrl',
-				controllerAs: 'notifsCtrl'
-			};
-		}])
-
-		.directive('notification', [function() {
-			return {
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/notification/notification.html',
-				controller: 'NotifsCtrl',
-				controllerAs: 'notifsCtrl',
-				scope: { notification: '=' }
 			};
 		}])
 
