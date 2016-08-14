@@ -22,6 +22,7 @@ var config = new AppConfig.from_options(opts)
 # clean bd
 config.players.clear
 config.notifications.clear
+config.friend_requests.clear
 config.tracks.clear
 config.missions.clear
 config.missions_status.clear
@@ -58,10 +59,18 @@ config.tracks.save t
 t.load_missions(config, "tracks/nit")
 
 # load some players
+var morriar = new Player("Morriar", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3")
+config.players.save morriar
+var privat = new Player("privat", "privat", avatar_url= "https://avatars2.githubusercontent.com/u/135828?v=3")
+config.players.save privat
+
+# privat.ask_friend(config, morriar)
+privat.add_friend(config, morriar)
+morriar.add_friend(config, privat)
+
 var aurl = "https://avatars.githubusercontent.com/u/2577044?v=3"
 var players = [
-	new Player("Morriar", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3"),
-	new Player("privat", "privat", avatar_url= "https://avatars2.githubusercontent.com/u/135828?v=3"),
+	morriar, privat,
 	new Player("P1", "Player 1", avatar_url=aurl),
 	new Player("P2", "Player 2", avatar_url=aurl),
 	new Player("P3", "Player 3", avatar_url=aurl),
