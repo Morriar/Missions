@@ -14,5 +14,5 @@
 
 module model
 
-import model::notifications
+import model::friends
 import model::stats
