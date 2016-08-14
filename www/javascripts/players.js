@@ -34,65 +34,61 @@
 			$scope.notifId = $routeParams.nid;
 		}])
 
-		.controller('PlayersCtrl', ['Players', function(Players) {
+		.factory('Errors', ['$rootScope', function($rootScope) {
+			return {
+				handleError: function(err) {
+					console.log(err);
+				}
+			}
+		}])
+
+		.controller('PlayersCtrl', ['Errors', 'Players', function(Errors, Players) {
 			$controller = this;
 
 			this.loadPlayers = function() {
 				Players.getPlayers(
 					function(data) {
 						$controller.players = data;
-					}, function(err) {
-						$controller.error = err;
-					});
+					}, Errors.handleError);
 			};
 		}])
 
-		.controller('PlayerCtrl', ['Players', function(Players) {
+		.controller('PlayerCtrl', ['Errors', 'Players', function(Errors, Players) {
 			$controller = this;
 
 			this.loadPlayer = function(playerId) {
 				Players.getPlayer(playerId,
 					function(data) {
 						$controller.player = data;
-					}, function(err) {
-						$controller.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.loadStats = function(playerId) {
 				Players.getStats(playerId,
 					function(data) {
 						$controller.stats = data;
-					}, function(err) {
-						$controller.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.loadTracksStatus = function(playerId) {
 				Players.getTracksStatus(playerId,
 					function(data) {
 						$controller.tracksStatus = data;
-					}, function(err) {
-						$controller.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.loadTrackStatus = function(playerId, trackId) {
 				Players.getTrackStatus(playerId, trackId,
 					function(data) {
 						$controller.trackStatus = data;
-					}, function(err) {
-						$controller.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.loadMissionStatus = function(playerId, missionId) {
 				Players.getMissionStatus(playerId, missionId,
 					function(data) {
 						$controller.missionStatus = data;
-					}, function(err) {
-						$controller.error = err;
-					});
+					}, Errors.handleError);
 			};
 		}])
 
@@ -102,40 +98,32 @@
 				Players.getAuth(
 					function(data) {
 						$rootScope.session = data;
-					}, function(err) {
-						$rootScope.error = err;
-					});
+					}, function(err) {});
 			};
 		}])
 
-		.controller('NotifsCtrl', ['Players', '$location', '$rootScope', '$scope', function(Players, $location, $rootScope, $scope) {
+		.controller('NotifsCtrl', ['Errors', 'Players', '$location', '$rootScope', '$scope', function(Errors, Players, $location, $rootScope, $scope) {
 			$notifsCtrl = this;
 
 			this.loadNotifications = function() {
 				Players.getNotifications(
 					function(data) {
 						$rootScope.notifications = data;
-					}, function(err) {
-						$notifsCtrl.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.clearNotifications = function() {
 				Players.deleteNotifications(
 					function(data) {
 						$rootScope.notifications = data;
-					}, function(err) {
-						$rootScope.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.loadNotification = function(notifId) {
 				Players.getNotification(notifId,
 					function(data) {
 						$notifsCtrl.notification = data;
-					}, function(err) {
-						$notifsCtrl.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.clearNotification = function(notifId) {
@@ -143,58 +131,46 @@
 					function(data) {
 						$scope.notification = data;
 						$notifsCtrl.loadNotifications();
-					}, function(err) {
-						$rootScope.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.acceptFriendRequest = function(notifId, frId) {
 				Players.acceptFriendRequest(frId,
 					function(data) {
 						$notifsCtrl.clearNotification(notifId);
-					}, function(err) {
-						$rootScope.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.declineFriendRequest = function(notifId, frId) {
 				Players.declineFriendRequest(frId,
 					function(data) {
 						$notifsCtrl.clearNotification(notifId);
-					}, function(err) {
-						$rootScope.error = err;
-					});
+					}, Errors.handleError);
 			};
 		}])
 
-		.controller('SidebarCtrl', ['Players', function(Players) {
+		.controller('SidebarCtrl', ['Errors', 'Players', function(Errors, Players) {
 			$sidebarCtrl = this;
 
 			this.loadStats = function() {
 				Players.getStats(this.playerId,
 					function(data) {
 						$sidebarCtrl.stats = data;
-					}, function(err) {
-						$sidebarCtrl.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.loadFriends = function() {
 				Players.getFriends(this.playerId,
 					function(data) {
 						$sidebarCtrl.friends = data;
-					}, function(err) {
-						$sidebarCtrl.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.removeFriend = function(friendId) {
 				Players.removeFriend(friendId,
 					function(data) {
 						$sidebarCtrl.loadFriends();
-					}, function(err) {
-						$sidebarCtrl.error = err;
-					});
+					}, Errors.handleError);
 			};
 
 			this.hasFriend = function() {
@@ -205,7 +181,7 @@
 			this.loadFriends();
 		}])
 
-		.controller('FriendsCtrl', ['Players', '$scope', function(Players, $scope) {
+		.controller('FriendsCtrl', ['Errors', 'Players', '$scope', function(Errors, Players, $scope) {
 			$friendsCtrl = this;
 
 			this.askFriend = function() {
@@ -213,8 +189,7 @@
 				$friendsCtrl.asked = true;
 				Players.askFriend(this.targetId,
 					function(data) {
-					}, function(err) {
-					});
+					}, Errors.handleError);
 			};
 		}])
 
