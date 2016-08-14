@@ -15,6 +15,7 @@
 module stats
 
 import model::status
+import model::achievements
 
 redef class AppConfig
 	fun players_ranking: Array[PlayerStats] do
@@ -44,6 +45,10 @@ redef class Player
 				end
 			end
 		end
+		for a in achievements(config) do
+			stats.score += a.reward
+			stats.achievements += 1
+		end
 		return stats
 	end
 end
@@ -58,6 +63,7 @@ class PlayerStats
 	var player: Player
 
 	var score = 0
+	var achievements = 0
 	var missions_count = 0
 	var missions_locked = 0
 	var missions_open = 0
