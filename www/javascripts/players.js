@@ -112,38 +112,11 @@
 					}, Errors.handleError);
 			};
 
-			this.loadFriends = function() {
-				Players.getFriends(this.playerId,
-					function(data) {
-						$sidebarCtrl.friends = data;
-					}, Errors.handleError);
-			};
-
-			this.removeFriend = function(friendId) {
-				Players.removeFriend(friendId,
-					function(data) {
-						$sidebarCtrl.loadFriends();
-					}, Errors.handleError);
-			};
-
 			this.hasFriend = function() {
 				return this.session.friends.__items.indexOf(this.playerId) >= 0
 			};
 
 			this.loadStats();
-			this.loadFriends();
-		}])
-
-		.controller('FriendsCtrl', ['Errors', 'Players', '$scope', function(Errors, Players, $scope) {
-			$friendsCtrl = this;
-
-			this.askFriend = function() {
-				if(this.asked) return;
-				$friendsCtrl.asked = true;
-				Players.askFriend(this.targetId,
-					function(data) {
-					}, Errors.handleError);
-			};
 		}])
 
 		.directive('playersList', [function() {
@@ -222,21 +195,6 @@
 						return false;
 					};
 				}
-			};
-		}])
-
-		.directive('friendBtn', [function() {
-			return {
-				scope: {},
-				bindToController: {
-					session: '=',
-					targetId: '='
-				},
-				controller: 'FriendsCtrl',
-				controllerAs: 'friendsCtrl',
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/player/friend-btn.html',
 			};
 		}])
 
