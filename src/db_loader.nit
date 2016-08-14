@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import model
-
 import model::loader
+import api
 
 var opts = new AppOptions.from_args(args)
 var config = new AppConfig.from_options(opts)
@@ -22,6 +22,7 @@ var config = new AppConfig.from_options(opts)
 # clean bd
 config.players.clear
 config.notifications.clear
+config.achievements.clear
 config.friend_requests.clear
 config.tracks.clear
 config.missions.clear
@@ -66,7 +67,9 @@ config.players.save privat
 
 # privat.ask_friend(config, morriar)
 privat.add_friend(config, morriar)
+privat.add_achievement(config, new FirstLoginAchievement(privat))
 morriar.add_friend(config, privat)
+morriar.add_achievement(config, new FirstLoginAchievement(morriar))
 
 var aurl = "https://avatars.githubusercontent.com/u/2577044?v=3"
 var players = [
@@ -93,9 +96,6 @@ for player in players do
 		if status.stars.not_empty then status.status = "success"
 		config.missions_status.save status
 	end
-
-	config.notifications.save new PlayerNotification(player, "New message", "Hello {player.id}")
-	config.notifications.save new PlayerNotification(player, "New message", "Hello2 {player.id}")
 end
 
 print "Loaded {config.tracks.find_all.length} tracks"
