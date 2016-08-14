@@ -1,6 +1,6 @@
-<div class='container-fluid' ng-controller='PlayerCtrl as playerCtrl' ng-init='playerCtrl.loadPlayer(playerId)'>
-	<div class='col-xs-3 col-md-2' ng-init='playerCtrl.loadStats(playerId)'>
-		<player-sidebar stats='playerCtrl.stats' session='session' />
+<div class='container-fluid' ng-controller='PlayerCtrl as playerCtrl'>
+	<div class='col-xs-3 col-md-2'>
+		<player-sidebar player-id='playerId' session='session' />
 	</div>
 	<div class='col-xs-9 col-md-10' ng-init='playerCtrl.loadMissionStatus(playerId, missionId)'>
 		<h3>{{playerCtrl.missionStatus.mission.title}}</h3>
