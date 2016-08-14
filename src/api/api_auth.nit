@@ -52,6 +52,7 @@ class MissionsGithubOAuthCallBack
 			player = new Player(id)
 			player.name = user.login
 			player.avatar_url = user.avatar_url
+			player.add_achievement(config, new FirstLoginAchievement(player))
 			config.players.save player
 		end
 		session.player = player
@@ -104,4 +105,19 @@ abstract class AuthHandler
 		end
 		return player
 	end
+end
+
+# First login achievement
+#
+# Unlocked when the player login for the first time ever.
+class FirstLoginAchievement
+	super Achievement
+	serialize
+	autoinit player
+
+	redef var key = "first_login"
+	redef var title = "Hello World!"
+	redef var desc = "Login into the mission board for the first time."
+	redef var reward = 10
+	redef var icon = "log-in"
 end
