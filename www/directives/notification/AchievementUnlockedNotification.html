@@ -1,0 +1,19 @@
+<div class='media notification'>
+	<div class='media-left media-middle'>
+		<span class='glyphicon glyphicon-{{notification.icon}} text-muted' />
+	</div>
+	<div class='media-body'>
+		<h5>{{notification.object}}</h5>
+		<p class='text-muted'>
+			{{notification.timestamp * 1000 | date: 'dd, MMM, yyyy HH:MM:ss a'}}
+		</p>
+		<p>
+			You unlocked <a href='/achievements/{{notification.achievement.key}}'>{{notification.achievement.title}}</a>
+		</p>
+	</div>
+	<div class="media-right">
+		<a href="#" class='text-muted' ng-click='notifsCtrl.clearNotification(notification._id)'>
+			<span class='glyphicon glyphicon-remove' />
+		</a>
+	</div>
+</div>

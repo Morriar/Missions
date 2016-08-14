@@ -5,12 +5,20 @@
 	<div class='col-xs-9 col-md-10'>
 		<ul class='nav nav-tabs'>
 			<li role='presentation'>
-				<a href='#'><span class='glyphicon glyphicon-tasks' /> Tracks</a>
+				<a href='#' data-toggle='tab' data-target='#tracks'>
+					<span class='glyphicon glyphicon-tasks' /> Tracks</a>
+			</li>
+			<li role='presentation'>
+				<a href='#' data-toggle='tab' data-target='#achievements'>
+					<span class='glyphicon glyphicon-check' /> Achievements</a>
 			</li>
 		</ul>
 		<div class='tab-content'>
 			<div role='tabpanel' class='tab-pane active' id='tracks'>
 				<player-tracks player-url='playerUrl' player-id='playerId' />
+			</div>
+			<div role='tabpanel' class='tab-pane' id='achievements'>
+				<player-achievements player-id='playerId' />
 			</div>
 		</div>
 	</div>

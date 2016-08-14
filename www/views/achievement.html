@@ -1,0 +1,11 @@
+<div class='container-fluid'>
+	<achievement achievement='achCtrl.achievement' />
+	<br>
+
+	<h3>Players who unlocked this achievement</h3>
+	<ul class='list-unstyled'>
+		<li ng-repeat='player in achCtrl.players'>
+			<player-link player='player' />
+		</li>
+	</ul>
+</div>

@@ -62,6 +62,11 @@
 						.success(cb)
 						.error(cbErr);
 				},
+				getAchievements: function(login, cb, cbErr) {
+					$http.get(apiUrl + '/players/' + login + '/achievements')
+						.success(cb)
+						.error(cbErr);
+				},
 				getTracksStatus: function(login, cb, cbErr) {
 					$http.get(apiUrl + '/players/' + login + '/tracks')
 						.success(cb)
@@ -104,6 +109,25 @@
 				},
 				removeFriend: function(fId, cb, cbErr) {
 					$http.delete(apiUrl + '/player/friends/' + fId)
+						.success(cb)
+						.error(cbErr);
+				}
+			}
+		}])
+		.factory('Achievements', [ '$http', function($http) {
+			return {
+				getAchievements: function(cb, cbErr) {
+					$http.get(apiUrl + '/achievements')
+						.success(cb)
+						.error(cbErr);
+				},
+				getAchievement: function(aid, cb, cbErr) {
+					$http.get(apiUrl + '/achievements/' + aid)
+						.success(cb)
+						.error(cbErr);
+				},
+				getAchievementPlayers: function(aid, cb, cbErr) {
+					$http.get(apiUrl + '/achievements/' + aid + '/players')
 						.success(cb)
 						.error(cbErr);
 				}

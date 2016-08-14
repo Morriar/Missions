@@ -1,4 +1,7 @@
 <div ng-switch='notification.__class'>
+	<div ng-switch-when='AchievementUnlockedNotification'>
+		<div ng-include='"/directives/notification/AchievementUnlockedNotification.html"' />
+	</div>
 	<div ng-switch-when='FriendRequestNotification'>
 		<div ng-include='"/directives/notification/FriendRequestNotification.html"' />
 	</div>
