@@ -85,8 +85,8 @@ for player in players do
 		config.missions_status.save status
 	end
 
-	config.notifications.save new PlayerNotification(player, "Hello {player.id}")
-	config.notifications.save new PlayerNotification(player, "Hello2 {player.id}")
+	config.notifications.save new PlayerNotification(player, "New message", "Hello {player.id}")
+	config.notifications.save new PlayerNotification(player, "New message", "Hello2 {player.id}")
 end
 
 print "Loaded {config.tracks.find_all.length} tracks"
