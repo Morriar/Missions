@@ -27,6 +27,8 @@ redef class APIRouter
 		use("/players/:login/missions/:mid", new APIPlayerMissionStatus(config))
 		use("/players/:login/stats/", new APIPlayerStats(config))
 		use("/players/:login/friends/", new APIPlayerFriends(config))
+		use("/players/:login/achievements/", new APIPlayerAchivements(config))
+
 		use("/player", new APIPlayerAuth(config))
 		use("/player/notifications", new APIPlayerNotifications(config))
 		use("/player/notifications/:nid", new APIPlayerNotification(config))
@@ -326,4 +328,14 @@ class APIPlayerFriendRequest
 	end
 
 	# TODO accept friend request
+end
+
+class APIPlayerAchivements
+	super PlayerHandler
+
+	redef fun get(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		res.json new JsonArray.from(player.achievements(config))
+	end
 end
