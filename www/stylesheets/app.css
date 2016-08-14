@@ -10,6 +10,13 @@ body {
 .dropdown-menu { min-width: 250px }
 .dropdown-menu>li>a { padding: 10px 20px }
 
+.btn-link.btn-muted { color: #777 }
+.btn-link.btn-primary { color: #337ab7 }
+.btn-link.btn-success { color: #3c763d }
+.btn-link.btn-info { color: #31708f }
+.btn-link.btn-warning { color: #8a6d3b }
+.btn-link.btn-danger { color: #a94442 }
+
 /*
  * Users
  */
@@ -30,6 +37,37 @@ body {
     background-image: url('/images/gitHub-mark-32-light.png');
     background-size: 14px 14px;
 	content: "";
+}
+
+/*
+ * Notifications
+ */
+
+.notifications {
+	min-width: 350px;
+	background-color: #e7e7e7;
+	padding: 10px;
+}
+
+.notifications .clear-all {
+    margin-right: 6px;
+}
+
+.notification.media:first-child {
+	margin-top: 5px;
+}
+
+.notification {
+	background-color: #fff;
+	padding: 5px 5px 10px 15px;
+	margin-top: 5px;
+    -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.2),inset 0 -1px 0 rgba(0,0,0,.3);
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,.2),inset 0 -1px 0 rgba(0,0,0,.3);
+}
+
+.notification h5 {
+	font-weight: bold;
+	margin-bottom: 3px;
 }
 
 /*

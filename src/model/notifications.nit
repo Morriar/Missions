@@ -25,6 +25,10 @@ redef class Player
 		return config.notifications.find_by_player(self)
 	end
 
+	fun add_notification(config: AppConfig, notification: PlayerNotification) do
+		config.notifications.save notification
+	end
+
 	fun clear_notifications(config: AppConfig): Bool do
 		return config.notifications.remove_by_player(self)
 	end
@@ -44,11 +48,19 @@ class PlayerNotification
 
 	var timestamp: Int = get_time
 	var player: Player
-	var message: String
+	var object: String
+	var body: String
+	var icon = "envelope"
 end
 
 class PlayerNotificationRepo
 	super MongoRepository[PlayerNotification]
+
+	redef fun find_all(q) do
+		var oq = new MongoMatch
+		if q isa MongoMatch then oq = q
+		return aggregate((new MongoPipeline).match(oq).sort((new MongoMatch).eq("timestamp", -1)))
+	end
 
 	fun find_by_player(player: Player): Array[PlayerNotification] do
 		return find_all((new MongoMatch).eq("player._id", player.id))
