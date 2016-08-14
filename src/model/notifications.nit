@@ -25,6 +25,10 @@ redef class Player
 		return config.notifications.find_by_player(self)
 	end
 
+	fun add_notification(config: AppConfig, notification: PlayerNotification) do
+		config.notifications.save notification
+	end
+
 	fun clear_notifications(config: AppConfig): Bool do
 		return config.notifications.remove_by_player(self)
 	end
