@@ -26,14 +26,15 @@ body {
 }
 
 .avatar-icon {
-	width: 18px;
-	height: 18px;
+	width: 25px;
+	height: 25px;
+	margin-left: 12px;
 }
 
 .glyphicon-github:before {
     display: inline-block;
-	width: 14px;
-	height: 14px;
+	width: 25px;
+	height: 25px;
     background-image: url('/images/gitHub-mark-32-light.png');
     background-size: 14px 14px;
 	content: "";
@@ -42,6 +43,10 @@ body {
 /*
  * Notifications
  */
+
+.nav > .glyphicon-bell {
+	margin-top: 6px;
+}
 
 .notifications {
 	min-width: 350px;
