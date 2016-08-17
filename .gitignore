@@ -2,3 +2,4 @@ bin/
 *.swp
 *.orig
 db_loader_serial.nit
+out/
