@@ -46,7 +46,16 @@ class Mission
 	end
 
 	redef fun to_s do return title
+
+	# The set of unit tests used to validate the mission
+	#
+	# This is done in `Mission` instead of a subclass to limit the number of classes
+	# and maybe simplify the serialization/API.
+	# If a mission has no test-case, an empty array should be enough for now.
+	var testsuite = new Array[TestCase]
 end
+
+
 
 class MissionRepo
 	super MongoRepository[Mission]
@@ -55,6 +64,19 @@ class MissionRepo
 		if track == null then return find_all
 		return find_all((new MongoMatch).eq("track._id", track.id))
 	end
+end
+
+# A single unit test on a mission
+#
+# They are provided by the author of the mission.
+class TestCase
+	serialize
+
+	# The input that is feed to the tested program.
+	var provided_input: String
+
+	# The expected response from the program for `provided_input`.
+	var expected_output: String
 end
 
 # Mission requirements
