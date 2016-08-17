@@ -15,54 +15,22 @@
 module api_auth
 
 import api_base
-import popcorn::pop_auth
 
+# The common auth router
+# Specific auth method can refine the class and plug additional handler
 class AuthRouter
 	super Router
 
 	var config: AppConfig
 
 	init do
-		use("/login", new GithubLogin(config.gh_client_id))
-		use("/oauth", new MissionsGithubOAuthCallBack(config))
-		use("/logout", new GithubLogout)
+		use("/logout", new Logout)
 	end
-end
-
-class MissionsGithubOAuthCallBack
-	super GithubOAuthCallBack
-	super APIHandler
-
-	autoinit config
-
-	init do
-		client_id = config.gh_client_id
-		client_secret = config.gh_client_secret
-	end
-
-	redef fun get(req, res) do
-		super
-		var session = req.session
-		if session == null then return
-		var user = session.user
-		if user == null then return
-		var id = user.login
-		var player = config.players.find_by_id(id)
-		if player == null then
-			player = new Player(id)
-			player.name = user.login
-			player.avatar_url = user.avatar_url
-			player.add_achievement(config, new FirstLoginAchievement(player))
-			config.players.save player
-		end
-		session.player = player
-		res.redirect "/player"
-	end
-
 end
 
 redef class Session
-	var player: nullable Player = null
+	# The current logged user
+	var player: nullable Player = null is writable
 end
 
 # Reload session player from db between pages
@@ -79,17 +47,17 @@ class SessionRefresh
 	end
 end
 
-redef class GithubLogout
+class Logout
+	super Handler
 	redef fun get(req, res) do
 		var session = req.session
 		if session == null then return
-		session.user = null
 		session.player = null
 		res.redirect "/"
 	end
 end
 
-redef class AuthHandler
+class AuthHandler
 	super APIHandler
 
 	fun get_player(req: HttpRequest, res: HttpResponse): nullable Player do
