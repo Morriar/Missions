@@ -89,7 +89,7 @@ redef class GithubLogout
 	end
 end
 
-abstract class AuthHandler
+redef class AuthHandler
 	super APIHandler
 
 	fun get_player(req: HttpRequest, res: HttpResponse): nullable Player do
