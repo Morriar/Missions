@@ -24,4 +24,14 @@ redef class AppConfig
 
 	# Github client secret used for Github OAuth login.
 	var gh_client_secret: String is lazy do return value_or_default("github.client.secret", "")
+
+	# Site root url to use for some redirect
+	# Useful if behind some reverse proxy
+	var app_root_url: String is lazy do
+		var host = app_host
+		var port = app_port
+		var url = "http://{host}"
+		if port != 80 then url += ":{port}"
+		return value_or_default("app.root_url", url)
+	end
 end

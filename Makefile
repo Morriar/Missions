@@ -17,6 +17,10 @@ build:
 	#nitserial src/app.nit -o src/app_serial.nit
 	nitc src/app.nit -m src/app_serial.nit -o bin/app
 
+debug:
+	mkdir -p bin
+	nitc src/app_debug.nit -m src/app_serial.nit -o bin/app
+
 populate:
 	mkdir -p bin
 	nitserial src/db_loader.nit -o src/db_loader_serial.nit
