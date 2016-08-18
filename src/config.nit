@@ -19,18 +19,6 @@ import popcorn::pop_repos
 
 redef class AppConfig
 
-	# MongoDB server used for data persistence.
-	var app_db_host: String is lazy do return value_or_default("app.db.host", "mongodb://localhost:27017/")
-
-	# MongoDB DB used for data persistence.
-	var app_db_name: String is lazy do return value_or_default("app.db.name", "missions")
-
-	# Mongo db client
-	var client = new MongoClient(app_db_host) is lazy
-
-	# Mongo db instance
-	var db: MongoDb = client.database(app_db_name) is lazy
-
 	# Github client id used for Github OAuth login.
 	var gh_client_id: String is lazy do return value_or_default("github.client.id", "")
 

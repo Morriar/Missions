@@ -56,7 +56,7 @@ end
 class PlayerNotificationRepo
 	super MongoRepository[PlayerNotification]
 
-	redef fun find_all(q) do
+	redef fun find_all(q, s, l) do
 		var oq = new MongoMatch
 		if q isa MongoMatch then oq = q
 		return aggregate((new MongoPipeline).match(oq).sort((new MongoMatch).eq("timestamp", -1)))
