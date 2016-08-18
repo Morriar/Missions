@@ -13,16 +13,30 @@
 # Player's submission for Pep8 missions
 #
 # TODO: Pep8Term is crap software to install and to execute.
-# Currently, this program assume the following:
-#
-# * `pep8` and `asem8` are in the PATH
-# * `trap` and `pep8os.pepo` are in the current working directory
+# Currently, this program assume that it is installed in the subdirectory `pep8term`.
+# Use `make pep8term` to install and compile it.
 module submissions
 
 import missions
 import players
 import markdown
 import poset
+
+# The absolute path of a `file` in pep8term.
+# Aborts if not found
+fun pep8term(file: String): String do
+	var dir = "pep8term"
+	if not dir.file_exists then
+		print_error "{dir}: does not exists. Please install it (make pep8term)."
+		exit 1
+	end
+	file = dir.realpath / file
+	if not file.file_exists then
+		print_error "{file}: does not exists. Please check the pep8term installation."
+		exit 1
+	end
+	return file
+end
 
 # An entry submitted by a player for a mission.
 #
@@ -97,7 +111,7 @@ class Program
 		source.write_to_file(sourcefile)
 
 		# Try to compile
-		system("cp trap pep8os.pepo {ws} && cd {ws} && asem8 source.pep 2> cmperr.txt")
+		system("cp {pep8term("trap")} {pep8term("pep8os.pepo")} {ws} && cd {ws} && {pep8term("asem8")} source.pep 2> cmperr.txt")
 		var objfile = ws / "source.pepo"
 		if not objfile.file_exists then
 			var err = (ws/"cmperr.txt").to_path.read_all
@@ -161,13 +175,16 @@ q
 
 		# Try to execute the program on the test input
 		# TODO: some time/space limit!
-		var r = system("cd {ws} && pep8 < {tdir}/canned_command > /dev/null 2> {tdir}/execerr.txt")
+		var r = system("cd {ws} && {pep8term("pep8")} < {tdir}/canned_command > /dev/null 2> {tdir}/execerr.txt")
 		if r != 0 then
 			var out = (ts/"execerr.txt").to_path.read_all
 			res.error = "Execution error, contact the administrator: {out}"
 			return res
 		end
-		
+
+		var instr_cpt = (ts/"execerr.txt").to_path.read_all.trim
+		res.time_score = instr_cpt.to_i
+
 		# Compare the result with diff
 		# TODO: some HTML-rich diff? Maybe client-side?
 		res.produced_output = ofile.to_path.read_all
@@ -198,6 +215,5 @@ class TestResult
 	var error: nullable String = null
 
 	# Execution time, in number of instructions.
-	# (not yet)
 	var time_score: Int = 0
 end
