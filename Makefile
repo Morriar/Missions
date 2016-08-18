@@ -30,3 +30,9 @@ clean:
 	rm -rf bin
 	rm -rf src/app_serial.nit
 	rm -rf src/db_loader_serial.nit
+
+.PHONY: pep8term
+pep8term:
+	test -d pep8term || git clone https://github.com/privat/pep8term.git
+	cd pep8term && git pull
+	${MAKE} -C pep8term
