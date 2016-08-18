@@ -182,6 +182,9 @@ q
 			return res
 		end
 
+		var instr_cpt = (ts/"execerr.txt").to_path.read_all.trim
+		res.time_score = instr_cpt.to_i
+
 		# Compare the result with diff
 		# TODO: some HTML-rich diff? Maybe client-side?
 		res.produced_output = ofile.to_path.read_all
@@ -212,6 +215,5 @@ class TestResult
 	var error: nullable String = null
 
 	# Execution time, in number of instructions.
-	# (not yet)
 	var time_score: Int = 0
 end
