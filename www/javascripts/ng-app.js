@@ -33,6 +33,12 @@
 				},
 			    template : "<div></div>"
 			})
+			.when('/shiblogin', {
+				controller : function(){
+					window.location.replace('/auth/shiblogin');
+				},
+			    template : "<div></div>"
+			})
 			.when('/logout', {
 				controller : [ '$rootScope', function($rootScope){
 					$rootScope.player = null;
