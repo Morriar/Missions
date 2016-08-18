@@ -59,6 +59,10 @@ var t = new Track("Nit", "Learn Nit")
 config.tracks.save t
 t.load_missions(config, "tracks/nit")
 
+t = new Track("Pep8", "Laboratoires INF2170")
+config.tracks.save t
+t.load_missions(config, "tracks/pep8")
+
 # load some players
 var morriar = new Player("Morriar", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3")
 config.players.save morriar

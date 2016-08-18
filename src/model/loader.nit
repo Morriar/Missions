@@ -58,7 +58,36 @@ redef class Track
 				m.parents.add r
 			end
 
-			print "{ff}: got «{m.title}»"
+			# Load tests, if any.
+			# This assume the Oto test file format:
+			# * Testcases start with the line `===`
+			# * input and output are separated  with the line `---`
+			var tf = ff / "tests.txt"
+			if tf.file_exists then
+				var i = ""
+				var o = ""
+				var in_input = true
+				var lines = tf.to_path.read_lines
+				if lines.first == "===" then lines.shift
+				lines.add "==="
+				for l in lines do
+					if l == "===" then
+						var t = new TestCase(i, o)
+						m.testsuite.add t
+						i = ""
+						o = ""
+						in_input = true
+					else if l == "---" then
+						in_input = false
+					else if in_input then
+						i += l + "\n"
+					else
+						o += l + "\n"
+					end
+				end
+			end
+
+			print "{ff}: got «{m}»; {m.testsuite.length} tests"
 
 			missions.add_node m
 		end
