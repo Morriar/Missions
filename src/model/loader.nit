@@ -58,6 +58,17 @@ redef class Track
 				m.parents.add r
 			end
 
+			var tg = ini["star.time_goal"]
+			if tg != null then
+				var star = new TimeStar("Instruction CPU", 10, tg.to_i)
+				m.add_star star
+			end
+			var sg = ini["star.size_goal"]
+			if sg != null then
+				var star = new SizeStar("Taille du code machine", 10, sg.to_i)
+				m.add_star star
+			end
+
 			# Load tests, if any.
 			# This assume the Oto test file format:
 			# * Testcases start with the line `===`
