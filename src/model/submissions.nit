@@ -19,6 +19,7 @@ module submissions
 
 import missions
 import players
+import status
 private import markdown
 private import poset
 
@@ -90,7 +91,7 @@ class Program
 	var test_errors: Int = 0
 
 	# Full validation of the program
-	fun check
+	fun check(config: AppConfig)
 	do
 		status = "pending"
 
@@ -146,6 +147,17 @@ class Program
 
 		# Succes. Update the mission status
 		status = "success"
+
+		var mission_status = config.missions_status.find_by_mission_and_player(mission, player)
+		if mission_status == null then
+			mission_status = new MissionStatus(mission, player)
+		end
+		mission_status.status = status
+
+		# Update/unlock stars
+		for star in mission.stars do star.check(self, mission_status)
+
+		config.missions_status.save(mission_status)
 	end
 end
 
@@ -207,6 +219,60 @@ q
 
 		return res
 	end
+end
+
+redef class MissionStar
+	# Check if the star is unlocked for the `program`
+	# Also update `status`
+	fun check(program: Program, status: MissionStatus): Bool do return false
+end
+
+redef class ScoreStar
+	redef fun check(program, status) do
+		var score = self.score(program)
+		if score == null then return false
+
+		# Search or create the corresponding StarStatus
+		# Just iterate the array
+		var star_status = null
+		for ss in status.star_status do
+			if ss.star == self then
+				star_status = ss
+				break
+			end
+		end
+		if star_status == null then
+			star_status = new StarStatus(self)
+			status.star_status.add star_status
+		end
+
+		# Best score?
+		var best = star_status.best_score
+		if best == null or score < best then
+			star_status.best_score = score
+			if best != null then print "STAR new best score {title}. {score} < {best}"
+		end
+
+		# Star granted?
+		if not status.stars.has(self) and score <= goal then
+			status.stars.add self
+			star_status.is_unlocked = true
+			print "STAR unlocked {title}. {score} <= {goal}"
+			return true
+		end
+		return false
+	end
+
+	# The specific score in program associated to `self`
+	fun score(program: Program): nullable Int is abstract
+end
+
+redef class TimeStar
+	redef fun score(program) do return program.time_score
+end
+
+redef class SizeStar
+	redef fun score(program) do return program.size_score
 end
 
 # A specific execution of a test case by a program
