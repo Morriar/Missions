@@ -101,7 +101,12 @@ class MissionStatus
 	var track: nullable Track
 
 	# Unlocked stars
+	#
+	# TODO: remove and use `star_status` once JS is updated
 	var stars = new Array[MissionStar]
+
+	# The state of each star
+	var star_status = new Array[StarStatus]
 
 	# `mission` status for `player`
 	#
@@ -117,6 +122,21 @@ class MissionStatus
 	var is_locked: Bool is lazy do return status == "locked"
 	var is_open: Bool is lazy do return status == "open"
 	var is_success: Bool is lazy do return status == "success"
+end
+
+# The link between a Player and a Star
+class StarStatus
+	super Entity
+	serialize
+
+	# The associated star
+	var star: MissionStar
+
+	# Is the star granted?
+	var is_unlocked = false is writable
+
+	# The current best score (for ScoreStar)
+	var best_score: nullable Int = null is writable
 end
 
 class MissionStatusRepo

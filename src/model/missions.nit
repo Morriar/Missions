@@ -90,3 +90,22 @@ class MissionStar
 	# The reward (in points) accorded when this star is unlocked
 	var reward: Int
 end
+
+# For stars that asks the player to minimize a quantity
+class ScoreStar
+	super MissionStar
+	serialize
+
+	# The value to earn the star
+	var goal: Int
+end
+
+class SizeStar
+	super ScoreStar
+	serialize
+end
+
+class TimeStar
+	super ScoreStar
+	serialize
+end

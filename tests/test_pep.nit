@@ -43,11 +43,21 @@ n: .BLOCK 2
 """
 DECO 10,i
 .END
-"""] do
+""",
+"""
+DECI 0,d
+LDA 0,d
+ADDA 10,i
+STA 0,d
+DECO 0,d
+STOP
+.END
+"""
+] do
 		print "## Try source {i} ##"
 		var prog = new Program(player, mission, source)
-		prog.check
-		print "** {prog.status} {prog.size_score or else "-"} {prog.time_score or else "-"}"
+		prog.check(config)
+		print "** {prog.status} errors={prog.test_errors}/{prog.results.length} size={prog.size_score or else "-"} time={prog.time_score or else "-"}"
 		var msg = prog.compilation_error
 		if msg != null then print "{msg}"
 		for tc, res in prog.results do
