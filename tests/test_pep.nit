@@ -47,7 +47,7 @@ DECO 10,i
 		print "## Try source {i} ##"
 		var prog = new Program(player, mission, source)
 		prog.check
-		print "** {prog.status} {prog.size_score or else "-"} {prog.time_score or else "-"}"
+		print "** {prog.status} errors={prog.test_errors}/{prog.results.length} size={prog.size_score or else "-"} time={prog.time_score or else "-"}"
 		var msg = prog.compilation_error
 		if msg != null then print "{msg}"
 		for tc, res in prog.results do

@@ -19,8 +19,8 @@ module submissions
 
 import missions
 import players
-import markdown
-import poset
+private import markdown
+private import poset
 
 # The absolute path of a `file` in pep8term.
 # Aborts if not found
@@ -86,6 +86,9 @@ class Program
 	# Is null if no error.
 	var compilation_error: nullable String = null
 
+	# Number of failed test-cases
+	var test_errors: Int = 0
+
 	# Full validation of the program
 	fun check
 	do
@@ -125,17 +128,24 @@ class Program
 
 		# Execute each testcase
 		var i = 0 # test number
-		var ts = 0 # current time_score
-		var error = false # Did a test fail?
+		var time_score = 0
+		var errors = 0
 		for test in mission.testsuite do
 			var result = test.run(self, i)
 			results[test] = result
-			ts += result.time_score
-			if result.error != null then error = true
+			time_score += result.time_score
+			if result.error != null then errors += 1
 			i += 1
 		end
-		self.time_score = ts
-		if error then status = "error" else status = "success"
+		self.test_errors = errors
+		self.time_score = time_score
+		if errors != 0 then
+			status = "error"
+			return
+		end
+
+		# Succes. Update the mission status
+		status = "success"
 	end
 end
 
