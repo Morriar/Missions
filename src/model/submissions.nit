@@ -23,22 +23,6 @@ import status
 private import markdown
 private import poset
 
-# The absolute path of a `file` in pep8term.
-# Aborts if not found
-fun pep8term(file: String): String do
-	var dir = "pep8term"
-	if not dir.file_exists then
-		print_error "{dir}: does not exists. Please install it (make pep8term)."
-		exit 1
-	end
-	file = dir.realpath / file
-	if not file.file_exists then
-		print_error "{file}: does not exists. Please check the pep8term installation."
-		exit 1
-	end
-	return file
-end
-
 # An entry submitted by a player for a mission.
 #
 # The last submitted programs and/or the ones that beat stars
