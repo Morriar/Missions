@@ -128,6 +128,15 @@
 				}
 			}
 		}])
+		.factory('Missions', [ '$http', function($http) {
+			return {
+				getMission: function(mid, cb, cbErr) {
+					$http.get(apiUrl + '/missions/' + mid)
+						.success(cb)
+						.error(cbErr);
+				}
+			}
+		}])
 		.factory('Achievements', [ '$http', function($http) {
 			return {
 				getAchievements: function(cb, cbErr) {
