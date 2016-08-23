@@ -1,9 +1,16 @@
 <ul class='nav navbar-nav navbar-right'>
-	<li ng-if='!player'>
-		<a href='/login'>
+	<li class="dropdown" ng-if='!player'>
+		<a class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
 			Login
-			<span class='octicon octicon-mark-github' />
 		</a>
+		<ul class="dropdown-menu dropdown-menu-right">
+			<li>
+				<a href="/login"><span class="octicon octicon-mark-github" /> Github... </a>
+			</li>
+			<li>
+				<a href="/shiblogin"><span class="glyphicon glyphicon-user" /> UQÀM... </a>
+			</li>
+		</ul>
 	</li>
 	<li class="dropdown" ng-if='player'>
 		<a class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
