@@ -1,3 +1,4 @@
 <div class='container-fluid'>
-	<track track-id='trackId' />
+	<track ng-if='!playerId' track-id='trackId' />
+	<player-track ng-if='playerId' player-id='playerId' track-id='trackId' />
 </div>

@@ -62,10 +62,6 @@
 				templateUrl: 'views/player.html',
 				controller : 'PlayerHome'
 			})
-			.when('/players/:login/tracks/:tid', {
-				templateUrl: 'views/player/track.html',
-				controller : 'PlayerHome'
-			})
 			.when('/players/:login/missions/:mid', {
 				templateUrl: 'views/player/mission.html',
 				controller : 'PlayerHome'

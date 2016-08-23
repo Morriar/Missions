@@ -21,7 +21,6 @@
 		.controller('PlayerHome', ['$routeParams', '$scope', function($routeParams, $scope) {
 			$scope.playerId = $routeParams.login;
 			$scope.playerUrl = '/players/' + $scope.playerId;
-			$scope.trackId = $routeParams.tid;
 			$scope.missionId = $routeParams.mid;
 		}])
 
@@ -29,7 +28,6 @@
 
 			$scope.playerId = $rootScope.session._id;
 			$scope.playerUrl = '/player';
-			$scope.trackId = $routeParams.tid;
 			$scope.missionId = $routeParams.mid;
 			$scope.notifId = $routeParams.nid;
 		}])

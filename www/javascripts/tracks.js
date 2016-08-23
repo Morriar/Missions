@@ -18,7 +18,10 @@
 	angular
 		.module('tracks', ['ngSanitize', 'model'])
 
-		.controller('TrackHome', ['$routeParams', '$scope', function($routeParams, $scope) {
+		.controller('TrackHome', ['$routeParams', '$rootScope', '$scope', function($routeParams, $rootScope, $scope) {
+			if($rootScope.session) {
+				$scope.playerId = $rootScope.session._id;
+			}
 			$scope.trackId = $routeParams.tid;
 		}])
 
@@ -56,7 +59,6 @@
 				templateUrl: '/directives/tracks/track.html'
 			};
 		}])
-
 
 		.directive('trackMissionsTree', [function() {
 			return {
