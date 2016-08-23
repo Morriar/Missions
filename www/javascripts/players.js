@@ -20,15 +20,11 @@
 
 		.controller('PlayerHome', ['$routeParams', '$scope', function($routeParams, $scope) {
 			$scope.playerId = $routeParams.login;
-			$scope.playerUrl = '/players/' + $scope.playerId;
-			$scope.missionId = $routeParams.mid;
 		}])
 
 		.controller('PlayerAuth', ['$routeParams', '$rootScope', '$scope', function($routeParams, $rootScope, $scope) {
 
 			$scope.playerId = $rootScope.session._id;
-			$scope.playerUrl = '/player';
-			$scope.missionId = $routeParams.mid;
 			$scope.notifId = $routeParams.nid;
 		}])
 

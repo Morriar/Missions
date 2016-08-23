@@ -1,3 +1,4 @@
 <div class='container-fluid'>
-	<mission mission-id='missionId' />
+	<mission ng-if='!playerId' mission-id='missionId' />
+	<player-mission ng-if='playerId' player-id='playerId' mission-id='missionId' />
 </div>

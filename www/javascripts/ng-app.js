@@ -62,10 +62,6 @@
 				templateUrl: 'views/player.html',
 				controller : 'PlayerHome'
 			})
-			.when('/players/:login/missions/:mid', {
-				templateUrl: 'views/player/mission.html',
-				controller : 'PlayerHome'
-			})
 			.when('/achievements/:aid', {
 				templateUrl: 'views/achievement.html',
 				controller : 'AchCtrl',
