@@ -1,0 +1,29 @@
+<div>
+	<h3>{{trackCtrl.track.title}}</h3>
+
+	<div>{{trackCtrl.track.desc}}</div>
+	<hr>
+
+	<h4>Missions</h4>
+	<track-missions-tree missions='trackCtrl.missions' />
+	<br><br><br><br>
+
+	<table class='table'>
+		<tr ng-repeat='mission in trackCtrl.missions'>
+			<th width='3%'>
+				<span class='glyphicon glyphicon-lock text-muted' />
+			</th>
+			<th width='30%'>
+				<a href='/missions/{{mission._id}}'>
+					{{mission.title}}
+				</a>
+			</th>
+			<td>
+				<span class='glyphicon glyphicon-star-empty text-muted'
+					ng-repeat='self in mission.stars.__items'
+					title='{{self.title}}' />
+			</td>
+			<td>+ {{mission.reward}} pts</td>
+		</tr>
+	</table>
+</div>

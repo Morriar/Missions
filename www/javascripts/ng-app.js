@@ -15,7 +15,7 @@
  */
 
 (function() {
-	angular.module('ng-app', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'players', 'notifications', 'friends', 'achievements'])
+	angular.module('ng-app', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'tracks', 'players', 'notifications', 'friends', 'achievements'])
 
 	.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 		cfpLoadingBarProvider.includeSpinner = false;
@@ -74,6 +74,10 @@
 				templateUrl: 'views/achievement.html',
 				controller : 'AchCtrl',
 				controllerAs : 'achCtrl'
+			})
+			.when('/tracks/:tid', {
+				templateUrl: 'views/track.html',
+				controller : 'TrackHome'
 			})
 			.otherwise({
 				redirectTo: '/'
