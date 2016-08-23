@@ -48,4 +48,25 @@
 				templateUrl: '/directives/missions/mission.html'
 			};
 		}])
+
+		.directive('playerMission', [function() {
+			return {
+				scope: {},
+				bindToController: {
+					playerId: '=',
+					missionId: '='
+				},
+				controller: ['Errors', 'Players', function (Errors, Players) {
+					$playerMissionCtrl = this;
+					Players.getMissionStatus(this.playerId, this.missionId,
+						function(data) {
+							$playerMissionCtrl.missionStatus = data;
+						}, Errors.handleError);
+				}],
+				controllerAs: 'missionCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/mission.html',
+			};
+		}])
 })();
