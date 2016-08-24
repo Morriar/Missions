@@ -63,12 +63,12 @@ class AuthHandler
 	fun get_player(req: HttpRequest, res: HttpResponse): nullable Player do
 		var session = req.session
 		if session == null then
-			res.error 403
+			res.api_error("Unauthorized", 403)
 			return null
 		end
 		var player = session.player
 		if player == null then
-			res.error 403
+			res.api_error("Unauthorized", 403)
 			return null
 		end
 		return player
