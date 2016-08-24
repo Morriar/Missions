@@ -15,7 +15,7 @@
  */
 
 (function() {
-	angular.module('ng-app', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'players', 'notifications', 'friends', 'achievements'])
+	angular.module('ng-app', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'tracks', 'missions', 'players', 'notifications', 'friends', 'achievements'])
 
 	.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 		cfpLoadingBarProvider.includeSpinner = false;
@@ -62,18 +62,18 @@
 				templateUrl: 'views/player.html',
 				controller : 'PlayerHome'
 			})
-			.when('/players/:login/tracks/:tid', {
-				templateUrl: 'views/player/track.html',
-				controller : 'PlayerHome'
-			})
-			.when('/players/:login/missions/:mid', {
-				templateUrl: 'views/player/mission.html',
-				controller : 'PlayerHome'
-			})
 			.when('/achievements/:aid', {
 				templateUrl: 'views/achievement.html',
 				controller : 'AchCtrl',
 				controllerAs : 'achCtrl'
+			})
+			.when('/tracks/:tid', {
+				templateUrl: 'views/track.html',
+				controller : 'TrackHome'
+			})
+			.when('/missions/:mid', {
+				templateUrl: 'views/mission.html',
+				controller : 'MissionHome'
 			})
 			.otherwise({
 				redirectTo: '/'

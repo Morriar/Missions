@@ -114,6 +114,29 @@
 				}
 			}
 		}])
+		.factory('Tracks', [ '$http', function($http) {
+			return {
+				getTrack: function(tid, cb, cbErr) {
+					$http.get(apiUrl + '/tracks/' + tid)
+						.success(cb)
+						.error(cbErr);
+				},
+				getTrackMissions: function(tid, cb, cbErr) {
+					$http.get(apiUrl + '/tracks/' + tid + '/missions')
+						.success(cb)
+						.error(cbErr);
+				}
+			}
+		}])
+		.factory('Missions', [ '$http', function($http) {
+			return {
+				getMission: function(mid, cb, cbErr) {
+					$http.get(apiUrl + '/missions/' + mid)
+						.success(cb)
+						.error(cbErr);
+				}
+			}
+		}])
 		.factory('Achievements', [ '$http', function($http) {
 			return {
 				getAchievements: function(cb, cbErr) {
