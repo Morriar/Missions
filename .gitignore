@@ -3,3 +3,4 @@ bin/
 *.orig
 db_loader_serial.nit
 out/
+db/
