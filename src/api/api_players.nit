@@ -149,12 +149,12 @@ class APIPlayerNotification
 	fun get_notification(req: HttpRequest, res: HttpResponse): nullable PlayerNotification do
 		var nid = req.param("nid")
 		if nid == null then
-			res.error 400
+			res.api_error("Missing URI param `nid`", 400)
 			return null
 		end
 		var notif = config.notifications.find_by_id(nid)
 		if notif == null then
-			res.error 404
+			res.api_error("Notification `{nid}` not found", 404)
 			return null
 		end
 		return notif
@@ -166,7 +166,7 @@ class APIPlayerNotification
 		var notif = get_notification(req, res)
 		if notif == null then return
 		if player.id != notif.player.id then
-			res.error 403
+			res.api_error("Unauthorized", 403)
 			return
 		end
 		res.json notif
@@ -178,7 +178,7 @@ class APIPlayerNotification
 		var notif = get_notification(req, res)
 		if notif == null then return
 		if player.id != notif.player.id then
-			res.error 403
+			res.api_error("Unauthorized", 403)
 			return
 		end
 		player.clear_notification(config, notif)
@@ -202,12 +202,12 @@ class APIPlayerFriend
 	fun get_friend(req: HttpRequest, res: HttpResponse): nullable Player do
 		var fid = req.param("fid")
 		if fid == null then
-			res.error 400
+			res.api_error("Missing URI param `fid`", 400)
 			return null
 		end
 		var friend = config.players.find_by_id(fid)
 		if friend == null then
-			res.error 404
+			res.api_error("Friend `{fid}` not found", 404)
 			return null
 		end
 		return friend
@@ -219,7 +219,7 @@ class APIPlayerFriend
 		var friend = get_friend(req, res)
 		if friend == null then return
 		if not player.has_friend(friend) then
-			res.error 404
+			res.api_error("Friend `{friend.id}` not found", 404)
 			return
 		end
 		res.json new JsonArray.from(player.load_friends(config))
@@ -231,7 +231,7 @@ class APIPlayerFriend
 		var friend = get_friend(req, res)
 		if friend == null then return
 		if not player.has_friend(friend) then
-			res.error 404
+			res.api_error("Friend `{friend.id}` not found", 404)
 			return
 		end
 		player.remove_friend(config, friend)

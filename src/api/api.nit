@@ -21,5 +21,14 @@ import api::api_missions
 import api::api_achievements
 
 redef class APIRouter
-	redef init do super
+	redef init do
+		super
+		use("/*", new APIErrorHandler(config))
+	end
+end
+
+class APIErrorHandler
+	super APIHandler
+
+	redef fun all(req, res) do res.api_error("Not found", 404)
 end

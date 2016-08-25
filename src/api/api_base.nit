@@ -36,12 +36,12 @@ abstract class PlayerHandler
 	fun get_player(req: HttpRequest, res: HttpResponse): nullable Player do
 		var pid = req.param("login")
 		if pid == null then
-			res.error 400
+			res.api_error("Missing URI param `login`", 400)
 			return null
 		end
 		var player = config.players.find_by_id(pid)
 		if player == null then
-			res.error 404
+			res.api_error("Player `{pid}` not found", 404)
 			return null
 		end
 		return player
@@ -54,12 +54,12 @@ abstract class TrackHandler
 	fun get_track(req: HttpRequest, res: HttpResponse): nullable Track do
 		var tid = req.param("tid")
 		if tid == null then
-			res.error 400
+			res.api_error("Missing URI param `tid`", 400)
 			return null
 		end
 		var track = config.tracks.find_by_id(tid)
 		if track == null then
-			res.error 404
+			res.api_error("Track `{tid}` not found", 404)
 			return null
 		end
 		return track
@@ -72,14 +72,30 @@ abstract class MissionHandler
 	fun get_mission(req: HttpRequest, res: HttpResponse): nullable Mission do
 		var mid = req.param("mid")
 		if mid == null then
-			res.error 400
+			res.api_error("Missing URI param `mid`", 400)
 			return null
 		end
 		var mission = config.missions.find_by_id(mid)
 		if mission == null then
-			res.error 404
+			res.api_error("Mission `{mid}` not found", 404)
 			return null
 		end
 		return mission
+	end
+end
+
+redef class HttpResponse
+
+	# Return a JSON error
+	#
+	# Format:
+	# ~~~json
+	# { message: "Not found", status: 404 }
+	# ~~~
+	fun api_error(message: String, status: Int) do
+		var obj = new JsonObject
+		obj["status"] = status
+		obj["message"] = message
+		json_error(obj, status)
 	end
 end

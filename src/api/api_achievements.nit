@@ -40,12 +40,12 @@ class APIAchievement
 	fun get_achievement(req: HttpRequest, res: HttpResponse): nullable Achievement do
 		var aid = req.param("aid")
 		if aid == null then
-			res.error 400
+			res.api_error("Missing URI param `aid`", 400)
 			return null
 		end
 		var achievement = config.achievements.find_by_key(aid)
 		if achievement == null then
-			res.error 404
+			res.api_error("Achievement `{aid}` not found", 404)
 			return null
 		end
 		return achievement
