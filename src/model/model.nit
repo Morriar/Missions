@@ -16,3 +16,4 @@ module model
 
 import model::friends
 import model::stats
+import model::engines

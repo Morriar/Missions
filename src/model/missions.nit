@@ -55,8 +55,6 @@ class Mission
 	var testsuite = new Array[TestCase]
 end
 
-
-
 class MissionRepo
 	super MongoRepository[Mission]
 
