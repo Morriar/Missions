@@ -18,7 +18,7 @@ import model::notifications
 import model::achievements
 
 redef class AppConfig
-	var friend_requests = new FriendRequestRepo(db.collection("friend_requests"))
+	var friend_requests = new FriendRequestRepo(db.collection("friend_requests")) is lazy
 end
 
 redef class Player

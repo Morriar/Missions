@@ -17,7 +17,7 @@ module achievements
 import model::notifications
 
 redef class AppConfig
-	var achievements = new AchievementRepo(db.collection("achievements"))
+	var achievements = new AchievementRepo(db.collection("achievements")) is lazy
 end
 
 # Achievement representation
