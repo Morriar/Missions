@@ -19,6 +19,9 @@ import api
 var opts = new AppOptions.from_args(args)
 var config = new AppConfig.from_options(opts)
 
+var level = 1
+if args.length >= 1 then level = args[0].to_i
+
 # clean bd
 config.players.clear
 config.notifications.clear
@@ -29,11 +32,13 @@ config.missions.clear
 config.missions_status.clear
 
 # load some tracks and missions
-for i in [1..10] do
+var track_count = 5 * level
+for i in [1..track_count] do
 	var track = new Track("Track {i}", "desc {i}")
 	config.tracks.save track
 	var last_missions = new Array[Mission]
-	for j in [1..10] do
+	var mission_count = (10 * level).rand
+	for j in [1..mission_count] do
 		var mission = new Mission(track, "Mission {i}-{j}", "desc {j}")
 		if last_missions.not_empty then
 			if 100.rand > 75 then
@@ -46,8 +51,8 @@ for i in [1..10] do
 				if not mission.parents.has(rand) then mission.parents.add rand
 			end
 		end
-		var stars = [1..3].rand
-		for s in [1..stars] do
+		var star_count = (4 * level).rand
+		for s in [1..star_count] do
 			mission.add_star(new MissionStar("star{s} explanation", 100.rand))
 		end
 		last_missions.add mission
@@ -76,14 +81,15 @@ morriar.add_friend(config, privat)
 morriar.add_achievement(config, new FirstLoginAchievement(morriar))
 
 var aurl = "https://avatars.githubusercontent.com/u/2577044?v=3"
-var players = [
-	morriar, privat,
-	new Player("P1", "Player 1", avatar_url=aurl),
-	new Player("P2", "Player 2", avatar_url=aurl),
-	new Player("P3", "Player 3", avatar_url=aurl),
-	new Player("P4", "Player 4", avatar_url=aurl),
-	new Player("P5", "Player 5", avatar_url=aurl)
-]
+var players = new Array[Player]
+players.push morriar
+players.push privat
+
+var player_count = 30 * level
+for i in [0..player_count] do
+	var p = new Player("P{i}", "Player{i}", avatar_url=aurl)
+	players.push p
+end
 
 for player in players do
 	config.players.save player
@@ -99,6 +105,14 @@ for player in players do
 		end
 		if status.stars.not_empty then status.status = "success"
 		config.missions_status.save status
+	end
+
+	# Spread some love (or friendships =( )
+	for other_player in players do
+		if not player.has_friend(other_player) then
+			var love = 10.rand
+			if love == 1 then player.add_friend(config, other_player)
+		end
 	end
 end
 
