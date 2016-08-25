@@ -41,31 +41,12 @@ class Pep8Engine
 
 	redef fun language do return "Pep/8"
 
+	redef fun extension do return "pep"
+
 	redef fun compile(program)
 	do
-		var player = program.player
-		var mission = program.mission
-		var source = program.source
-
-		# Get a workspace
-		# We need to create a unique working directory
-		# The following is not thread/process safe
-		var ws
-		var z = 0
-		loop
-			# Get a unique timestamp for this submission
-			var date = (new TimeT).to_i.to_s + "_" + z.to_s
-			ws = "out/{date}"
-			if not ws.file_exists then break
-			z += 1
-		end
-		ws.mkdir
-		program.workspace = ws
-		print "{player}/{mission} compiled in {ws}"
-
-		# Copy source
-		var sourcefile = ws / "source.pep"
-		source.write_to_file(sourcefile)
+		var ws = program.workspace
+		if ws == null then return false
 
 		# Try to compile
 		system("cp {pep8term("trap")} {pep8term("pep8os.pepo")} {ws} && cd {ws} && {pep8term("asem8")} source.pep 2> cmperr.txt")
@@ -82,22 +63,10 @@ class Pep8Engine
 		return true
 	end
 
-	redef fun run_test(program, test) do
-		var res = new TestResult(test, program)
-
-		var tdir = "test{program.results.length + 1}"
-		# We get a subdirectory (a testspace) for each test case
-		var ws = program.workspace.as(not null)
+	redef fun execute_test(submission, res, env) do
+		var tdir = env.temporary_dir
+		var ws = env.workspace
 		var ts = ws / tdir
-		ts.mkdir
-
-		# Prepare the input/output
-		var ifile = ts / "input.txt"
-		test.provided_input.write_to_file(ifile)
-		var ofile = ts / "output.txt"
-		var sfile = ts / "sav.txt"
-		test.expected_output.write_to_file(sfile)
-
 		# Prepare the execution command
 		# Because `pep8` is interactive.
 		var canned_command = """
@@ -120,22 +89,12 @@ q
 		if r != 0 then
 			var out = (ts/"execerr.txt").to_path.read_all
 			res.error = "Execution error, contact the administrator: {out}"
-			return res
+			return
 		end
+
+		system("echo '' >> {env.output_file}")
 
 		var instr_cpt = (ts/"execerr.txt").to_path.read_all.trim
 		res.time_score = instr_cpt.to_i
-
-		# Compare the result with diff
-		# TODO: some HTML-rich diff? Maybe client-side?
-		res.produced_output = ofile.to_path.read_all
-		r = system("cd {ws} && echo '' >> {tdir}/output.txt && diff -u {tdir}/sav.txt {tdir}/output.txt > {tdir}/diff.txt")
-		if r != 0 then
-			var out = (ts/"diff.txt").to_path.read_all
-			res.error = "Error: the result is not the expected one\n{out}"
-			return res
-		end
-
-		return res
 	end
 end
