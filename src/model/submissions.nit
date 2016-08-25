@@ -76,6 +76,9 @@ class Program
 	# Number of failed test-cases
 	var test_errors: Int = 0 is writable
 
+	# Was the run successful?
+	fun successful: Bool do return not compilation_failed and test_errors == 0
+
 	# Update status of `self` in DB
 	fun update_status(config: AppConfig) do
 		var mission_status = config.missions_status.find_by_mission_and_player(mission, player)
@@ -85,7 +88,7 @@ class Program
 		mission_status.status = status
 
 		# Update/unlock stars
-		for star in mission.stars do star.check(self, mission_status)
+		if successful then for star in mission.stars do star.check(self, mission_status)
 
 		config.missions_status.save(mission_status)
 	end
