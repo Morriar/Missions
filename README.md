@@ -12,6 +12,8 @@ See the `app.ini` file to configure the popcorn app:
 
 * `app.host`: app hostname
 * `app.port`: app port
+* `app.root_url`: used for redirect/call back from 3rd-party authentications.
+  To use if behind a reverse proxy or if host is 0.0.0.0
 
 ## Running
 
