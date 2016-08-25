@@ -134,7 +134,12 @@
 					$http.get(apiUrl + '/missions/' + mid)
 						.success(cb)
 						.error(cbErr);
-				}
+				},
+				sendMissionSubmission: function(data, mid, cb, cbErr) {
+					$http.post(apiUrl + '/missions/' + mid, data)
+						.success(cb)
+						.error(cbErr);
+				},
 			}
 		}])
 		.factory('Achievements', [ '$http', function($http) {
