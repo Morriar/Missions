@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import api
-import api_auth_github
+import api_auth_shibuqam
 
 var opts = new AppOptions.from_args(args)
 var config = new AppConfig.from_options(opts)
