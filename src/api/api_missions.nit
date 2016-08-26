@@ -43,22 +43,14 @@ class APIMission
 		if player == null then return
 		var mission = get_mission(req, res)
 		if mission == null then return
-		var post = req.post_args
-		if not post.has_key("source") then
+
+		var post = req.body
+
+		var deserializer = new JsonDeserializer(post)
+		var submission = new Submission.from_deserializer(deserializer)
+		if not deserializer.errors.is_empty then
 			res.error 400
-			print "No code provided for submission"
-			return
-		end
-		var code = post["source"]
-		if not post.has_key("lang") then
-			res.error 400
-			print "No lang provided for submission"
-			return
-		end
-		var engine = post["lang"]
-		if not config.engine_map.has_key(engine) then
-			res.error 400
-			print "Unknown language '{engine}'"
+			print "Error deserializing submitted mission: {post}"
 			return
 		end
 		var runner = config.engine_map[submission.engine]
