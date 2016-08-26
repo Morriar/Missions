@@ -55,13 +55,7 @@ for i in [1..10] do
 	end
 end
 
-var t = new Track("Nit", "Learn Nit")
-config.tracks.save t
-t.load_missions(config, "tracks/nit")
-
-t = new Track("Pep8", "Laboratoires INF2170")
-config.tracks.save t
-t.load_missions(config, "tracks/pep8")
+config.load_tracks "tracks"
 
 # load some players
 var morriar = new Player("Morriar", "Morriar", avatar_url= "https://avatars.githubusercontent.com/u/583144?v=3")

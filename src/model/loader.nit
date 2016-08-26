@@ -18,6 +18,48 @@ import markdown
 
 private import poset
 
+redef class AppConfig
+	# Load all tracks that are subdirectories of `path`.
+	fun load_tracks(path: String) do
+		# Process files
+		for f in path.files do
+			var sub = path / f
+			var t = sub / "track.ini"
+			if t.file_exists then load_track(sub)
+		end
+	end
+
+	# Load the track of the directory `path`.
+	#
+	# Returns the track, or `null` if there is a problem
+	fun load_track(path: String): nullable Track do
+		var desc = path / "track.md"
+		if not desc.file_exists then return null
+
+		var ini = new ConfigTree(path / "track.ini")
+
+		# The internal name
+		var name = ini["name"] or else path.basename
+
+		# The public title
+		var title = ini["title"]
+		if title == null then
+			print_error "{path}: no title in {ini}, fall-back to {name}"
+			title = name
+		end
+
+		var content = desc.to_path.read_all
+		if content.is_empty then print_error "{path}: empty {desc}"
+		var proc = new MarkdownProcessor
+		var html = proc.process(content).write_to_string
+
+		var track = new Track(title, html)
+		self.tracks.save track
+		track.load_missions(self, path)
+		return track
+	end
+end
+
 redef class Track
 	# Load the missions from the directory `path`.
 	fun load_missions(config: AppConfig, path: String) do
