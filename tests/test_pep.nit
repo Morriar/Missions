@@ -56,13 +56,14 @@ STOP
 ] do
 		print "## Try source {i} ##"
 		var prog = new Program(player, mission, source)
-		prog.check(config)
-		print "** {prog.status} errors={prog.test_errors}/{prog.results.length} size={prog.size_score or else "-"} time={prog.time_score or else "-"}"
-		var msg = prog.compilation_error
-		if msg != null then print "{msg}"
+		var runner = config.engine_map["pep8term"]
+		runner.run(prog, config)
+		print "** {prog.status} errors={prog.test_errors}/{prog.results.length} size={prog.size_score or else "-"} time={prog.time_score}"
+		var msg = prog.compilation_messages
+		if msg != "" then print "{msg}"
 		for tc, res in prog.results do
-			msg = res.error
-			if msg != null then print "{msg}"
+			var msg_test = res.error
+			if msg_test != null then print "{msg_test}"
 		end
 		i += 1
 	end
