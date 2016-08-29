@@ -22,7 +22,7 @@ debug:
 	nitc src/app_debug.nit -m src/app_serial.nit -o bin/app
 
 populate:
-	# There are levels to this... try: `make mass_populate level=2`
+	# There are levels to this... try: `make populate level=2`
 	mkdir -p bin
 	nitserial src/db_loader.nit -o src/db_loader_serial.nit
 	nitc src/db_loader.nit -m src/db_loader_serial.nit -o bin/db_loader
