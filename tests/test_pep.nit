@@ -15,9 +15,7 @@ var config = new AppConfig.from_options(opts)
 config.db.drop
 
 # Load pep8
-var t = new Track("Pep8", "Laboratoires INF2170")
-config.tracks.save t
-t.load_missions(config, "tracks/pep8")
+config.load_track("tracks/pep8")
 
 # Create a dummy user
 var player = new Player("John", "Doe")

@@ -15,8 +15,52 @@ module loader
 
 import missions
 import markdown
+private import md5
 
 private import poset
+
+redef class AppConfig
+	# Load all tracks that are subdirectories of `path`.
+	fun load_tracks(path: String) do
+		# Process files
+		for f in path.files do
+			var sub = path / f
+			var t = sub / "track.ini"
+			if t.file_exists then load_track(sub)
+		end
+	end
+
+	# Load the track of the directory `path`.
+	#
+	# Returns the track, or `null` if there is a problem
+	fun load_track(path: String): nullable Track do
+		var desc = path / "track.md"
+		if not desc.file_exists then return null
+
+		var ini = new ConfigTree(path / "track.ini")
+
+		# The internal name
+		var name = ini["name"] or else path.basename
+
+		# The public title
+		var title = ini["title"]
+		if title == null then
+			print_error "{path}: no title in {ini}, fall-back to {name}"
+			title = name
+		end
+
+		var content = desc.to_path.read_all
+		if content.is_empty then print_error "{path}: empty {desc}"
+		var proc = new MarkdownProcessor
+		proc.emitter.decorator = new DescDecorator(path, "data")
+		var html = proc.process(content).write_to_string
+
+		var track = new Track(title, html)
+		self.tracks.save track
+		track.load_missions(self, path)
+		return track
+	end
+end
 
 redef class Track
 	# Load the missions from the directory `path`.
@@ -44,6 +88,7 @@ redef class Track
 			var content = mission.to_path.read_all
 			if content.is_empty then print_error "{name}: no {mission}"
 			var proc = new MarkdownProcessor
+			proc.emitter.decorator = new DescDecorator(ff, "data")
 			var html = proc.process(content).write_to_string
 
 			# TODO: drop mango_ids and use semantic id.
@@ -122,6 +167,75 @@ redef class Track
 			m.parents.clear
 			m.parents.add_all reals
 			config.missions.save(m)
+		end
+	end
+end
+
+class DescDecorator
+	super HTMLDecorator
+
+	# The directory to find original local resources (links and images)
+	var ressources_dir: String
+
+	# Storage directory to put copied resources
+	# Assume it will be served as is by nitcorn
+	var data_dir: String
+
+	# Copy a local resource to the storage directory.
+	#
+	# If it is successful, return a new link.
+	# If the link is not local, return `null`.
+	# If the resource is not found, return `null`.
+	fun copy_ressource(link: String): nullable String
+	do
+		# Keep absolute links as is
+		if link.has_prefix("http://") or link.has_prefix("https://") then
+			return null
+		end
+
+		# Get the full path to the local resource
+		var fulllink = ressources_dir / link
+		var stat = fulllink.file_stat
+		if stat == null then
+			print_error "Error: cannot find local resource `{link}`"
+			return null
+		end
+
+		# Get a collision-free name for the resource
+		var hash = fulllink.md5
+		var ext = fulllink.file_extension
+		if ext != null then hash = hash + "." + ext
+
+		# Copy the local resource in the resource directory of the catalog
+		data_dir.mkdir
+		var res = data_dir / hash
+		fulllink.file_copy_to(res)
+
+		# Produce a new absolute link for the HTML
+		var new_link = "/" / data_dir / hash
+		#print "{link} -> {new_link}; as {res}"
+		return new_link
+	end
+
+	redef fun add_image(v, link, name, comment)
+	do
+		var new_link = copy_ressource(link.to_s)
+
+		if new_link == null then
+			super
+		else
+			super(v, new_link, name, comment)
+		end
+	end
+
+	redef fun add_link(v, link, name, comment)
+	do
+		var new_link = copy_ressource(link.to_s)
+
+		if new_link == null then
+			super
+		else
+			super(v, new_link, name, comment)
 		end
 	end
 end
