@@ -19,12 +19,11 @@
 				<th>+ {{missionCtrl.missionStatus.mission.reward}} pts</th>
 			</tr>
 			<tr ng-repeat='star in missionCtrl.missionStatus.mission.stars.__items'>
-				<th ng-init='i = $index + 1' width='15%'>
-					<span class='glyphicon text-warning'
-						ng-repeat='self in [1, 2, 3]'
-						ng-class='{"glyphicon-star-empty": self > i, "glyphicon-star": self <= i}' />
+				<th width='15%'>
+					<span class='glyphicon'
+						ng-class="{ 'glyphicon-star-empty text-warning': !missionCtrl.statusByStar(star._id), 'glyphicon-star text-success': missionCtrl.statusByStar(star._id) }" />
 				</th>
-				<td width='15%'>+{{star.reward}}pts</td>
+				<td width='15%'>{{star.reward}} pts</td>
 				<td>{{star.title}}</td>
 			</tr>
 		</table>

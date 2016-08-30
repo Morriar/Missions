@@ -40,6 +40,26 @@
 
 		}])
 
+		.controller('PlayerMissionCtrl', ['Errors', 'Players', function (Errors, Players) {
+
+			var vm = this;
+
+			Players.getMissionStatus(this.playerId, this.missionId, function(data) {
+					vm.missionStatus = data;
+			}, Errors.handleError);
+
+			vm.statusByStar = function (starId) {
+				var unlocked = false;
+				angular.forEach(vm.missionStatus.star_status.__items, function (starStatus) {
+					if(starId == starStatus.star._id) {
+						unlocked = starStatus.is_unlocked;
+					}
+				});
+				return unlocked;
+			};
+
+		}])
+
 		.controller('MissionSubmitCtrl', ['Missions', '$scope', function (Missions, $scope) {
 			$scope.source = "";
 			$scope.lang = "pep8";
@@ -80,13 +100,7 @@
 					playerId: '=',
 					missionId: '='
 				},
-				controller: ['Errors', 'Players', function (Errors, Players) {
-					$playerMissionCtrl = this;
-					Players.getMissionStatus(this.playerId, this.missionId,
-						function(data) {
-							$playerMissionCtrl.missionStatus = data;
-						}, Errors.handleError);
-				}],
+				controller: 'PlayerMissionCtrl',
 				controllerAs: 'missionCtrl',
 				restrict: 'E',
 				replace: true,
