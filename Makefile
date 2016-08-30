@@ -31,6 +31,10 @@ populate:
 run:
 	bin/app
 
+check:
+	nitunit .
+	$(MAKE) -C tests/
+
 clean:
 	rm -rf bin
 	rm -rf src/app_serial.nit

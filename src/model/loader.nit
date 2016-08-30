@@ -244,15 +244,15 @@ redef class String
 	# Replace sequences of non-alphanumerical characters by underscore.
 	#
 	# ~~~
-	# assert "abcXYZ123_" == "abcXYZ123_"
-	# assert ", 'A[]\nB#$_" == "A_B"
+	# assert "abcXYZ123_".strip_id == "abcXYZ123_"
+	# assert ", 'A[]\nB#$_".strip_id == "_A_B_"
 	# ~~~
 	fun strip_id: String
 	do
 		var res = new Buffer
 		var sp = false
 		for c in chars do
-			if not c.is_alpha then
+			if not c.is_alphanumeric then
 				sp = true
 				continue
 			end
@@ -262,6 +262,7 @@ redef class String
 			end
 			res.add c
 		end
+		if sp then res.add '_'
 		return res.to_s
 	end
 end
