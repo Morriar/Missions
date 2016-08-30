@@ -30,6 +30,9 @@ populate:
 run:
 	bin/app
 
+check:
+	nitunit .
+
 clean:
 	rm -rf bin
 	rm -rf src/app_serial.nit
