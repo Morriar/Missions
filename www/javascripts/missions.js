@@ -44,7 +44,7 @@
 
 			var vm = this;
 
-			Players.getMissionStatus(this.playerId, this.missionId, function(data) {
+			Players.getMissionStatus(vm.playerId, vm.missionId, function(data) {
 					vm.missionStatus = data;
 			}, Errors.handleError);
 
