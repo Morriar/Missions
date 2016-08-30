@@ -32,6 +32,7 @@ run:
 
 check:
 	nitunit .
+	$(MAKE) -C tests/
 
 clean:
 	rm -rf bin
