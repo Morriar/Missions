@@ -1,5 +1,3 @@
-# Copyright 2016 Alexandre Terrasa <alexandre@moz-code.org>.
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,8 +10,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module model
+# Global map of engines
+module engine_configuration
 
-import model::friends
-import model::stats
 import model::engines
+
+redef class AppConfig
+	# Map of all supported engines for problem solving
+	var engine_map = new HashMap[String, Engine]
+
+	init do
+		engine_map["pep8term"] = new Pep8Engine
+	end
+end

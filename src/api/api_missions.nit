@@ -16,6 +16,7 @@ module api_missions
 
 import model
 import api::api_tracks
+import api::engine_configuration
 
 redef class APIRouter
 	redef init do
@@ -35,6 +36,29 @@ end
 
 class APIMission
 	super MissionHandler
+	super AuthHandler
+
+	redef fun post(req, res) do
+		var player = get_player(req, res)
+		if player == null then return
+		var mission = get_mission(req, res)
+		if mission == null then return
+
+		var post = req.body
+
+		var deserializer = new JsonDeserializer(post)
+		var submission = new Submission.from_deserializer(deserializer)
+		if not deserializer.errors.is_empty then
+			res.error 400
+			print "Error deserializing submitted mission: {post}"
+			return
+		end
+		var runner = config.engine_map[submission.engine]
+		var program = new Program(player, mission, submission.source)
+		runner.run(program, config)
+
+		res.json program
+	end
 
 	redef fun get(req, res) do
 		var mission = get_mission(req, res)

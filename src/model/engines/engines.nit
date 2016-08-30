@@ -1,5 +1,3 @@
-# Copyright 2016 Alexandre Terrasa <alexandre@moz-code.org>.
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,8 +10,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module model
+# Handles the different languages and engines that go along with it.
+module engines
 
-import model::friends
-import model::stats
-import model::engines
+import engine_base
+import pep8
