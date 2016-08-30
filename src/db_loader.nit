@@ -34,12 +34,12 @@ config.missions_status.clear
 # load some tracks and missions
 var track_count = 5 * level
 for i in [1..track_count] do
-	var track = new Track("Track {i}", "desc {i}")
+	var track = new Track("track{i}", "Track {i}", "desc {i}")
 	config.tracks.save track
 	var last_missions = new Array[Mission]
 	var mission_count = (10 * level).rand
 	for j in [1..mission_count] do
-		var mission = new Mission(track, "Mission {i}-{j}", "desc {j}")
+		var mission = new Mission("track{i}:mission{j}", track, "Mission {i}-{j}", "desc {j}")
 		if last_missions.not_empty then
 			if 100.rand > 75 then
 				mission.parents.add last_missions.last.id

@@ -24,6 +24,7 @@ class Track
 	super Entity
 	serialize
 
+	redef var id
 	var title: String
 	var desc: String
 

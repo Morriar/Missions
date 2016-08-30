@@ -31,6 +31,7 @@ class Mission
 	super Entity
 	serialize
 
+	redef var id
 	var track: nullable Track
 	var title: String
 	var desc: String
