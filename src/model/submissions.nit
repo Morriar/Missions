@@ -26,7 +26,7 @@ private import poset
 #
 # Other can be discarded (or archived for data analysis and/or the wall of shame)
 class Program
-	super Jsonable
+	super Event
 	serialize
 
 	# The submitter
@@ -98,7 +98,6 @@ end
 
 # This model provides easy deserialization of posted submissions
 class Submission
-	super Event
 	serialize
 
 	# Source code to be run
