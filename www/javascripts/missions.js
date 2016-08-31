@@ -40,13 +40,15 @@
 
 		}])
 
-		.controller('PlayerMissionCtrl', ['Errors', 'Players', function (Errors, Players) {
+		.controller('PlayerMissionCtrl', ['Errors', 'Players', '$scope', function (Errors, Players, $scope) {
 
 			var vm = this;
 
-			Players.getMissionStatus(vm.playerId, vm.missionId, function(data) {
+			vm.getMissionStatus = function () {
+				Players.getMissionStatus(vm.playerId, vm.missionId, function(data) {
 					vm.missionStatus = data;
-			}, Errors.handleError);
+				}, Errors.handleError);
+			};
 
 			vm.statusByStar = function (starId) {
 				var unlocked = false;
@@ -57,6 +59,12 @@
 				});
 				return unlocked;
 			};
+
+			$scope.$on('mission_submission', function (data) {
+				vm.getMissionStatus();
+			});
+
+			vm.getMissionStatus();
 
 		}])
 
@@ -73,6 +81,7 @@
 				};
 				Missions.sendMissionSubmission(data, $scope.missionId, function (data) {
 					$scope.source = data;
+					$scope.$emit('mission_submission', 'success');
 				}, function () {
 					console.log("err");
 				});
