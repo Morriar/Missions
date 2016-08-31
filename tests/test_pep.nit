@@ -53,13 +53,13 @@ STOP
 """
 ] do
 		print "## Try source {i} ##"
-		var prog = new Program(player, mission, source)
+		var sub = new Submission(player, mission, source)
 		var runner = config.engine_map["pep8term"]
-		runner.run(prog, config)
-		print "** {prog.status} errors={prog.test_errors}/{prog.results.length} size={prog.size_score or else "-"} time={prog.time_score}"
-		var msg = prog.compilation_messages
+		runner.run(sub, config)
+		print "** {sub.status} errors={sub.test_errors}/{sub.results.length} size={sub.size_score or else "-"} time={sub.time_score}"
+		var msg = sub.compilation_messages
 		if msg != "" then print "{msg}"
-		for tc, res in prog.results do
+		for tc, res in sub.results do
 			var msg_test = res.error
 			if msg_test != null then print "{msg_test}"
 		end

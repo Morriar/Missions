@@ -47,17 +47,17 @@ class APIMission
 		var post = req.body
 
 		var deserializer = new JsonDeserializer(post)
-		var submission = new Submission.from_deserializer(deserializer)
+		var submission_form = new SubmissionForm.from_deserializer(deserializer)
 		if not deserializer.errors.is_empty then
 			res.error 400
 			print "Error deserializing submitted mission: {post}"
 			return
 		end
-		var runner = config.engine_map[submission.engine]
-		var program = new Program(player, mission, submission.source)
-		runner.run(program, config)
+		var runner = config.engine_map[submission_form.engine]
+		var submission = new Submission(player, mission, submission_form.source)
+		runner.run(submission, config)
 
-		res.json program
+		res.json submission
 	end
 
 	redef fun get(req, res) do

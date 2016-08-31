@@ -20,38 +20,38 @@ class Engine
 	# Which language is supported by the engine?
 	fun language: String is abstract
 
-	# Compile and run the tests for `program`
-	fun run(program: Program, config: AppConfig) do
-		program.status = "pending"
-		var runnable = compile(program)
-		program.compilation_failed = not runnable
+	# Compile and run the tests for `submission`
+	fun run(submission: Submission, config: AppConfig) do
+		submission.status = "pending"
+		var runnable = compile(submission)
+		submission.compilation_failed = not runnable
 		if not runnable then
-			program.status = "error"
-			program.update_status(config)
+			submission.status = "error"
+			submission.update_status(config)
 			return
 		end
-		var tests = program.mission.testsuite
+		var tests = submission.mission.testsuite
 		var errors = 0
 		var time = 0
 		for i in tests do
-			var res = run_test(program, i)
+			var res = run_test(submission, i)
 			time += res.time_score
-			program.results[i] = res
+			submission.results[i] = res
 			if res.error != null then errors += 1
 		end
 		if errors != 0 then
-			program.status = "error"
+			submission.status = "error"
 		else
-			program.status = "success"
+			submission.status = "success"
 		end
-		program.time_score = time
-		program.test_errors = errors
-		program.update_status(config)
+		submission.time_score = time
+		submission.test_errors = errors
+		submission.update_status(config)
 	end
 
-	# Compile `program` and check for errors and warnings
-	fun compile(program: Program): Bool is abstract
+	# Compile `submission` and check for errors and warnings
+	fun compile(submission: Submission): Bool is abstract
 
-	# Run `test` for `program`
-	fun run_test(program: Program, test: TestCase): TestResult is abstract
+	# Run `test` for `submission`
+	fun run_test(submission: Submission, test: TestCase): TestResult is abstract
 end

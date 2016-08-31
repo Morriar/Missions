@@ -25,7 +25,7 @@ private import poset
 # can be saved server-side so that the played can retrieve them.
 #
 # Other can be discarded (or archived for data analysis and/or the wall of shame)
-class Program
+class Submission
 	super Event
 	serialize
 
@@ -96,8 +96,8 @@ class Program
 	redef fun to_json do return serialize_to_json
 end
 
-# This model provides easy deserialization of posted submissions
-class Submission
+# This model provides easy deserialization of posted submission forms
+class SubmissionForm
 	serialize
 
 	# Source code to be run
@@ -109,14 +109,14 @@ class Submission
 end
 
 redef class MissionStar
-	# Check if the star is unlocked for the `program`
+	# Check if the star is unlocked for the `submission`
 	# Also update `status`
-	fun check(program: Program, status: MissionStatus): Bool do return false
+	fun check(submission: Submission, status: MissionStatus): Bool do return false
 end
 
 redef class ScoreStar
-	redef fun check(program, status) do
-		var score = self.score(program)
+	redef fun check(submission, status) do
+		var score = self.score(submission)
 		if score == null then return false
 
 		# Search or create the corresponding StarStatus
@@ -150,19 +150,19 @@ redef class ScoreStar
 		return false
 	end
 
-	# The specific score in program associated to `self`
-	fun score(program: Program): nullable Int is abstract
+	# The specific score in submission associated to `self`
+	fun score(submission: Submission): nullable Int is abstract
 end
 
 redef class TimeStar
-	redef fun score(program) do return program.time_score
+	redef fun score(submission) do return submission.time_score
 end
 
 redef class SizeStar
-	redef fun score(program) do return program.size_score
+	redef fun score(submission) do return submission.size_score
 end
 
-# A specific execution of a test case by a program
+# A specific execution of a test case by a submission
 class TestResult
 	super Entity
 	serialize
@@ -170,10 +170,10 @@ class TestResult
 	# The test case considered
 	var testcase: TestCase
 
-	# The program considered
-	var program: Program
+	# The submission considered
+	var submission: Submission
 
-	# The output of the `program` when feed by `testcase.provided_input`.
+	# The output of the `submission` when feed by `testcase.provided_input`.
 	var produced_output: nullable String = null is writable
 
 	# Error message
