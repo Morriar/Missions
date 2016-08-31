@@ -22,11 +22,26 @@ var player = new Player("John", "Doe")
 config.players.save player
 
 # Run some submission on the missions
-for mission in config.missions.find_all do
+var mission = config.missions.find_all.first
+do
 	print "Mission {mission} {mission.testsuite.length}"
 	var i = 0
 	for source in [
 """
+""",
+"""
+DECO 10,i
+.END
+""",
+"""
+DECI n,d
+LDA n,d
+ADDA 10,i
+STA n,d
+DECO n,d
+STOP
+n: .BLOCK 3
+.END
 """,
 """
 DECI n,d
@@ -36,10 +51,6 @@ STA n,d
 DECO n,d
 STOP
 n: .BLOCK 2
-.END
-""",
-"""
-DECO 10,i
 .END
 """,
 """
