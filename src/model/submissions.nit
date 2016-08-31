@@ -85,10 +85,17 @@ class Submission
 		if mission_status == null then
 			mission_status = new MissionStatus(mission, player)
 		end
-		mission_status.status = status
 
 		# Update/unlock stars
-		if successful then for star in mission.stars do star.check(self, mission_status)
+		if successful then
+			if mission_status.status != status then
+				# new solve
+				var solve = new Solve(self)
+				print solve
+			end
+			for star in mission.stars do star.check(self, mission_status)
+		end
+		mission_status.status = status
 
 		config.missions_status.save(mission_status)
 	end
@@ -134,17 +141,20 @@ redef class ScoreStar
 		end
 
 		# Best score?
+		var newscore = null
 		var best = star_status.best_score
 		if best == null or score < best then
 			star_status.best_score = score
-			if best != null then print "STAR new best score {title}. {score} < {best}"
+			newscore = new NewHighScore(submission, self, goal, best, score)
+			print newscore
 		end
 
 		# Star granted?
 		if not status.stars.has(self) and score <= goal then
 			status.stars.add self
 			star_status.is_unlocked = true
-			print "STAR unlocked {title}. {score} <= {goal}"
+			var unlock = new StarUnlock(submission, self, newscore)
+			print unlock
 			return true
 		end
 		return false
@@ -182,4 +192,71 @@ class TestResult
 
 	# Execution time
 	var time_score: Int = 0 is writable
+end
+
+# A player solved a mission
+class Solve
+	super Event
+	serialize
+
+	# The associated submission
+	var submission: Submission
+
+	redef fun to_s do
+		return "SOLVE {submission.mission.title}"
+	end
+end
+
+# A player beat a star score
+class NewHighScore
+	super Event
+	serialize
+
+	# The associated submission
+	var sumbission: Submission
+
+	# Information about the star
+	var star: MissionStar
+
+	# The goal of the star
+	var goal: Int
+
+	# The previous score, if any
+	var old_score: nullable Int
+
+	# The new score
+	var new_score: Int
+
+	redef fun to_s do
+		var best = old_score
+		if best != null then
+			return "STAR new best score {star.title}. {new_score} < {best}"
+		else
+			return "STAR new score {star.title}. {new_score}"
+		end
+	end
+end
+
+# A player got a star!
+class StarUnlock
+	super Event
+	serialize
+
+	# The associated submission
+	var sumbission: Submission
+
+	# Information about the star
+	var star: MissionStar
+
+	# If the star is a score star, the associated score information
+	var score: nullable NewHighScore
+
+	redef fun to_s do
+		var score = self.score
+		if score != null then
+			return "STAR unlocked {star.title}. {score.new_score} <= {score.goal}"
+		else
+			return "STAR unlocked {star.title}."
+		end
+	end
 end
