@@ -32,3 +32,12 @@ abstract class Entity
 	redef fun hash do return id.hash
 	redef fun to_json do return serialize_to_json
 end
+
+# Something that occurs at some point in time
+abstract class Event
+	super Entity
+	serialize
+
+	# Timestamp when this event occurred.
+	var timestamp: Int = get_time
+end
