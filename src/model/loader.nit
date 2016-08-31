@@ -49,13 +49,15 @@ redef class AppConfig
 			title = name
 		end
 
+		var title_id = title.strip_id
+
 		var content = desc.to_path.read_all
 		if content.is_empty then print_error "{path}: empty {desc}"
 		var proc = new MarkdownProcessor
 		proc.emitter.decorator = new DescDecorator(path, "data")
 		var html = proc.process(content).write_to_string
 
-		var track = new Track(title, html)
+		var track = new Track(title_id, title, html)
 		self.tracks.save track
 		track.load_missions(self, path)
 		return track
@@ -91,10 +93,9 @@ redef class Track
 			proc.emitter.decorator = new DescDecorator(ff, "data")
 			var html = proc.process(content).write_to_string
 
-			# TODO: drop mango_ids and use semantic id.
-			var title_id = title.strip_id
+			var title_id = self.id + ":" + title.strip_id
 
-			var m = new Mission(self, title, html)
+			var m = new Mission(title_id, self, title, html)
 			mission_by_name[name] = m
 
 			var reqs = ini["req"]
