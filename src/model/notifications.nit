@@ -43,10 +43,9 @@ end
 #
 # Each player is linked to a Github user
 class PlayerNotification
-	super Entity
+	super Event
 	serialize
 
-	var timestamp: Int = get_time
 	var player: Player
 	var object: String
 	var body: String

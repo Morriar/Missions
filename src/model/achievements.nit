@@ -24,11 +24,8 @@ end
 #
 # Achievement are notorious acts performed by players.
 class Achievement
-	super Entity
+	super Event
 	serialize
-
-	# Timestamp when this achievement god unlocked
-	var timestamp: Int = get_time
 
 	# Achievement key used to identify all instances of an achievement
 	var key: String
