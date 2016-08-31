@@ -38,10 +38,14 @@ class Mission
 	var parents = new Array[String]
 	var stars = new Array[MissionStar]
 
+	# Number of points to solve the mission (excluding stars)
+	var solve_reward: Int = 1 is writable
+
 	fun add_star(star: MissionStar) do stars.add star
 
+	# Total number of points for the mission (including stars)
 	var reward: Int is lazy do
-		var r = 0
+		var r = solve_reward
 		for star in stars do r += star.reward
 		return r
 	end

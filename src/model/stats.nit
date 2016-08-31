@@ -40,6 +40,9 @@ redef class Player
 			stats.stars_count += track_status.stars_count
 			stats.stars_unlocked += track_status.stars_unlocked
 			for mission_status in track_status.missions do
+				if mission_status.is_success then
+					stats.score += mission_status.mission.solve_reward
+				end
 				for star in mission_status.stars do
 					stats.score += star.reward
 				end

@@ -104,6 +104,11 @@ redef class Track
 				m.parents.add r
 			end
 
+			var r = ini["reward"]
+			if r != null then
+				m.solve_reward = r.to_i
+			end
+
 			var tg = ini["star.time_goal"]
 			if tg != null then
 				var star = new TimeStar("Instruction CPU", 10, tg.to_i)
