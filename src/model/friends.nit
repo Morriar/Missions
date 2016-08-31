@@ -110,12 +110,11 @@ redef class Player
 end
 
 class FriendRequest
-	super Entity
+	super Event
 	serialize
 
 	var from: Player
 	var to: Player
-	var timestamp: Int = get_time
 
 	# Build a new notification based on `self`
 	fun new_notification: FriendRequestNotification do
