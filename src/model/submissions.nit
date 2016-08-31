@@ -98,6 +98,7 @@ end
 
 # This model provides easy deserialization of posted submissions
 class Submission
+	super Event
 	serialize
 
 	# Source code to be run
