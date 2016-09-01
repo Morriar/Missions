@@ -85,7 +85,7 @@ class Pep8Engine
 	redef fun run_test(program, test) do
 		var res = new TestResult(test, program)
 
-		var tdir = "{program.mission.id}_{program.player.id}"
+		var tdir = "test{program.results.length + 1}"
 		# We get a subdirectory (a testspace) for each test case
 		var ws = program.workspace.as(not null)
 		var ts = ws / tdir
