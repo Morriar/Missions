@@ -37,6 +37,7 @@ class Mission
 	var desc: String
 	var parents = new Array[String]
 	var stars = new Array[MissionStar]
+	var path: nullable String = null is writable
 
 	# Number of points to solve the mission (excluding stars)
 	var solve_reward: Int = 1 is writable
