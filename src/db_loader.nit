@@ -110,6 +110,8 @@ for player in players do
 	end
 end
 
+config.players.save new Player("John", "Doe")
+
 print "Loaded {config.tracks.find_all.length} tracks"
 print "Loaded {config.missions.find_all.length} missions"
 print "Loaded {config.players.find_all.length} players"
