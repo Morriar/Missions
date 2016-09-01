@@ -98,6 +98,8 @@ redef class Track
 			var m = new Mission(title_id, self, title, html)
 			mission_by_name[name] = m
 
+			m.path = ff
+
 			var reqs = ini["req"]
 			if reqs != null then for r in reqs.split(",") do
 				r = r.trim
