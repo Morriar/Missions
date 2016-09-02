@@ -17,13 +17,20 @@ WORKDIR /missions
 COPY . /missions/
 RUN make pep8term && make
 
+# Configuration at build-time
+ARG MISSION_HOST=0.0.0.0
+ARG MISSION_PORT=3000
+ARG MISSION_ROOT_URL=http://localhost:${MISSION_PORT}
+
 # Expose the web application
-EXPOSE 3000
+EXPOSE ${MISSION_PORT}
 
 # Configure to work with the mongo server from compose
 RUN echo "db.host=mongodb://mongo:27017" >> app.ini \
-# Configure to listen outsite the container
-	&& echo "app.host=0.0.0.0" >> app.ini
+# Store the ARG in the config file
+	&& echo "app.host=$MISSION_HOST" >> app.ini \
+	&& echo "app.port=$MISSION_PORT" >> app.ini \
+	&& echo "app.root_url=$MISSION_ROOT_URL" >> app.ini
 
 # Populate and run
 # TODO: stop populating
