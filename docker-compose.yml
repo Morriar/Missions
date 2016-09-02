@@ -8,13 +8,16 @@
 #   It is used (shared) by the mongo docker.
 # * `./out/` is the submission directory
 #   It is provided so the admin can manage/grep/whatever the directory.
+#
+# This is the base file.
+# The default version for local testing is in `docker-compose.override.yml`
+#
+# See https://docs.docker.com/compose/extends/ for details
 
 version: '2'
 services:
         web:
                 build: .
-                ports:
-                        - "3000:3000"
                 volumes:
                         - ./out:/missions/out
                 depends_on:

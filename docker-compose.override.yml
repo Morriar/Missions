@@ -1,0 +1,16 @@
+# Run the local Mission (see Dockerfile) with a mongodb
+#
+# After run the web application is available at http://localhost:3000
+#
+# Volumes are:
+#
+# * `./db/` is the persistent mongo database.
+#   It is used (shared) by the mongo docker.
+# * `./out/` is the submission directory
+#   It is provided so the admin can manage/grep/whatever the directory.
+
+version: '2'
+services:
+        web:
+                ports:
+                        - "3000:3000"
