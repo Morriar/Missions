@@ -3,6 +3,10 @@ import api
 redef class AppConfig
 	# The default player, if any, that will be logged on a new session
 	var debug_player: String is lazy do return value_or_default("app.debug.player", "")
+
+	init do
+		engine_map["nitc"] = new NitcEngine
+	end
 end
 
 redef class Session
