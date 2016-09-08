@@ -65,6 +65,8 @@ redef class AppConfig
 				l = l.trim
 				track.languages.add l
 			end
+		else
+			print_error "Track without languages: {track}"
 		end
 
 		self.tracks.save track
