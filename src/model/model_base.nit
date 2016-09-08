@@ -41,3 +41,12 @@ abstract class Event
 	# Timestamp when this event occurred.
 	var timestamp: Int = get_time
 end
+
+# Remove inner references from JSON serialization
+#
+# Override the basic serialization process for the whole app
+redef class JsonSerializer
+
+	# Remove caching when saving refs to db
+	redef fun serialize_reference(object) do serialize object
+end
