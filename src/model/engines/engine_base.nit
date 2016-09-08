@@ -59,7 +59,7 @@ class Engine
 		for i in tests do
 			var res = run_test(submission, i)
 			time += res.time_score
-			submission.results[i] = res
+			submission.results.add res
 			if res.error != null then errors += 1
 		end
 		if errors != 0 then

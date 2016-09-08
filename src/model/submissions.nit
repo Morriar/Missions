@@ -41,7 +41,7 @@ class Submission
 	# Individual results for each test case
 	#
 	# Filled by `check`
-	var results = new HashMap[TestCase, TestResult]
+	var results = new Array[TestResult]
 
 	# The status of the submission
 	#
