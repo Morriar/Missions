@@ -77,7 +77,7 @@ class Engine
 
 	# Run `test` for `submission`
 	fun run_test(submission: Submission, test: TestCase): TestResult do
-		var res = new TestResult(test, submission)
+		var res = new TestResult(test)
 
 		var tdir = "test{submission.results.length + 1}"
 		# We get a subdirectory (a testspace) for each test case

@@ -180,9 +180,6 @@ class TestResult
 	# The test case considered
 	var testcase: TestCase
 
-	# The submission considered
-	var submission: Submission
-
 	# The output of the `submission` when feed by `testcase.provided_input`.
 	var produced_output: nullable String = null is writable
 
