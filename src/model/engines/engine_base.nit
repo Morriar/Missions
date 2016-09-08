@@ -106,7 +106,8 @@ class Engine
 		var r = system("cd {ws} && diff -u {tdir}/sav.txt {tdir}/output.txt > {tdir}/diff.txt")
 		if r != 0 then
 			var out = (ts/"diff.txt").to_path.read_all
-			res.error = "Error: the result is not the expected one\n{out}"
+			res.error = "Error: the result is not the expected one"
+			res.diff = out
 			return res
 		end
 

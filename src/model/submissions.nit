@@ -187,6 +187,9 @@ class TestResult
 	# Is `null` if success
 	var error: nullable String = null is writable
 
+	# Result diff (if any)
+	var diff: nullable String = null is writable
+
 	# Execution time
 	var time_score: Int = 0 is writable
 end
