@@ -94,10 +94,10 @@ for player in players do
 		if mission.is_unlocked_for_player(config, player) or 100.rand > 25 then
 			status.status = "open"
 			for star in mission.stars do
-				if 100.rand > 50 then status.stars.add star
+				if 100.rand > 50 then status.stars_status.add new StarStatus(star, true)
 			end
 		end
-		if status.stars.not_empty then status.status = "success"
+		if status.unlocked_stars.not_empty then status.status = "success"
 		config.missions_status.save status
 	end
 

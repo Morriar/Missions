@@ -129,7 +129,7 @@ redef class ScoreStar
 		# Search or create the corresponding StarStatus
 		# Just iterate the array
 		var star_status = null
-		for ss in status.star_status do
+		for ss in status.stars_status do
 			if ss.star == self then
 				star_status = ss
 				break
@@ -137,7 +137,7 @@ redef class ScoreStar
 		end
 		if star_status == null then
 			star_status = new StarStatus(self)
-			status.star_status.add star_status
+			status.stars_status.add star_status
 		end
 
 		# Best score?
@@ -150,9 +150,9 @@ redef class ScoreStar
 		end
 
 		# Star granted?
-		if not status.stars.has(self) and score <= goal then
-			status.stars.add self
+		if not status.unlocked_stars.has(self) and score <= goal then
 			star_status.is_unlocked = true
+			status.stars_status.add star_status
 			var unlock = new StarUnlock(submission, self, newscore)
 			print unlock
 			return true

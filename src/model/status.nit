@@ -41,7 +41,7 @@ redef class Player
 			if mission_status.is_open then status.missions_open += 1
 			if mission_status.is_success then status.missions_success += 1
 			status.stars_count += mission.stars.length
-			status.stars_unlocked += mission_status.stars.length
+			status.stars_unlocked += mission_status.unlocked_stars.length
 			status.missions.add mission_status
 		end
 
@@ -101,12 +101,16 @@ class MissionStatus
 	var track: nullable Track
 
 	# Unlocked stars
-	#
-	# TODO: remove and use `star_status` once JS is updated
-	var stars = new Array[MissionStar]
+	fun unlocked_stars: Array[MissionStar] do
+		var stars = new Array[MissionStar]
+		for status in stars_status do
+			if status.is_unlocked then stars.add status.star
+		end
+		return stars
+	end
 
 	# The state of each star
-	var star_status = new Array[StarStatus]
+	var stars_status = new Array[StarStatus]
 
 	# `mission` status for `player`
 	#
@@ -133,7 +137,7 @@ class StarStatus
 	var star: MissionStar
 
 	# Is the star granted?
-	var is_unlocked = false is writable
+	var is_unlocked = false is writable, optional
 
 	# The current best score (for ScoreStar)
 	var best_score: nullable Int = null is writable
