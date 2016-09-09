@@ -4,7 +4,7 @@
 			<form ng-submit='submit()'>
 				<textarea id='source' ng-model="source"></textarea>
 				<div class='panel-footer text-right'>
-					<input type='submit' value='Try code' class='btn btn-success' />
+					<input type='submit' value='Try code' class='btn btn-primary' />
 				</div>
 			</form>
 		</div>
@@ -12,10 +12,14 @@
 	<div class='col-xs-12 col-md-6' ng-if='result'>
 		<!-- Mission success -->
 		<div class='panel panel-success' ng-if='result.status == "success"'>
-			<div class='panel-body text-center'>
-				<h3 class='text-success'>
-					Congratulations, you accomplished this mission!
-				</h3>
+			<div class='panel-body text-success text-center'>
+				<h1>
+					MISSION ACCOMPLISHED
+					<br/><br/>
+					<span class='glyphicon glyphicon-ok' />
+					<br/><br/>
+				</h1>
+				<p class='lead'>Congratulations, you accomplished this mission.</p>
 				<a ng-href='/tracks/{{missionSubmitCtrl.mission.track.id}}'
 					class='btn btn-success'>Go back to track</a>
 			</div>
@@ -23,13 +27,11 @@
 
 		<!-- Compilation error -->
 		<div class='panel panel-danger' ng-if='result.compilation_failed'>
-			<div class='panel-heading'>
-				<h3 class='panel-title'>
-					<span class='glyphicon glyphicon-remove text-danger' />
+			<div class='panel-body'>
+				<h3 class='text-danger mission-status-icon title'>
+					<span class='glyphicon glyphicon-remove' />
 					Compile time error
 				</h3>
-			</div>
-			<div class='panel-body'>
 				<pre><code>{{result.compilation_messages}}</code></pre>
 			</div>
 		</div>
@@ -38,36 +40,36 @@
 		<div ng-if='result.results'>
 			<div ng-repeat = '(index, testRes) in result.results.__items'>
 				<div class='panel panel-danger' ng-if='testRes.error'>
-					<div class='panel-heading'>
-						<h4 class='panel-title'>
-							<span class='glyphicon glyphicon-remove text-danger' />
-							<a data-toggle='collapse' data-target='#testcase_{{index}}' href='#'>
-								Test {{index}}
+					<div class='panel-body'>
+						<h3 class='text-danger mission-status-icon title'>
+							<span class='glyphicon glyphicon-remove' />
+							<a data-toggle='collapse' data-target='#testcase_{{index}}' href='#' class='text-danger'>
+								Test {{index + 1}}
 							</a>
-						</h4>
-					</div>
-					<div class='panel-body collapse in' id='testcase_{{index}}'>
-						<p class='text-danger'><b>{{testRes.error}}</b></p>
-						<b>Input</b>
-						<pre><code>{{testRes.testcase.provided_input}}</code></pre>
-						<testcase-diff diff-id='testcase_diff_{{index}}' diff-string='{{testRes.diff}}'/>
+						</h3>
+						<div class='collapse in' id='testcase_{{index}}'>
+							<p><b>{{testRes.error}}</b></p>
+							<b>Input</b>
+							<pre><code>{{testRes.testcase.provided_input}}</code></pre>
+							<testcase-diff diff-id='testcase_diff_{{index}}' diff-string='{{testRes.diff}}'/>
+						</div>
 					</div>
 				</div>
 				<div class='panel panel-success' ng-if='!testRes.error'>
-					<div class='panel-heading'>
-						<h4 class='panel-title'>
-							<span class='glyphicon glyphicon-ok text-success' />
-							<a data-toggle='collapse' data-target='#testcase_{{index}}' href='#'>
-								Test {{index}}
+					<div class='panel-body'>
+						<h3 class='text-success mission-status-icon title'>
+							<span class='glyphicon glyphicon-ok' />
+							<a data-toggle='collapse' data-target='#testcase_{{index}}' href='#' class='text-success'>
+								Test {{index + 1}}
 							</a>
-						</h4>
-					</div>
-					<div class='panel-body collapse' id='testcase_{{index}}'>
-						<p class='text-success'><b>Congratulations, you passed this test!</b></p>
-						<b>Input</b>
-						<pre><code>{{testRes.testcase.provided_input}}</code></pre>
-						<b>Produced output</b>
-						<pre><code>{{testRes.produced_output}}</code></pre>
+						</h3>
+						<div class='collapse' id='testcase_{{index}}'>
+							<p class='text-success'><b>Congratulations, you passed this test!</b></p>
+							<b>Input</b>
+							<pre><code>{{testRes.testcase.provided_input}}</code></pre>
+							<b>Produced output</b>
+							<pre><code>{{testRes.produced_output}}</code></pre>
+						</div>
 					</div>
 				</div>
 			</div>

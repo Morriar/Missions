@@ -52,7 +52,7 @@
 
 			vm.statusByStar = function (starId) {
 				var unlocked = false;
-				angular.forEach(vm.missionStatus.star_status.__items, function (starStatus) {
+				angular.forEach(vm.missionStatus.stars_status.__items, function (starStatus) {
 					if(starId == starStatus.star._id) {
 						unlocked = starStatus.is_unlocked;
 					}
@@ -160,6 +160,26 @@
 				controllerAs: 'missionSubmitCtrl',
 				restrict: 'E',
 				templateUrl: '/directives/missions/submit.html'
+			};
+		}])
+
+		.directive('missionStatus', [function () {
+			return {
+				scope: {
+					missionStatus: '='
+				},
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/missions/status.html'
+			};
+		}])
+
+		.directive('missionLocked', [function () {
+			return {
+				scope: {},
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/missions/locked.html'
 			};
 		}])
 })();

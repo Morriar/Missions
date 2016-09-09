@@ -5,6 +5,29 @@ body {
 	margin-bottom: 70px;
 }
 
+.navbar-primary {
+	background-color: #0955A0;
+	border-color: #001290;
+}
+
+.navbar-primary .navbar-brand, .navbar-primary .navbar-nav>li>a {
+	color: white;
+}
+
+.navbar-primary .text-danger {
+	color: #FF9D32;
+}
+
+.panel {
+	border-radius: 0px;
+	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+}
+
+.panel-default { border: 1px solid #ddd; }
+
+.title { margin-top: 0; }
+.title .glyphicon { font-size: 0; }
+
 .progress { margin-bottom: 0 }
 
 .dropdown-menu { min-width: 250px }
@@ -16,6 +39,21 @@ body {
 .btn-link.btn-info { color: #31708f }
 .btn-link.btn-warning { color: #8a6d3b }
 .btn-link.btn-danger { color: #a94442 }
+
+.mission-status-icon .glyphicon {
+	vertical-align: baseline;
+	font-size: 80%;
+}
+
+.mission-stars {
+	padding-left: 10px;
+}
+.mission-stars .glyphicon {
+	padding-left: 10px;
+}
+.mission-stars .glyphicon.text-success {
+	color: #FFD800;
+}
 
 /*
  * Users
@@ -244,4 +282,15 @@ body {
 
 .d2h-file-header {
 	display: none;
+}
+
+/* blinking effect (yes, we are back in 1994) */
+
+.blink {
+  animation: blink-animation 1.5s linear infinite alternate;
+}
+@keyframes blink-animation {
+  to {
+    opacity: 0;
+  }
 }
