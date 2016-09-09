@@ -201,7 +201,7 @@
 					this.hasStar = function(star, stars) {
 						for(var i = 0; i < stars.__items.length; i++) {
 							var s = stars.__items[i]
-							if(s._id == star._id) return true;
+							if(s.star._id == star._id) return true;
 						}
 						return false;
 					};
@@ -239,7 +239,7 @@
 							.setGraph({
 								nodesep: 20,
 								ranksep: 50,
-								rankdir: "LR",
+								rankdir: "TB",
 								marginx: 10,
 								marginy: 10
 							})
@@ -286,7 +286,7 @@
 												"<p>" + status.mission.reward + " pts</p>"
 									for(var i in status.mission.stars.__items) {
 										var star = status.mission.stars.__items[i];
-										if(hasStar(star, status.stars)) {
+										if(hasStar(star, status.stars_status)) {
 											html += "<span class='glyphicon glyphicon-star' />";
 										} else {
 											html += "<span class='glyphicon glyphicon-star-empty' />";
@@ -306,9 +306,9 @@
 							var graphHeight = g.graph().height;
 							var width = parseInt(svg.style("width").replace(/px/, ""));
 							var height = parseInt(svg.style("height").replace(/px/, ""));
-							var zoomScale = Math.min(width / graphWidth, height / graphHeight);
-							var translate = [(width/2) - ((graphWidth*zoomScale)/2), (height/2) - ((graphHeight*zoomScale)/2)];
-
+							var graphScale = Math.min(width / graphWidth, height / graphHeight);
+							var zoomScale = Math.min(graphScale, 1) - 0.15;
+							var translate = [(width/2) - ((graphWidth*zoomScale)/2), 0];
 							var zoom = d3.behavior.zoom().on("zoom", function() {
 								inner.attr("transform", "translate(" + d3.event.translate + ")" +
 									"scale(" + d3.event.scale + ")");

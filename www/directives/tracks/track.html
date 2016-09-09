@@ -1,8 +1,11 @@
 <div>
-	<h3>{{trackCtrl.track.title}}</h3>
+	<h1>{{trackCtrl.track.title}}</h1>
 
-	<div ng-bind-html="trackCtrl.track.desc"></div>
-	<hr>
+	<div class='panel panel-default'>
+		<div class='panel-body'>
+			<div ng-bind-html="trackCtrl.track.desc"></div>
+		</div>
+	</div>
 
 	<h4>Missions</h4>
 	<track-missions-tree missions='trackCtrl.missions' />
