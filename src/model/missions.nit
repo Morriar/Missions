@@ -35,6 +35,10 @@ class Mission
 	var track: nullable Track
 	var title: String
 	var desc: String
+
+	# List of allowed languages
+	var languages = new Array[String]
+
 	var parents = new Array[String]
 	var stars = new Array[MissionStar]
 	var path: nullable String = null is writable

@@ -58,6 +58,17 @@ redef class AppConfig
 		var html = proc.process(content).write_to_string
 
 		var track = new Track(title_id, title, html)
+
+		var ls = ini["languages"]
+		if ls != null then
+			for l in ls.split(",") do
+				l = l.trim
+				track.languages.add l
+			end
+		else
+			print_error "Track without languages: {track}"
+		end
+
 		self.tracks.save track
 		track.load_missions(self, path)
 		return track
@@ -121,6 +132,18 @@ redef class Track
 				var star = new SizeStar("Taille du code machine", 10, sg.to_i)
 				m.add_star star
 			end
+			var ls = ini["languages"]
+			if ls != null then
+				# Get the list of languages
+				for l in ls.split(",") do
+					l = l.trim
+					m.languages.add l
+				end
+			else
+				# Defaults to the track list, if any
+				m.languages.add_all self.languages
+			end
+
 
 			# Load tests, if any.
 			# This assume the Oto test file format:
@@ -151,7 +174,7 @@ redef class Track
 				end
 			end
 
-			print "{ff}: got «{m}»; {m.testsuite.length} tests"
+			print "{ff}: got «{m}»; {m.testsuite.length} tests. languages={m.languages.join(",")}"
 
 			missions.add_node m
 		end
@@ -177,6 +200,9 @@ redef class Track
 			config.missions.save(m)
 		end
 	end
+
+	# List of default allowed languages
+	var languages = new Array[String]
 end
 
 class DescDecorator
