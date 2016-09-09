@@ -59,7 +59,7 @@ class Engine
 		for i in tests do
 			var res = run_test(submission, i)
 			time += res.time_score
-			submission.results[i] = res
+			submission.results.add res
 			if res.error != null then errors += 1
 		end
 		if errors != 0 then
@@ -77,7 +77,7 @@ class Engine
 
 	# Run `test` for `submission`
 	fun run_test(submission: Submission, test: TestCase): TestResult do
-		var res = new TestResult(test, submission)
+		var res = new TestResult(test)
 
 		var tdir = "test{submission.results.length + 1}"
 		# We get a subdirectory (a testspace) for each test case
@@ -106,7 +106,8 @@ class Engine
 		var r = system("cd {ws} && diff -u {tdir}/sav.txt {tdir}/output.txt > {tdir}/diff.txt")
 		if r != 0 then
 			var out = (ts/"diff.txt").to_path.read_all
-			res.error = "Error: the result is not the expected one\n{out}"
+			res.error = "Error: the result is not the expected one"
+			res.diff = out
 			return res
 		end
 

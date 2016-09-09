@@ -69,22 +69,54 @@
 		}])
 
 		.controller('MissionSubmitCtrl', ['Missions', '$scope', function (Missions, $scope) {
-			$scope.source = "";
-			$scope.lang = "pep8";
-			$scope.engine = "pep8term";
+			var $ctrl = this;
+			$ctrl.source = "; enter your code here\n\n.END";
+			$ctrl.lang = "pep8";
+			$ctrl.engine = "pep8term";
 
 			$scope.submit = function () {
 				var data = {
-					source: $scope.source,
-					lang: $scope.lang,
-					engine: $scope.engine
+					source: $ctrl.codeMirror.doc.getValue(),
+					lang: $ctrl.lang,
+					engine: $ctrl.engine
 				};
-				Missions.sendMissionSubmission(data, $scope.missionId, function (data) {
-					$scope.source = data;
+				Missions.sendMissionSubmission(data, $ctrl.mission._id, function (data) {
+					$scope.result = data;
 					$scope.$emit('mission_submission', 'success');
 				}, function () {
 					console.log("err");
 				});
+			};
+
+			$scope.initCodeMirror = function() {
+				$ctrl.codeMirror = CodeMirror.fromTextArea(
+					document.getElementById('source'), {
+					mode:  "javascript",
+					lineNumbers: true,
+				});
+				$ctrl.codeMirror.doc.setValue($ctrl.source);
+			};
+		}])
+
+		.directive('testcaseDiff', [function() {
+			return {
+				scope: {
+					diffId: '@',
+					diffString: '@'
+				},
+				restrict: 'E',
+				link: function($scope, $element, $attr) {
+					$scope.$watch('diffString', function(diffString) {
+						var diff2htmlUi = new Diff2HtmlUI({diff: $scope.diffString});
+						diff2htmlUi.draw("#" + $scope.diffId, {
+							inputFormat: 'json',
+							outputFormat: 'side-by-side',
+							matching: 'lines',
+							synchronisedScroll: true
+						});
+					});
+				},
+				templateUrl: '/directives/missions/diff.html'
 			};
 		}])
 
@@ -120,9 +152,12 @@
 		.directive('missionSubmit', [function () {
 			return {
 				transclude: true,
-				scope: {
-					missionId: '=missionId'
+				scope: {},
+				bindToController: {
+					mission: '='
 				},
+				controller: 'MissionSubmitCtrl',
+				controllerAs: 'missionSubmitCtrl',
 				restrict: 'E',
 				templateUrl: '/directives/missions/submit.html'
 			};

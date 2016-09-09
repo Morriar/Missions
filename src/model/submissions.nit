@@ -41,7 +41,7 @@ class Submission
 	# Individual results for each test case
 	#
 	# Filled by `check`
-	var results = new HashMap[TestCase, TestResult]
+	var results = new Array[TestResult]
 
 	# The status of the submission
 	#
@@ -180,15 +180,15 @@ class TestResult
 	# The test case considered
 	var testcase: TestCase
 
-	# The submission considered
-	var submission: Submission
-
 	# The output of the `submission` when feed by `testcase.provided_input`.
 	var produced_output: nullable String = null is writable
 
 	# Error message
 	# Is `null` if success
 	var error: nullable String = null is writable
+
+	# Result diff (if any)
+	var diff: nullable String = null is writable
 
 	# Execution time
 	var time_score: Int = 0 is writable

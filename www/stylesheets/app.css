@@ -239,3 +239,9 @@ body {
 .col-bottom {
     vertical-align:bottom;
 }
+
+/* diff2Html */
+
+.d2h-file-header {
+	display: none;
+}
