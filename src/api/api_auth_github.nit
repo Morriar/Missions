@@ -28,7 +28,7 @@ end
 
 class MissionsGithubOAuthCallBack
 	super GithubOAuthCallBack
-	super APIHandler
+	super AuthLogin
 
 	autoinit config
 
@@ -39,6 +39,7 @@ class MissionsGithubOAuthCallBack
 
 	redef fun get(req, res) do
 		super
+
 		var session = req.session
 		if session == null then return
 		var user = session.user
@@ -49,8 +50,7 @@ class MissionsGithubOAuthCallBack
 			player = new Player(id)
 			player.name = user.login
 			player.avatar_url = user.avatar_url
-			player.add_achievement(config, new FirstLoginAchievement(player))
-			config.players.save player
+			register_new_player(player)
 		end
 		session.player = player
 		res.redirect "/player"

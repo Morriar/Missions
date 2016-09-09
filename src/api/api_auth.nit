@@ -57,6 +57,20 @@ class Logout
 	end
 end
 
+# Common services related to authentication/login.
+abstract class AuthLogin
+	super APIHandler
+
+	# Register a new player and add a first-login achievement
+	#
+	# Helper method to use when a new account is created.
+	fun register_new_player(player: Player)
+	do
+		player.add_achievement(config, new FirstLoginAchievement(player))
+		config.players.save player
+	end
+end
+
 class AuthHandler
 	super APIHandler
 

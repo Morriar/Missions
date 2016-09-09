@@ -31,8 +31,7 @@ redef class Session
 end
 
 class ShibLogin
-	super APIHandler
-	autoinit config
+	super AuthLogin
 
 	redef fun get(req, res) do
 		var session = req.session
@@ -46,9 +45,7 @@ class ShibLogin
 end
 
 class ShibCallback
-	super APIHandler
-
-	autoinit config
+	super AuthLogin
 
 	redef fun get(req, res) do
 		# Check if everything matches and get the code
@@ -90,8 +87,7 @@ class ShibCallback
 			player = new Player(id)
 			player.name = user.display_name
 			player.avatar_url = user.avatar
-			player.add_achievement(config, new FirstLoginAchievement(player))
-			config.players.save player
+			register_new_player(player)
 		end
 		session.player = player
 		res.redirect "/player"
