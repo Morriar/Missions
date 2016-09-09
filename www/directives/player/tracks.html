@@ -1,28 +1,30 @@
-<div>
-	<h3>Overall progress</h3>
-	<table class='table'>
-		<tr ng-repeat='status in tracksCtrl.tracksStatus'>
-			<th width='30%'>
-				<a href='/tracks/{{status.track._id}}'>
-					{{status.track.title}}
-				</a>
-			</th>
-			<td width='3%'>
+<div class='panel panel-default' ng-repeat='status in tracksCtrl.tracksStatus'>
+	<div class='panel-middle' style='vertical-align: top'>
+		<h4 class='title'>
+			<a href='/tracks/{{status.track._id}}'>{{status.track.title}}</a>
+		</h4>
+		<span class='text-muted' ng-bind-html='status.track.desc'></span>
+	</div>
+	<div class='panel-right'>
+		<div class='progress' style='width: 200px; margin-bottom:10px' title='missions accomplished'>
+			<div class='progress-bar progress-bar-info progress-bar-striped'
+				style='width: {{status.missions_success / status.missions_count * 100 | number: 0}}%'>
+				<span>
+					{{status.missions_success}} /
+					{{status.missions_count}}
+				</span>
 				<span class='glyphicon glyphicon-flag' />
-			</td>
-			<td title='{{status.missions_success}}/{{status.missions_count}} missions accomplished'>
-				<div class='progress'
-					ng-init='progress = status.missions_success / status.missions_count * 100'>
-					<div class='progress-bar progress-bar-info progress-bar-striped'
-						style='width: {{progress | number: 0}}%'>
-						<span>{{status.missions_success}}/{{status.missions_count}}</span>
-					</div>
-				</div>
-			</td>
-			<td width='15%' title='{{status.stars_unlocked}}/{{status.stars_count}} stars unlocked'>
+			</div>
+		</div>
+		<div class='progress' style='width: 200px;' title='stars unlocked'>
+			<div class='progress-bar progress-bar-warning progress-bar-striped'
+				style='width: {{status.stars_unlocked / status.stars_count * 100 | number: 0}}%'>
+				<span>
+					{{status.stars_unlocked}} /
+					{{status.stars_count}}
+				</span>
 				<span class='glyphicon glyphicon-star' />
-				{{status.stars_unlocked}} / {{status.stars_count}}
-			</td>
-		</tr>
+			</div>
+		</div>
 	</div>
 </div>

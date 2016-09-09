@@ -112,8 +112,11 @@ body {
 .avatar-icon {
 	width: 20px;
 	height: 20px;
-	margin-left: 12px;
 	vertical-align: bottom;
+}
+
+.navbar li .avatar-icon {
+	margin-left: 12px;
 }
 
 /*
@@ -151,19 +154,14 @@ body {
  * Achievements
  */
 
-.achievement {
-	padding: 15px 5px 5px 5px;
-	-webkit-box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
-	-moz-box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
-	box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
-}
+.achievement .panel-middle { vertical-align: top }
 
-.achievement .media-left .glyphicon {
+.achievement .panel-left .glyphicon {
 	font-size: 300%;
 	margin: 10px;
 }
 
-.achievement .media-left .badge {
+.achievement .panel-left .badge {
 	position: absolute;
 	margin: -20px 0 0 20px;
 }
