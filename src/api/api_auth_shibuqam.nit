@@ -34,11 +34,13 @@ class ShibLogin
 	super AuthLogin
 
 	redef fun get(req, res) do
+		store_next_page(req)
+
 		var session = req.session
 		if session == null then return
 		var secret = generate_token
 		session.shib_secret = secret
-		var redir = config.app_root_url + req.url + "/callback"
+		var redir = config.app_root_url + req.uri + "/callback"
 		var url = "https://info.uqam.ca/oauth/login"
 		res.redirect "{url}?redirect_uri={redir.to_percent_encoding}&state={secret.to_percent_encoding}"
 	end
@@ -90,7 +92,7 @@ class ShibCallback
 			register_new_player(player)
 		end
 		session.player = player
-		res.redirect "/player"
+		redirect_after_login(req, res)
 	end
 
 	# Send the token, retrieve information

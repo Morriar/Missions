@@ -31,6 +31,9 @@ end
 redef class Session
 	# The current logged user
 	var player: nullable Player = null is writable
+
+	# Page to redirect on successful authentication
+	var auth_next: nullable String = null is writable
 end
 
 # Reload session player from db between pages
@@ -61,6 +64,20 @@ end
 abstract class AuthLogin
 	super APIHandler
 
+	# Extract a possible next page from the GET arguments and store it in the session for latter
+	#
+	# Helper method to use before initiating a login attempt.
+	fun store_next_page(req: HttpRequest)
+	do
+		var session = req.session
+		if session == null then return
+
+		var next = req.string_arg("next")
+		if next != null then next = next.from_percent_encoding
+		session.auth_next = next
+		print "NEXT->{next or else "?"}"
+	end
+
 	# Register a new player and add a first-login achievement
 	#
 	# Helper method to use when a new account is created.
@@ -68,6 +85,20 @@ abstract class AuthLogin
 	do
 		player.add_achievement(config, new FirstLoginAchievement(player))
 		config.players.save player
+	end
+
+	# Redirect to the `next` page.
+	#
+	# Helper method to use at the end of the login attempt.
+	fun redirect_after_login(req: HttpRequest, res: HttpResponse)
+	do
+		var session = req.session
+		if session == null then return
+
+		var next = session.auth_next or else "/player"
+		session.auth_next = null
+		res.redirect next
+		print "NEXT2->{next}"
 	end
 end
 
