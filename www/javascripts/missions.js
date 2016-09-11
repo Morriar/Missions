@@ -50,16 +50,6 @@
 				}, Errors.handleError);
 			};
 
-			vm.statusByStar = function (starId) {
-				var unlocked = false;
-				angular.forEach(vm.missionStatus.stars_status.__items, function (starStatus) {
-					if(starId == starStatus.star._id) {
-						unlocked = starStatus.is_unlocked;
-					}
-				});
-				return unlocked;
-			};
-
 			$scope.$on('mission_submission', function (data) {
 				vm.getMissionStatus();
 			});
@@ -180,6 +170,42 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/missions/locked.html'
+			};
+		}])
+
+		/* Mission stars */
+
+		.directive('missionStars', [function () {
+			return {
+				scope: {},
+				bindToController: {
+					mission: '=',
+					missionStatus: '='
+				},
+				controller: function () {},
+				controllerAs: 'starsCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/missions/stars.html'
+			};
+		}])
+
+		.directive('missionStar', [function () {
+			return {
+				scope: {},
+				bindToController: {
+					star: '=',
+					starStatus: '='
+				},
+				controller: function () {
+					this.isSuccess = function() {
+						return this.starStatus && this.starStatus.is_unlocked;
+					}
+				},
+				controllerAs: 'starCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/missions/star.html'
 			};
 		}])
 })();

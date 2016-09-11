@@ -11,16 +11,9 @@
 					<span class='glyphicon glyphicon-flag' />
 				</div>
 			</div>
-			<div class='progress' style='width: 100px;' title='stars unlocked'>
-				<div class='progress-bar progress-bar-warning progress-bar-striped'
-					style='width: {{trackCtrl.trackStatus.stars_unlocked / trackCtrl.trackStatus.stars_count * 100 | number: 0}}%'>
-					<span>
-						{{trackCtrl.trackStatus.stars_unlocked}} /
-						{{trackCtrl.trackStatus.stars_count}}
-					</span>
-					<span class='glyphicon glyphicon-star' />
-				</div>
-			</div>
+			<stars-progress style='width: 200px;'
+				track='trackCtrl.trackStatus.track'
+				track-status='trackCtrl.trackStatus' />
 		</div>
 
 		<h1>{{trackCtrl.trackStatus.track.title}}</h1>
@@ -54,10 +47,7 @@
 					</div>
 					<div class='panel-right panel-mission-control'>
 						<h4 class='text-center'>
-							<span class='glyphicon'
-								ng-repeat='star in ms.mission.stars.__items'
-								title='{{star.title}}'
-								ng-class='trackCtrl.hasStar(star, ms.stars_status) ? "glyphicon-star text-success" :"glyphicon-star-empty text-muted"' />
+							<mission-stars mission='ms.mission' mission-status='ms' />
 							<span ng-if='ms.mission.stars.__items.length == 0'>&nbsp;</span>
 						</h4>
 						<div>

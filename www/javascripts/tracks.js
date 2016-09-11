@@ -327,4 +327,43 @@
 				}
 			};
 		}])
+
+		/* Track stars */
+
+		.directive('starsProgress', [function () {
+			return {
+				scope: {},
+				bindToController: {
+					track: '=',
+					trackStatus: '='
+				},
+				controller: function () {
+					this.stars = function() {
+						if (this.trackStatus) {
+							return this.trackStatus.stars_count;
+						}
+						return 0;
+					}
+
+					this.unlocked = function() {
+						if (this.trackStatus) {
+							return this.trackStatus.stars_unlocked;
+						}
+						return 0;
+					}
+
+					this.progress = function() {
+						var stars = this.stars();
+						if (stars != 0) {
+							return this.unlocked() / stars * 100;
+						}
+						return 0;
+					}
+				},
+				controllerAs: 'barCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/tracks/stars-progress.html'
+			};
+		}])
 })();

@@ -16,15 +16,7 @@
 				<span class='glyphicon glyphicon-flag' />
 			</div>
 		</div>
-		<div class='progress' style='width: 200px;' title='stars unlocked'>
-			<div class='progress-bar progress-bar-warning progress-bar-striped'
-				style='width: {{status.stars_unlocked / status.stars_count * 100 | number: 0}}%'>
-				<span>
-					{{status.stars_unlocked}} /
-					{{status.stars_count}}
-				</span>
-				<span class='glyphicon glyphicon-star' />
-			</div>
-		</div>
+		<stars-progress style='width: 200px;'
+			track='status.track' track-status='status' />
 	</div>
 </div>

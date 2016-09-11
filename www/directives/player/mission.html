@@ -13,13 +13,9 @@
 
 			<!-- Mission stars -->
 			<h1 class='pull-right mission-stars'>
-				<small><span class='glyphicon'
-					ng-repeat='star in missionCtrl.missionStatus.mission.stars.__items'
-					ng-class='{
-						"glyphicon-star text-success": missionCtrl.statusByStar(star._id),
-						"glyphicon-star-empty": !missionCtrl.statusByStar(star._id)
-					}'
-					title='{{star.title}} ({{star.reward}} pts)' /></small>
+				<small>
+					<mission-stars mission='missionCtrl.missionStatus.mission' mission-status='missionCtrl.missionStatus' />
+				</small>
 			</h1>
 
 			<!-- Mission reward -->
