@@ -328,6 +328,45 @@
 			};
 		}])
 
+		/* Track progress */
+
+		.directive('missionsProgress', [function () {
+			return {
+				scope: {},
+				bindToController: {
+					track: '=',
+					trackStatus: '='
+				},
+				controller: function () {
+					this.missions = function() {
+						if (this.trackStatus) {
+							return this.trackStatus.missions_count;
+						}
+						return 0;
+					}
+
+					this.achieved = function() {
+						if (this.trackStatus) {
+							return this.trackStatus.missions_success;
+						}
+						return 0;
+					}
+
+					this.progress = function() {
+						var missions = this.missions();
+						if (missions != 0) {
+							return this.achieved() / missions * 100;
+						}
+						return 0;
+					}
+				},
+				controllerAs: 'barCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/tracks/missions-progress.html'
+			};
+		}])
+
 		/* Track stars */
 
 		.directive('starsProgress', [function () {

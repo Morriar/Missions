@@ -1,0 +1,15 @@
+<table width='100%'>
+	<tr>
+		<td width='90%'>
+			<div class='progress' title='{{barCtrl.achieved()}} / {{barCtrl.missions()}} missions achieved'>
+				<div class='progress-bar progress-bar-info progress-bar-striped'
+					style='width: {{barCtrl.progress() | number: 0}}%'>
+					<span>{{barCtrl.achieved()}} / {{barCtrl.missions()}}</span>
+				</div>
+			</div>
+		</td>
+		<td width='20%' style='vertical-align: middle; text-align: right;'>
+			<span class='glyphicon glyphicon-flag text-muted' />
+		</td>
+	</tr>
+</table>

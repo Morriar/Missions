@@ -6,16 +6,8 @@
 		<span class='text-muted' ng-bind-html='status.track.desc'></span>
 	</div>
 	<div class='panel-right'>
-		<div class='progress' style='width: 200px; margin-bottom:10px' title='missions accomplished'>
-			<div class='progress-bar progress-bar-info progress-bar-striped'
-				style='width: {{status.missions_success / status.missions_count * 100 | number: 0}}%'>
-				<span>
-					{{status.missions_success}} /
-					{{status.missions_count}}
-				</span>
-				<span class='glyphicon glyphicon-flag' />
-			</div>
-		</div>
+		<missions-progress style='width: 200px; margin-bottom:10px'
+			track='status.track' track-status='status' />
 		<stars-progress style='width: 200px;'
 			track='status.track' track-status='status' />
 	</div>

@@ -1,16 +1,9 @@
 <div>
 	<div class='col-xs-12'>
 		<div class='pull-right'>
-			<div class='progress' style='width: 100px; margin:10px 0 5px 0' title='missions accomplished'>
-				<div class='progress-bar progress-bar-info progress-bar-striped'
-					style='width: {{trackCtrl.trackStatus.missions_success / trackCtrl.trackStatus.missions_count * 100 | number: 0}}%'>
-					<span>
-						{{trackCtrl.trackStatus.missions_success}} /
-						{{trackCtrl.trackStatus.missions_count}}
-					</span>
-					<span class='glyphicon glyphicon-flag' />
-				</div>
-			</div>
+			<missions-progress style='width: 200px; margin:10px 0 5px 0;'
+				track='trackCtrl.trackStatus.track'
+				track-status='trackCtrl.trackStatus' />
 			<stars-progress style='width: 200px;'
 				track='trackCtrl.trackStatus.track'
 				track-status='trackCtrl.trackStatus' />
