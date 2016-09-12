@@ -79,12 +79,17 @@ class Submission
 	# Was the run successful?
 	fun successful: Bool do return not compilation_failed and test_errors == 0
 
+	# The aggregated mission status after the submission
+	var mission_status: nullable MissionStatus = null
+
 	# Update status of `self` in DB
 	fun update_status(config: AppConfig) do
 		var mission_status = config.missions_status.find_by_mission_and_player(mission, player)
 		if mission_status == null then
 			mission_status = new MissionStatus(mission, player)
 		end
+
+		self.mission_status = mission_status
 
 		# Update/unlock stars
 		if successful then
