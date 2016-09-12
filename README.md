@@ -39,3 +39,16 @@ make populate
 4. open http://localhost:3000
 
 See `Dockerfile` and `docker-compose.yml` for detail
+
+## Contributing
+
+The `Missions` team is happy to receive contributions and suggestions.
+Give a look at the Github repo
+[https://github.com/Morriar/Missions](https://github.com/Morriar/Missions).
+
+### Code style
+
+Mission enforces the following code style rules:
+
+* All the Nit coding standards
+* The `do` is on the same line as the function declaration
