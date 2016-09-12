@@ -98,7 +98,7 @@ class Submission
 		if successful then
 			if mission_status.status != status then
 				# new solve
-				var solve = new Solve(self)
+				var solve = new Solve(mission)
 				events.add solve
 			end
 		end
@@ -156,14 +156,14 @@ redef class ScoreStar
 		var best = star_status.best_score
 		if best == null or score < best then
 			star_status.best_score = score
-			newscore = new NewHighScore(submission, self, goal, best, score)
+			newscore = new NewHighScore(self, goal, best, score)
 			submission.events.add newscore
 		end
 
 		# Star granted?
 		if not status.unlocked_stars.has(self) and score <= goal then
 			star_status.is_unlocked = true
-			var unlock = new StarUnlock(submission, self, newscore)
+			var unlock = new StarUnlock(self, newscore)
 			submission.events.add unlock
 			return true
 		end
@@ -209,11 +209,11 @@ class Solve
 	super Event
 	serialize
 
-	# The associated submission
-	var submission: Submission
+	# The associated mission
+	var mission: Mission
 
 	redef fun to_s do
-		return "SOLVE {submission.mission.title}"
+		return "SOLVE {mission.title}"
 	end
 end
 
@@ -221,9 +221,6 @@ end
 class NewHighScore
 	super Event
 	serialize
-
-	# The associated submission
-	var sumbission: Submission
 
 	# Information about the star
 	var star: MissionStar
@@ -251,9 +248,6 @@ end
 class StarUnlock
 	super Event
 	serialize
-
-	# The associated submission
-	var sumbission: Submission
 
 	# Information about the star
 	var star: MissionStar
