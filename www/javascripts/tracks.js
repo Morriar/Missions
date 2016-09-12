@@ -95,7 +95,7 @@
 					track: '=',
 					trackStatus: '='
 				},
-				controller: function () {console.log(this.trackStatus)},
+				controller: function () {},
 				controllerAs: 'trackCtrl',
 				restrict: 'E',
 				replace: true,
