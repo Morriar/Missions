@@ -5,6 +5,38 @@ body {
 	margin-bottom: 70px;
 }
 
+.navbar-primary {
+	background-color: #0955A0;
+	border-color: #0955A0;
+	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.4);
+}
+
+.navbar-primary .navbar-brand, .navbar-primary .navbar-nav>li>a {
+	color: white;
+}
+
+.navbar-primary .text-danger {
+	color: #FF9D32;
+}
+
+.panel {
+	border-radius: 0px;
+	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+}
+
+.panel-left, .panel-middle, .panel-right {
+    padding: 15px;
+	display: table-cell;
+}
+
+.panel-left { width: 10% }
+.panel-middle { width: 100% }
+
+.panel-default { border: 1px solid #ddd; }
+
+.title { margin-top: 0; }
+.title .glyphicon { font-size: 0; }
+
 .progress { margin-bottom: 0 }
 
 .dropdown-menu { min-width: 250px }
@@ -17,6 +49,58 @@ body {
 .btn-link.btn-warning { color: #8a6d3b }
 .btn-link.btn-danger { color: #a94442 }
 
+.mission-status-icon .glyphicon {
+	vertical-align: baseline;
+	font-size: 80%;
+}
+
+.mission-stars {
+	padding-left: 10px;
+}
+.mission-stars .glyphicon {
+	padding-left: 10px;
+}
+.mission-stars .glyphicon.text-success {
+	color: #FFD800;
+}
+
+.panel-mission-status {
+	color: white;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.panel-status-success .panel-mission-status { background-color: #5cb85c; }
+.panel-status-open .panel-mission-status { background-color: #d9534f; }
+.panel-status-locked .panel-mission-status { background-color: #aaa; }
+
+.panel-status-success, .panel-status-locked { opacity: 0.50 }
+.panel-status-success:hover, .panel-status-locked:hover { opacity: 1 }
+
+.panel-mission-status h4 {
+	font-weight: bold;
+	margin: 10px 0 0 0;
+}
+
+.panel-mission-status h4.title { margin: 0; }
+.panel-mission-control h4 { margin: 0 0 5px 0}
+
+.panel-mission-status .glyphicon {
+	color: white;
+}
+
+.panel-mission-control .glyphicon {
+	margin-right: 5px;
+}
+
+.panel-mission-control {
+	vertical-align: bottom;
+}
+
+.panel-mission-control .btn {
+	width: 100px;
+}
+
 /*
  * Users
  */
@@ -28,8 +112,11 @@ body {
 .avatar-icon {
 	width: 20px;
 	height: 20px;
-	margin-left: 12px;
 	vertical-align: bottom;
+}
+
+.navbar li .avatar-icon {
+	margin-left: 12px;
 }
 
 /*
@@ -67,19 +154,14 @@ body {
  * Achievements
  */
 
-.achievement {
-	padding: 15px 5px 5px 5px;
-	-webkit-box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
-	-moz-box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
-	box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.64);
-}
+.achievement .panel-middle { vertical-align: top }
 
-.achievement .media-left .glyphicon {
+.achievement .panel-left .glyphicon {
 	font-size: 300%;
 	margin: 10px;
 }
 
-.achievement .media-left .badge {
+.achievement .panel-left .badge {
 	position: absolute;
 	margin: -20px 0 0 20px;
 }
@@ -92,7 +174,7 @@ body {
 
 .track-tree {
 	width: 100%;
-	height: 300px;
+	height: 100%;
 }
 
 .track-tree text {
@@ -116,20 +198,20 @@ body {
 
 .track-tree .node.success rect,
 .track-tree .edgePath.success path {
-	fill: rgba(60, 200, 0, 1);
-	stroke: rgba(30, 150, 0, 1);
+	fill: #5cb85c;
+	stroke: #5cb85c;
 }
 
 .track-tree .node.open rect,
 .track-tree .edgePath.open path {
-	fill: rgba(255, 200, 0, 1);
-	stroke: rgba(175, 130, 0, 1);
+	fill: #d9534f;
+	stroke: #d9534f;
 }
 
 .track-tree .node.locked rect,
 .track-tree .edgePath.locked path {
-	fill: rgba(150, 150, 150, 1);
-	stroke: rgba(100, 100, 100, 1);
+	fill: #aaa;
+	stroke: #aaa;
 }
 
 .track-tree .number {
@@ -244,4 +326,15 @@ body {
 
 .d2h-file-header {
 	display: none;
+}
+
+/* blinking effect (yes, we are back in 1994) */
+
+.blink {
+  animation: blink-animation 1.5s linear infinite alternate;
+}
+@keyframes blink-animation {
+  to {
+    opacity: 0;
+  }
 }

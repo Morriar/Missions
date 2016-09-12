@@ -25,7 +25,7 @@
 		$routeProvider
 			.when('/', {
 				templateUrl: 'views/index.html',
-				controller: 'PlayersCtrl'
+				controller : 'PlayerAuth'
 			})
 			.when('/login', {
 				controller : function(){

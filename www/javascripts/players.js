@@ -24,7 +24,9 @@
 
 		.controller('PlayerAuth', ['$routeParams', '$rootScope', '$scope', function($routeParams, $rootScope, $scope) {
 
-			$scope.playerId = $rootScope.session._id;
+			if($rootScope.session) {
+				$scope.playerId = $rootScope.session._id;
+			}
 			$scope.notifId = $routeParams.nid;
 		}])
 

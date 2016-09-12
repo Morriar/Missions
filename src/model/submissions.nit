@@ -93,8 +93,8 @@ class Submission
 				var solve = new Solve(self)
 				print solve
 			end
-			for star in mission.stars do star.check(self, mission_status)
 		end
+		for star in mission.stars do star.check(self, mission_status)
 		mission_status.status = status
 
 		config.missions_status.save(mission_status)
@@ -123,22 +123,22 @@ end
 
 redef class ScoreStar
 	redef fun check(submission, status) do
-		var score = self.score(submission)
-		if score == null then return false
-
 		# Search or create the corresponding StarStatus
 		# Just iterate the array
 		var star_status = null
-		for ss in status.star_status do
+		for ss in status.stars_status do
 			if ss.star == self then
 				star_status = ss
 				break
 			end
 		end
-		if star_status == null then
-			star_status = new StarStatus(self)
-			status.star_status.add star_status
-		end
+		if star_status == null then star_status = new StarStatus(self)
+		status.stars_status.add star_status
+
+		if not submission.successful then return false
+
+		var score = self.score(submission)
+		if score == null then return false
 
 		# Best score?
 		var newscore = null
@@ -150,8 +150,7 @@ redef class ScoreStar
 		end
 
 		# Star granted?
-		if not status.stars.has(self) and score <= goal then
-			status.stars.add self
+		if not status.unlocked_stars.has(self) and score <= goal then
 			star_status.is_unlocked = true
 			var unlock = new StarUnlock(submission, self, newscore)
 			print unlock

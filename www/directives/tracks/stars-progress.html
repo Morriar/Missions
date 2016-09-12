@@ -1,0 +1,15 @@
+<table width='100%'>
+	<tr>
+		<td width='90%'>
+			<div class='progress' title='{{barCtrl.unlocked()}} / {{barCtrl.stars()}} stars unlocked'>
+				<div class='progress-bar progress-bar-warning progress-bar-striped'
+					style='width: {{barCtrl.progress() | number: 0}}%'>
+					<span>{{barCtrl.unlocked()}} / {{barCtrl.stars()}}</span>
+				</div>
+			</div>
+		</td>
+		<td width='20%' style='vertical-align: middle; text-align: right;'>
+			<span class='glyphicon glyphicon-star text-muted' />
+		</td>
+	</tr>
+</table>

@@ -116,6 +116,11 @@
 		}])
 		.factory('Tracks', [ '$http', function($http) {
 			return {
+				getTracks: function(cb, cbErr) {
+					$http.get(apiUrl + '/tracks')
+						.success(cb)
+						.error(cbErr);
+				},
 				getTrack: function(tid, cb, cbErr) {
 					$http.get(apiUrl + '/tracks/' + tid)
 						.success(cb)

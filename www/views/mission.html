@@ -1,8 +1,3 @@
 <div class='container-fluid'>
-	<div class='panel panel-danger' ng-if='!playerId'>
-		<div class='panel-body'>
-			<p class='lead text-danger'>Mission locked</p>
-		</div>
-	</div>
-	<player-mission ng-if='playerId' player-id='playerId' mission-id='missionId' />
+	<mission player-id='playerId' mission-id='missionId' />
 </div>

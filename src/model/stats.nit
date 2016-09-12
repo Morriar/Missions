@@ -43,7 +43,7 @@ redef class Player
 				if mission_status.is_success then
 					stats.score += mission_status.mission.solve_reward
 				end
-				for star in mission_status.stars do
+				for star in mission_status.unlocked_stars do
 					stats.score += star.reward
 				end
 			end
