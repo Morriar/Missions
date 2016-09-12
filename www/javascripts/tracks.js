@@ -25,306 +25,81 @@
 			$scope.trackId = $routeParams.tid;
 		}])
 
-		.controller('TrackCtrl', ['Tracks', function(Tracks) {
-			$trackCtrl = this;
+		.directive('tracks', [function() {
+			return {
+				scope: {},
+				bindToController: {
+					playerId: '=' // optional
+				},
+				controller: ['Errors', 'Tracks', 'Players', function (Errors, Tracks, Players) {
+					var $ctrl = this;
 
-			this.loadTrack = function() {
-				Tracks.getTrack(this.trackId,
-					function(data) {
-						$trackCtrl.track = data;
-					}, function(err) {});
+					if(this.playerId) {
+						Players.getTracksStatus(this.playerId, function(data) {
+							$ctrl.tracksStatus = data;
+						}, Errors.handleError);
+					}
+
+					Tracks.getTracks(function(data) {
+						$ctrl.tracks = data;
+					}, Errors.handleError);
+				}],
+				controllerAs: 'tracksCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/tracks/tracks.html',
 			};
-
-			this.loadTrackMissions = function() {
-				Tracks.getTrackMissions(this.trackId,
-					function(data) {
-						$trackCtrl.missions = data;
-					}, function(err) {});
-			};
-
-			this.loadTrack();
-			this.loadTrackMissions();
 		}])
+
+		/* Track */
 
 		.directive('track', [function() {
 			return {
 				scope: {},
 				bindToController: {
-					trackId: '='
+					trackId: '=',
+					playerId: '=' // optional
 				},
-				controller: 'TrackCtrl',
-				controllerAs: 'trackCtrl',
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/tracks/track.html'
-			};
-		}])
+				controller: ['Errors', 'Tracks', 'Players', function (Errors, Tracks, Players) {
+					var $ctrl = this;
 
-		.directive('trackMissionsTree', [function() {
-			return {
-				replace: true,
-				restrict: 'E',
-				scope: {
-					missions: '='
-				},
-				templateUrl: '/directives/track-tree.html',
-				link: function ($scope, element, attrs) {
-					$scope.buildMap = function(missions) {
-						var map = {};
-						missions.forEach(function(mission) {
-							map[mission._id] = mission;
-						});
-						return map;
-					}
-					$scope.drawTree = function(missions) {
-						var svg = d3.select(element[0])
-						var inner = svg.select("g")
-						var render = new dagreD3.render();
-
-						// Left-to-right layout
-						var g = new dagreD3.graphlib.Graph()
-							.setGraph({
-								nodesep: 20,
-								ranksep: 50,
-								rankdir: "LR",
-								marginx: 10,
-								marginy: 10
-							})
-						  .setDefaultEdgeLabel(function() { return {}; });
-
-						function draw(isUpdate) {
-							var map = $scope.buildMap(missions);
-							missions.forEach(function(mission, index) {
-								g.setNode(mission._id, {
-									labelType: "html",
-									label: "<p class='number'>" + (index + 1) + "</p>",
-									rx: 5,
-									ry: 5,
-									padding: 0,
-									id: mission._id,
-									class: "locked"
-								});
-								mission.parents.__items.forEach(function(parent) {
-									g.setEdge(parent, mission._id, {
-										class: "locked"
-									});
-								});
-							});
-
-							render(inner, g);
-
-							$("svg .node").tipsy({
-								gravity: $.fn.tipsy.autoNS,
-								fade: true,
-								html: true,
-								title: function() {
-									var mission = map[this.id];
-									var html = ''
-									html += "<div class='mission-tip locked'>" +
-												"<h3>" + mission.title + "</h3>" +
-												"<p>" + mission.reward + " pts</p>"
-									for(var i in mission.stars.__items) {
-										var star = mission.stars.__items[i];
-										html += "<span class='glyphicon glyphicon-star-empty' title='" + star.title + "' />";
-									}
-									html += "</div>"
-									return html;
-								}
-							});
-							$("svg .node").click(function() {
-								var status = map[this.id];
-								window.location.href = "/missions/" + this.id;
-							});
-
-							// Zoom and scale to fit
-							var graphWidth = g.graph().width;
-							var graphHeight = g.graph().height;
-							var width = parseInt(svg.style("width").replace(/px/, ""));
-							var height = parseInt(svg.style("height").replace(/px/, ""));
-							var zoomScale = Math.min(width / graphWidth, height / graphHeight);
-							var translate = [(width/2) - ((graphWidth*zoomScale)/2), (height/2) - ((graphHeight*zoomScale)/2)];
-
-							var zoom = d3.behavior.zoom().on("zoom", function() {
-								inner.attr("transform", "translate(" + d3.event.translate + ")" +
-									"scale(" + d3.event.scale + ")");
-							});
-							zoom.translate(translate);
-							zoom.scale(zoomScale);
-							zoom.event(isUpdate ? svg.transition().duration(500) : d3.select("svg"));
-						}
-						draw();
+					if(this.playerId) {
+						Players.getTrackStatus(this.playerId, this.trackId,
+							function(data) {
+								$ctrl.trackStatus = data;
+							}, Errors.handleError);
 					}
 
-					$scope.$watch('missions', function(missions) {
-						if(!missions) { return; }
-						$scope.drawTree(missions);
-					})
-				}
-			};
-		}])
-
-		.directive('playerTracks', [function() {
-			return {
-				scope: {},
-				bindToController: {
-					playerId: '='
-				},
-				controller: ['Errors', 'Players', function (Errors, Players) {
-					$playerTracksCtrl = this;
-					Players.getTracksStatus(this.playerId,
+					Tracks.getTrack(this.trackId,
 						function(data) {
-							$playerTracksCtrl.tracksStatus = data;
-						}, Errors.handleError);
-				}],
-				controllerAs: 'tracksCtrl',
-				restrict: 'E',
-				replace: true,
-				templateUrl: '/directives/player/tracks.html',
-			};
-		}])
-
-		.directive('playerTrack', [function() {
-			return {
-				scope: {},
-				bindToController: {
-					playerUrl: '=',
-					playerId: '=',
-					trackId: '='
-				},
-				controller: ['Errors', 'Players', function (Errors, Players) {
-					$playerTrackCtrl = this;
-					Players.getTrackStatus(this.playerId, this.trackId,
-						function(data) {
-							$playerTrackCtrl.trackStatus = data;
+							$ctrl.track = data;
 						}, Errors.handleError);
 
-					this.hasStar = function(star, stars) {
-						for(var i = 0; i < stars.__items.length; i++) {
-							var s = stars.__items[i]
-							if(s.star._id == star._id) return true;
-						}
-						return false;
-					};
+					Tracks.getTrackMissions(this.trackId,
+						function(data) {
+							$ctrl.missions = data;
+						}, Errors.handleError);
+
 				}],
 				controllerAs: 'trackCtrl',
 				restrict: 'E',
 				replace: true,
-				templateUrl: '/directives/player/track.html',
+				templateUrl: '/directives/tracks/track.html',
 			};
 		}])
 
-		.directive('trackTree', [function() {
+		.directive('trackPanel', [function () {
 			return {
-				replace: true,
-				restrict: 'E',
-				scope: {
-					missionsStatus: '='
+				scope: {},
+				bindToController: {
+					track: '=',
+					trackStatus: '='
 				},
-				templateUrl: '/directives/track-tree.html',
-				link: function ($scope, element, attrs) {
-					$scope.buildMap = function(missionsStatus) {
-						var map = {};
-						missionsStatus.forEach(function(status) {
-							map[status.mission._id] = status;
-						});
-						return map;
-					}
-					$scope.drawTree = function(missionsStatus) {
-						var svg = d3.select(element[0])
-						var inner = svg.select("g")
-						var render = new dagreD3.render();
-
-						// Left-to-right layout
-						var g = new dagreD3.graphlib.Graph()
-							.setGraph({
-								nodesep: 20,
-								ranksep: 50,
-								rankdir: "TB",
-								marginx: 10,
-								marginy: 10
-							})
-						  .setDefaultEdgeLabel(function() { return {}; });
-
-						function draw(isUpdate) {
-							var map = $scope.buildMap(missionsStatus);
-							missionsStatus.forEach(function(status, index) {
-								g.setNode(status.mission._id, {
-									labelType: "html",
-									label: "<p class='number'>" + (index + 1) + "</p>",
-									rx: 5,
-									ry: 5,
-									padding: 0,
-									id: status.mission._id,
-									class: status.status
-								});
-								status.mission.parents.__items.forEach(function(parent) {
-									g.setEdge(parent, status.mission._id, {
-										class: map[parent].status
-									});
-								});
-							});
-
-							var hasStar = function(star, stars) {
-								for(var i = 0; i < stars.__items.length; i++) {
-									var s = stars.__items[i]
-									if(s._id == star._id) return true;
-								}
-								return false;
-							}
-
-							render(inner, g);
-
-							$("svg .node").tipsy({
-								gravity: $.fn.tipsy.autoNS,
-								fade: true,
-								html: true,
-								title: function() {
-									var status = map[this.id];
-									var html = ''
-									html += "<div class='mission-tip " + status.status + "'>" +
-												"<h3>" + status.mission.title + "</h3>" +
-												"<p>" + status.mission.reward + " pts</p>"
-									for(var i in status.mission.stars.__items) {
-										var star = status.mission.stars.__items[i];
-										if(hasStar(star, status.stars_status)) {
-											html += "<span class='glyphicon glyphicon-star' />";
-										} else {
-											html += "<span class='glyphicon glyphicon-star-empty' />";
-										}
-									}
-									html += "</div>"
-									return html;
-								}
-							});
-							$("svg .node").click(function() {
-								var status = map[this.id];
-								window.location.href = "/missions/" + this.id;
-							});
-
-							// Zoom and scale to fit
-							var graphWidth = g.graph().width;
-							var graphHeight = g.graph().height;
-							var width = parseInt(svg.style("width").replace(/px/, ""));
-							var height = parseInt(svg.style("height").replace(/px/, ""));
-							var graphScale = Math.min(width / graphWidth, height / graphHeight);
-							var zoomScale = Math.min(graphScale, 1) - 0.15;
-							var translate = [(width/2) - ((graphWidth*zoomScale)/2), 0];
-							var zoom = d3.behavior.zoom().on("zoom", function() {
-								inner.attr("transform", "translate(" + d3.event.translate + ")" +
-									"scale(" + d3.event.scale + ")");
-							});
-							zoom.translate(translate);
-							zoom.scale(zoomScale);
-							zoom.event(isUpdate ? svg.transition().duration(500) : d3.select("svg"));
-						}
-						draw();
-					}
-
-					$scope.$watch('missionsStatus', function(missionsStatus) {
-						if(!missionsStatus) { return; }
-						$scope.drawTree(missionsStatus);
-					})
-				}
+				controller: function () {console.log(this.trackStatus)},
+				controllerAs: 'trackCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/tracks/track-panel.html'
 			};
 		}])
 
@@ -403,6 +178,130 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/tracks/stars-progress.html'
+			};
+		}])
+
+		/*  Track tree */
+
+		.directive('trackTree', [function() {
+			return {
+				replace: true,
+				restrict: 'E',
+				scope: {
+					missions: '=',
+					missionsStatus: '='
+				},
+				templateUrl: '/directives/tracks/track-tree.html',
+				link: function ($scope, element, attrs) {
+					$scope.buildMap = function(missions, missionsStatus) {
+						var map = {};
+						missions.forEach(function(mission, index) {
+							map[mission._id] = mission;
+							if(missionsStatus) {
+								map[mission._id].status = missionsStatus[index];
+							} else {
+								map[mission._id].status = { status: 'locked' };
+							}
+						});
+						return map;
+					}
+					$scope.drawTree = function(missions, missionsStatus) {
+						var svg = d3.select(element[0])
+						var inner = svg.select("g")
+						var render = new dagreD3.render();
+
+						// Left-to-right layout
+						var g = new dagreD3.graphlib.Graph()
+							.setGraph({
+								nodesep: 20,
+								ranksep: 50,
+								rankdir: "TB",
+								marginx: 10,
+								marginy: 10
+							})
+						  .setDefaultEdgeLabel(function() { return {}; });
+
+						function draw(isUpdate) {
+							var map = $scope.buildMap(missions, missionsStatus);
+							missions.forEach(function(mission, index) {
+								g.setNode(mission._id, {
+									labelType: "html",
+									label: "<p class='number'>" + (index + 1) + "</p>",
+									rx: 5,
+									ry: 5,
+									padding: 0,
+									id: mission._id,
+									class: mission.status.status
+								});
+								mission.parents.__items.forEach(function(parent) {
+									g.setEdge(parent, mission._id, {
+										class: map[parent].status
+									});
+								});
+							});
+
+							var hasStar = function(star, stars) {
+								for(var i = 0; i < stars.__items.length; i++) {
+									var s = stars.__items[i]
+									if(s._id == star._id) return true;
+								}
+								return false;
+							}
+
+							render(inner, g);
+
+							$("svg .node").tipsy({
+								gravity: $.fn.tipsy.autoNS,
+								fade: true,
+								html: true,
+								title: function() {
+									var mission = map[this.id];
+									var html = ''
+									html += "<div class='mission-tip " + status + "'>" +
+												"<h3>" + mission.title + "</h3>" +
+												"<p>" + mission.reward + " pts</p>"
+									for(var i in mission.stars.__items) {
+										var star = mission.stars.__items[i];
+										if(hasStar(star, mission.status.stars_status)) {
+											html += "<span class='glyphicon glyphicon-star' />";
+										} else {
+											html += "<span class='glyphicon glyphicon-star-empty' />";
+										}
+									}
+									html += "</div>"
+									return html;
+								}
+							});
+							$("svg .node").click(function() {
+								window.location.href = "/missions/" + this.id;
+							});
+
+							// Zoom and scale to fit
+							var graphWidth = g.graph().width;
+							var graphHeight = g.graph().height;
+							var width = parseInt(svg.style("width").replace(/px/, ""));
+							var height = parseInt(svg.style("height").replace(/px/, ""));
+							var graphScale = Math.min(width / graphWidth, height / graphHeight);
+							var zoomScale = Math.min(graphScale, 1) - 0.15;
+							var translate = [(width/2) - ((graphWidth*zoomScale)/2), 0];
+							var zoom = d3.behavior.zoom().on("zoom", function() {
+								inner.attr("transform", "translate(" + d3.event.translate + ")" +
+									"scale(" + d3.event.scale + ")");
+							});
+							zoom.translate(translate);
+							zoom.scale(zoomScale);
+							zoom.event(isUpdate ? svg.transition().duration(500) : d3.select("svg"));
+						}
+						setTimeout(function() {
+							draw();
+						}, 100);
+					}
+
+					$scope.$watchGroup(['missions', 'missionsStatus'], function(values) {
+						if(!values[0]) { return; }
+						$scope.drawTree(values[0], values[1]);
+					});
+				}
 			};
 		}])
 })();

@@ -1,32 +1,36 @@
 <div>
-	<h1>{{trackCtrl.track.title}}</h1>
+	<div class='col-xs-12'>
+		<div class='pull-right' ng-if='trackCtrl.trackStatus'>
+			<missions-progress style='width: 200px; margin:10px 0 5px 0;'
+				track='trackCtrl.track'
+				track-status='trackCtrl.trackStatus' />
+			<stars-progress style='width: 200px;'
+				track='trackCtrl.track'
+				track-status='trackCtrl.trackStatus' />
+		</div>
 
-	<div class='panel panel-default'>
-		<div class='panel-body'>
-			<div ng-bind-html="trackCtrl.track.desc"></div>
+		<h1>{{trackCtrl.track.title}}</h1>
+	</div>
+	<div class='col-xs-12'>
+		<div class='panel panel-default'>
+			<div class='panel-body'>
+				<div ng-bind-html='trackCtrl.track.desc'></div>
+			</div>
 		</div>
 	</div>
 
-	<h4>Missions</h4>
-	<track-missions-tree missions='trackCtrl.missions' />
-	<br><br><br><br>
-
-	<table class='table'>
-		<tr ng-repeat='mission in trackCtrl.missions'>
-			<th width='3%'>
-				<span class='glyphicon glyphicon-lock text-muted' />
-			</th>
-			<th width='30%'>
-				<a href='/missions/{{mission._id}}'>
-					{{mission.title}}
-				</a>
-			</th>
-			<td>
-				<span class='glyphicon glyphicon-star-empty text-muted'
-					ng-repeat='self in mission.stars.__items'
-					title='{{self.title}}' />
-			</td>
-			<td>+ {{mission.reward}} pts</td>
-		</tr>
-	</table>
+	<div class='container-xs-height'>
+		<div class='row-xs-height'>
+			<div class='col-xs-9' style='width:100%'>
+				<mission-panel
+					ng-repeat='(i, mission) in trackCtrl.missions'
+					index='i + 1' mission='mission'
+					mission-status='trackCtrl.trackStatus.missions.__items[i]' />
+			</div>
+			<div class='col-xs-3 col-xs-height'>
+				<track-tree missions='trackCtrl.missions'
+					missions-status='trackCtrl.trackStatus.missions.__items' />
+			</div>
+		</div>
+	</div>
 </div>
