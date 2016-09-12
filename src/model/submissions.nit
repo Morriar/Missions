@@ -132,8 +132,10 @@ redef class ScoreStar
 				break
 			end
 		end
-		if star_status == null then star_status = new StarStatus(self)
-		status.stars_status.add star_status
+		if star_status == null then
+			star_status = new StarStatus(self)
+			status.stars_status.add star_status
+		end
 
 		if not submission.successful then return false
 
