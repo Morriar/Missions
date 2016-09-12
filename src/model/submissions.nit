@@ -82,6 +82,9 @@ class Submission
 	# The aggregated mission status after the submission
 	var mission_status: nullable MissionStatus = null
 
+	# The events thrown by the submission
+	var events = new Array[Event]
+
 	# Update status of `self` in DB
 	fun update_status(config: AppConfig) do
 		var mission_status = config.missions_status.find_by_mission_and_player(mission, player)
@@ -96,11 +99,12 @@ class Submission
 			if mission_status.status != status then
 				# new solve
 				var solve = new Solve(self)
-				print solve
+				events.add solve
 			end
 		end
 		for star in mission.stars do star.check(self, mission_status)
 		mission_status.status = status
+
 
 		config.missions_status.save(mission_status)
 	end
@@ -153,14 +157,14 @@ redef class ScoreStar
 		if best == null or score < best then
 			star_status.best_score = score
 			newscore = new NewHighScore(submission, self, goal, best, score)
-			print newscore
+			submission.events.add newscore
 		end
 
 		# Star granted?
 		if not status.unlocked_stars.has(self) and score <= goal then
 			star_status.is_unlocked = true
 			var unlock = new StarUnlock(submission, self, newscore)
-			print unlock
+			submission.events.add unlock
 			return true
 		end
 		return false
