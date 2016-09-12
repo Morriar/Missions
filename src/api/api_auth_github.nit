@@ -19,16 +19,32 @@ import popcorn::pop_auth
 
 redef class AuthRouter
 	redef init do
-		use("/login", new GithubLogin(config.gh_client_id))
+		use("/login", new MissionGithubLogin(config))
 		use("/oauth", new MissionsGithubOAuthCallBack(config))
 		use("/logout", new GithubLogout)
 		super
 	end
 end
 
+class MissionGithubLogin
+	super GithubLogin
+	super AuthLogin
+
+	autoinit config
+
+	init do
+		client_id = config.gh_client_id
+	end
+
+	redef fun get(req, res) do
+		store_next_page(req)
+		super
+	end
+end
+
 class MissionsGithubOAuthCallBack
 	super GithubOAuthCallBack
-	super APIHandler
+	super AuthLogin
 
 	autoinit config
 
@@ -39,6 +55,7 @@ class MissionsGithubOAuthCallBack
 
 	redef fun get(req, res) do
 		super
+
 		var session = req.session
 		if session == null then return
 		var user = session.user
@@ -49,11 +66,10 @@ class MissionsGithubOAuthCallBack
 			player = new Player(id)
 			player.name = user.login
 			player.avatar_url = user.avatar_url
-			player.add_achievement(config, new FirstLoginAchievement(player))
-			config.players.save player
+			register_new_player(player)
 		end
 		session.player = player
-		res.redirect "/player"
+		redirect_after_login(req, res)
 	end
 
 end
