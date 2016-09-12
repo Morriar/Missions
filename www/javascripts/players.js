@@ -50,10 +50,28 @@
 
 		.directive('playerMenu', ['$rootScope', function($rootScope) {
 			return {
-				restrict: 'E',
-				replace: true,
+				scope: {},
+				bindToController: {
+					player: '='
+				},
+				controller: ['$location', function ($location) {
+					this.ghLogin = function() {
+						window.location.replace('/auth/login?next=' + $location.absUrl());
+					}
+
+					this.shLogin = function() {
+						window.location.replace('/auth/shiblogin?next=' + $location.absUrl());
+					}
+
+					this.logout = function() {
+						$rootScope.player = null;
+						window.location.replace('/auth/logout');
+					}
+				}],
+				controllerAs: 'playerMenuCtrl',
 				templateUrl: '/directives/player/menu.html',
-				scope: { player: '=' }
+				restrict: 'E',
+				replace: true
 			};
 		}])
 

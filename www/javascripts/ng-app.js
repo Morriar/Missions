@@ -27,25 +27,6 @@
 				templateUrl: 'views/index.html',
 				controller : 'PlayerAuth'
 			})
-			.when('/login', {
-				controller : function(){
-					window.location.replace('/auth/login');
-				},
-			    template : "<div></div>"
-			})
-			.when('/shiblogin', {
-				controller : function(){
-					window.location.replace('/auth/shiblogin');
-				},
-			    template : "<div></div>"
-			})
-			.when('/logout', {
-				controller : [ '$rootScope', function($rootScope){
-					$rootScope.player = null;
-					window.location.replace('/auth/logout');
-				}],
-			    template : "<div></div>"
-			})
 			.when('/player/', {
 				templateUrl: 'views/player.html',
 				controller : 'PlayerAuth'
