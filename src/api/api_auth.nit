@@ -64,7 +64,7 @@ end
 abstract class AuthLogin
 	super APIHandler
 
-	# Extract a possible next page from the GET arguments and store it in the session for latter
+	# Extract a possible next page from the GET arguments and store it in the session for later
 	#
 	# Helper method to use before initiating a login attempt.
 	fun store_next_page(req: HttpRequest)
@@ -75,7 +75,6 @@ abstract class AuthLogin
 		var next = req.string_arg("next")
 		if next != null then next = next.from_percent_encoding
 		session.auth_next = next
-		print "NEXT->{next or else "?"}"
 	end
 
 	# Register a new player and add a first-login achievement
@@ -98,7 +97,6 @@ abstract class AuthLogin
 		var next = session.auth_next or else "/player"
 		session.auth_next = null
 		res.redirect next
-		print "NEXT2->{next}"
 	end
 end
 
