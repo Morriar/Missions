@@ -1,11 +1,5 @@
-Traduisez ce pseudo-code en assembleur
+Le programme compare un nombre saisi par l'utilisateur à 10.
 
-~~~nit
-var x = deci
-
-if x > 10 then
-    print "> 10"
-else
-    print "<= 10"
-end
-~~~
+* Lire un nombre
+* S'il est strictement plus grand que 10, afficher "`> 10`"
+* Sinon, afficher "`<= 10`"

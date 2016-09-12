@@ -1,3 +1,5 @@
-# Addition simple
+Le programme additionne 10 à un nombre saisi par l'utilisateur.
 
-On veut additionner 10 à un nombre saisi au clavier.
+* Lire un nombre
+* Additionner 10
+* Afficher le résultat

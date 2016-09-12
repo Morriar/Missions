@@ -1,1 +1,1 @@
-Le programme affiche les trois premiers caractères saisis par l'utilisateur.
+Le programme affich les trois premiers caractères saisis par l'utilisateur.
