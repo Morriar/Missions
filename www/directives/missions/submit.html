@@ -29,6 +29,24 @@
 			</div>
 		</div>
 
+		<!-- Mission success: star progress -->
+		<div class='card' ng-if='result.status == "success"'>
+			<div class='card-left text-center bg-dark bg-warning'>
+				<h4><span class='glyphicon glyphicon-star' /></h4>
+			</div>
+			<div class='card-body' ng-if='missionSubmitCtrl.mission.stars.__items.length > 0'>
+				<h3 class='title text-warning'>Star progression</h3>
+
+				<table class='table'>
+					<tr ng-repeat='star in missionSubmitCtrl.mission.stars.__items'>
+						<th width='25%'>{{star.title}}</th>
+						<td><star-progress star='star' submission='result' /></td>
+						<th width='10%' class='text-muted'>+{{star.reward}}pts</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+
 		<!-- Compilation error -->
 		<div class='card' ng-if='result.compilation_failed'>
 			<div class='card-left text-center bg-dark bg-danger'>
