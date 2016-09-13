@@ -48,6 +48,7 @@
 
 .bg-success { background-color: #5cb85c; }
 .bg-danger { background-color: #d9534f; }
+.bg-warning { background-color: #ffd800; }
 
 .bg-open { background-color: #d9534f; }
 .bg-locked { background-color: #aaaaaa; }

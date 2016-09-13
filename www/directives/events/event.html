@@ -1,0 +1,11 @@
+<div ng-switch='event.__class'>
+	<div ng-switch-when='Solve'>
+		<div ng-include='"/directives/events/Solve.html"' />
+	</div>
+	<div ng-switch-when='NewHighScore'>
+		<div ng-include='"/directives/events/NewHighScore.html"' />
+	</div>
+	<div ng-switch-when='StarUnlock'>
+		<div ng-include='"/directives/events/StarUnlock.html"' />
+	</div>
+</div>

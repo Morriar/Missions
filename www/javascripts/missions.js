@@ -139,6 +139,39 @@
 			};
 		}])
 
+		.directive('starProgress', [function () {
+			return {
+				scope: {},
+				bindToController: {
+					star: '=',
+					submission: '='
+				},
+				controller: ['$scope', function ($scope) {
+					var vm = this;
+
+					$scope.$watch('progressCtrl.submission', function(submission) {
+						if(!submission) return;
+						vm.score = submission[vm.star.submission_key];
+						vm.goal = vm.star.goal;
+
+						vm.bars = [];
+
+						if(vm.score <= vm.goal) {
+							vm.style = "progress-bar-success";
+							vm.width = vm.score * 100 / vm.goal;
+						} else {
+							vm.style = "progress-bar-danger";
+							vm.width = (vm.score - vm.goal) * 100 / vm.score;
+						}
+					})
+				}],
+				controllerAs: 'progressCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/missions/star-progress.html'
+			};
+		}])
+
 		/* Submissions */
 
 		.controller('MissionSubmitCtrl', ['Missions', '$scope', function (Missions, $scope) {
@@ -213,6 +246,19 @@
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/missions/locked.html'
+			};
+		}])
+
+		/* Events */
+
+		.directive('eventPanel', [function () {
+			return {
+				scope: {
+					event: '='
+				},
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/events/event.html'
 			};
 		}])
 })();

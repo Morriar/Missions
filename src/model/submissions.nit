@@ -168,14 +168,25 @@ redef class ScoreStar
 
 	# The specific score in submission associated to `self`
 	fun score(submission: Submission): nullable Int is abstract
+
+	# The key in the Submission object used to store the star `score`
+	#
+	# So we can factorize things in the HTML output.
+	fun submission_key: String is abstract
 end
 
 redef class TimeStar
+	serialize
+
 	redef fun score(submission) do return submission.time_score
+	redef var submission_key = "time_score"
 end
 
 redef class SizeStar
+	serialize
+
 	redef fun score(submission) do return submission.size_score
+	redef var submission_key = "size_score"
 end
 
 # A specific execution of a test case by a submission
