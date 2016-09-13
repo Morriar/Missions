@@ -53,7 +53,7 @@
 
 		/* Track */
 
-		.directive('track', [function() {
+		.directive('track', ['$rootScope', function($rootScope) {
 			return {
 				scope: {},
 				bindToController: {
@@ -73,6 +73,10 @@
 					Tracks.getTrack(this.trackId,
 						function(data) {
 							$ctrl.track = data;
+							// Set breadcrumbs
+							$rootScope.track = data;
+							$rootScope.mission = null;
+							$rootScope.player = null;
 						}, function(err) {
 							$ctrl.error = err;
 						});

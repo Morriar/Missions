@@ -28,7 +28,7 @@
 
 		/* Mission */
 
-		.directive('mission', [function() {
+		.directive('mission', ['$rootScope', function($rootScope) {
 			return {
 				scope: {},
 				bindToController: {
@@ -51,6 +51,10 @@
 
 					Missions.getMission(this.missionId, function(data) {
 						$ctrl.mission = data;
+							// Set breadcrumbs
+							$rootScope.track = data.track;
+							$rootScope.mission = data;
+							$rootScope.player = null;
 					}, function(err) {
 						$ctrl.error = err;
 					});

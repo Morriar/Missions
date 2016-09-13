@@ -9,14 +9,27 @@ body {
 	background-color: #0955A0;
 	border-color: #0955A0;
 	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.4);
+	color: white;
 }
 
-.navbar-primary .navbar-brand, .navbar-primary .navbar-nav>li>a {
+.navbar-primary .navbar-brand, .navbar-primary .navbar-nav>li>a, .navbar-primary .breadcrumb a {
 	color: white;
 }
 
 .navbar-primary .text-danger {
 	color: #FF9D32;
+}
+
+.navbar .breadcrumb {
+	padding: 15px 0;
+	margin: 0 0 0 -5px;
+	background: transparent;
+}
+
+.navbar .breadcrumb>li:before {
+    padding: 0 15px;
+    color: #337ab7;
+    content: "/\00a0";
 }
 
 .progress { margin-bottom: 0 }
