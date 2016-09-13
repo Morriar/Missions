@@ -92,7 +92,7 @@ class Submission
 
 		# Update/unlock stars
 		if successful then
-			if mission_status.status != status then
+			if mission_status.status != "success" then
 				# new solve
 				var solve = new Solve(mission)
 				events.add solve
