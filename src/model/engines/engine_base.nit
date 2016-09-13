@@ -150,6 +150,7 @@ class Engine
 
 		var ws = make_workspace
 		if ws == null then
+			submission.compilation_failed = true
 			submission.compilation_messages = "Unable to make workspace for the submission"
 			return false
 		end
