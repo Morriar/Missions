@@ -61,8 +61,8 @@ body {
 .mission-star.active { color: #fbca04; }
 .mission-star.active:before { content: "\e006"; }
 
-.mission-stars .mission-star { padding-left: 10px; }
-.mission-stars .mission-star:first-child { padding-left: 0; }
+.mission-stars .mission-star { margin-left: 10px; }
+.mission-stars .mission-star:first-child { margin-left: 0; }
 
 /*
  * Users
@@ -203,10 +203,6 @@ body {
 .mission-tip.locked h3 { color: #777; }
 .mission-tip.locked .tip-status { color: #777; }
 .mission-tip .tip-reward { color: green; }
-
-.mission-icon {
-	width: 100%;
-}
 
 /*
  * Podium
