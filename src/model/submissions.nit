@@ -38,6 +38,9 @@ class Submission
 	# The submitted source code
 	var source: String
 
+	# Unlocked missions if success and if any
+	var next_missions: nullable Array[Mission] = null
+
 	# Individual results for each test case
 	#
 	# Filled by `check`
@@ -101,11 +104,15 @@ class Submission
 			for star in mission.stars do star.check(self, mission_status)
 
 			# Unlock next missions
+			# Add next missions to successful submissions
+			var next_missions = new Array[Mission]
 			for mission in mission.load_children(config) do
 				var cstatus = player.mission_status(config, mission)
 				cstatus.status = "open"
 				config.missions_status.save(cstatus)
+				next_missions.add mission
 			end
+			self.next_missions = next_missions
 		end
 
 		config.missions_status.save(mission_status)
