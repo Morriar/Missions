@@ -22,8 +22,8 @@ redef class AuthRouter
 	redef init do
 		super
 		if config.auth_method == "shib" then
-			use("/shiblogin", new ShibLogin(config))
-			use("/shiblogin/callback", new ShibCallback(config))
+			use("/login", new ShibLogin(config))
+			use("/login/oauth", new ShibCallback(config))
 			use("/logout", new Logout)
 		end
 	end
@@ -44,7 +44,7 @@ class ShibLogin
 		if session == null then return
 		var secret = generate_token
 		session.shib_secret = secret
-		var redir = config.app_root_url + req.uri + "/callback"
+		var redir = config.app_root_url + req.uri + "/oauth"
 		var url = "https://info.uqam.ca/oauth/login"
 		res.redirect "{url}?redirect_uri={redir.to_percent_encoding}&state={secret.to_percent_encoding}"
 	end
