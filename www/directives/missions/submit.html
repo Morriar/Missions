@@ -47,6 +47,8 @@
 			</div>
 		</div>
 
+		<event-panel event='event' ng-repeat='event in result.events.__items' />
+
 		<!-- Compilation error -->
 		<div class='card' ng-if='result.compilation_failed'>
 			<div class='card-left text-center bg-dark bg-danger'>

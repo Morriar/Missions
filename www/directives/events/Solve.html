@@ -1,0 +1,17 @@
+<div class='card'>
+	<div class='card-left bg-dark bg-success'>
+		<h4><span class='glyphicon glyphicon-flag' /></h4>
+	</div>
+	<div class='card-body'>
+		<h3 class='text-success'>Mission achieved</h3>
+		<p>
+			You achieved
+			<a href="/missions/{{event.mission.track._id}}">{{event.mission.track.title}}</a>
+			::
+			<a href="/missions/{{event.mission._id}}">{{event.mission.title}}</a>
+		</p>
+	</div>
+	<div class='card-right align-bottom'>
+		<h2 class='text-success'>+{{event.mission.reward}}pts</h2>
+	</div>
+</div>

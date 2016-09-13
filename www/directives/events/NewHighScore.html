@@ -1,0 +1,15 @@
+<div class='card'>
+	<div class='card-left bg-dark bg-primary'>
+		<h4><span class='glyphicon glyphicon-asterisk' /></h4>
+	</div>
+	<div class='card-body'>
+		<h3 class='text-primary'>New highscore</h3>
+		<p>
+			{{event.star.title}}:
+			<span class='text-success'><b>{{event.new_score}} / {{event.star.goal}}</b></span>
+			<span class='text-muted' ng-if='event.old_score'>
+				(old score {{event.old_score}} / {{event.star.goal}})
+			</span>
+		</p>
+	</div>
+</div>

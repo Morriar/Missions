@@ -248,4 +248,17 @@
 				templateUrl: '/directives/missions/locked.html'
 			};
 		}])
+
+		/* Events */
+
+		.directive('eventPanel', [function () {
+			return {
+				scope: {
+					event: '='
+				},
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/events/event.html'
+			};
+		}])
 })();
