@@ -5,6 +5,8 @@ body {
 	margin-bottom: 70px;
 }
 
+/* Nav bar */
+
 .navbar-primary {
 	background-color: #0955A0;
 	border-color: #0955A0;
@@ -16,9 +18,6 @@ body {
 	color: white;
 }
 
-.navbar-primary .text-danger {
-	color: #FF9D32;
-}
 
 .navbar .breadcrumb {
 	padding: 15px 0;
@@ -34,8 +33,7 @@ body {
 
 .progress { margin-bottom: 0 }
 
-.dropdown-menu { min-width: 250px }
-.dropdown-menu>li>a { padding: 10px 20px }
+/* Btn */
 
 .btn-link.btn-muted { color: #777 }
 .btn-link.btn-primary { color: #337ab7 }
