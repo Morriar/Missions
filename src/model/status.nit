@@ -123,9 +123,9 @@ class MissionStatus
 	# that the mission is locked and check the parents dependencies.
 	var status: String = "locked" is writable
 
-	var is_locked: Bool is lazy do return status == "locked"
-	var is_open: Bool is lazy do return status == "open"
-	var is_success: Bool is lazy do return status == "success"
+	fun is_locked: Bool do return status == "locked"
+	fun is_open: Bool do return status == "open"
+	fun is_success: Bool do return status == "success"
 end
 
 # The link between a Player and a Star

@@ -31,11 +31,11 @@
 				</div>
 			</div>
 			<!-- Mission is locked -->
-				<div class='container' ng-if='!missionCtrl.playerId || missionCtrl.missionStatus.is_locked'>
+				<div class='container' ng-if='!missionCtrl.playerId || missionCtrl.missionStatus.status == "locked"'>
 					<mission-locked />
 				</div>
 		</div>
 		<mission-submit mission='missionCtrl.mission'
-			ng-if='missionCtrl.playerId && !missionCtrl.missionStatus.is_locked' />
+			ng-if='missionCtrl.playerId' />
 	</div>
 </div>
