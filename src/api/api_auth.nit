@@ -54,6 +54,10 @@ class AuthRouter
 	super Router
 
 	var config: AppConfig
+
+	init do
+		use("/auth_method", new AuthMethodHandler(config))
+	end
 end
 
 redef class Session
@@ -143,6 +147,20 @@ class AuthHandler
 			return null
 		end
 		return player
+	end
+end
+
+# Return the current authentification handler used.
+#
+# Could also be used to pass the login/logout uris to the frontend.
+# But I'm too lazy.
+class AuthMethodHandler
+	super APIHandler
+
+	redef fun get(req, res) do
+		var obj = new JsonObject
+		obj["auth_method"] = config.auth_method
+		res.json obj
 	end
 end
 
