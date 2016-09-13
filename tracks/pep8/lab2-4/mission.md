@@ -1,1 +1,1 @@
-Lisez deux caracteres, et affichez-les dans l'ordre alphanumérique croissant.
+Lisez deux caractères, puis affichez-les dans l'ordre alphanumérique croissant.
