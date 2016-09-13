@@ -48,6 +48,32 @@
 			};
 		}])
 
+		.directive('player', [function() {
+			return {
+				scope: {},
+				bindToController: {
+					session: '=',
+					playerId: '='
+				},
+				controller: ['Errors', 'Players', function(Errors, Players) {
+					var vm = this;
+
+					this.loadPlayer = function() {
+						Players.getPlayer(vm.playerId,
+							function(data) {
+								vm.player = data;
+							}, Errors.handleError);
+					};
+
+					this.loadPlayer();
+				}],
+				controllerAs: 'playerCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/player.html'
+			};
+		}])
+
 		.directive('playerMenu', ['Errors', 'Auth', '$rootScope', function(Errors, Auth, $rootScope) {
 			return {
 				scope: {},
