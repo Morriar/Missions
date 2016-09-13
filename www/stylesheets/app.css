@@ -111,6 +111,37 @@ body {
 	margin-top: 5px;
 }
 
+.notifications-icon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 120%;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.notifications-icon:before {
+	content: "\e123";
+}
+
+.notifications-icon.active {
+	color: #ff9d32;
+	animation: notify-animation .2s ease-in-out infinite alternate;
+}
+
+@keyframes notify-animation {
+  from {
+    transform: rotate(-10deg);
+  }
+  to {
+    transform: rotate(10deg);
+  }
+}
+
 .notification {
 	background-color: #fff;
 	padding: 5px 5px 10px 15px;

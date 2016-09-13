@@ -1,7 +1,7 @@
 <ul class='nav navbar-nav navbar-right' ng-init='notifsCtrl.loadNotifications()'>
 	<li class='dropdown'>
 		<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>
-			<span class='glyphicon glyphicon-bell' ng-class='{"text-danger": notifications.length > 0}' />
+			<span class='notifications-icon' ng-class='{"active": notifications.length > 0}' />
 		</a>
 		<div class='dropdown-menu dropdown-menu-right notifications' ng-if='notifications.length > 0'>
 			<p class='text-right clear-all'>
