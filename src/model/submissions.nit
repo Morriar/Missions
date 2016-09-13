@@ -87,11 +87,7 @@ class Submission
 
 	# Update status of `self` in DB
 	fun update_status(config: AppConfig) do
-		var mission_status = config.missions_status.find_by_mission_and_player(mission, player)
-		if mission_status == null then
-			mission_status = new MissionStatus(mission, player)
-		end
-
+		var mission_status = player.mission_status(config, mission)
 		self.mission_status = mission_status
 
 		# Update/unlock stars
