@@ -17,16 +17,22 @@ module api_auth_github
 import api_auth
 import popcorn::pop_auth
 
+redef class AppConfig
+	redef var default_auth_method = "github"
+end
+
 redef class AuthRouter
 	redef init do
-		use("/login", new MissionGithubLogin(config))
-		use("/oauth", new MissionsGithubOAuthCallBack(config))
-		use("/logout", new GithubLogout)
 		super
+		if config.auth_method == "github" then
+			use("/login", new MissionsGithubLogin(config))
+			use("/oauth", new MissionsGithubOAuthCallBack(config))
+			use("/logout", new MissionsGithubLogout)
+		end
 	end
 end
 
-class MissionGithubLogin
+class MissionsGithubLogin
 	super GithubLogin
 	super AuthLogin
 
@@ -71,15 +77,15 @@ class MissionsGithubOAuthCallBack
 		session.player = player
 		redirect_after_login(req, res)
 	end
-
 end
 
-redef class GithubLogout
+class MissionsGithubLogout
+	super Logout
+
 	redef fun get(req, res) do
 		var session = req.session
 		if session == null then return
 		session.user = null
-		session.player = null
-		res.redirect "/"
+		super
 	end
 end
