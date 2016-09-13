@@ -19,24 +19,6 @@ body {
 	color: #FF9D32;
 }
 
-.panel {
-	border-radius: 0px;
-	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
-}
-
-.panel-left, .panel-middle, .panel-right {
-    padding: 15px;
-	display: table-cell;
-}
-
-.panel-left { width: 10% }
-.panel-middle { width: 100% }
-
-.panel-default { border: 1px solid #ddd; }
-
-.title { margin-top: 0; }
-.title .glyphicon { font-size: 0; }
-
 .progress { margin-bottom: 0 }
 
 .dropdown-menu { min-width: 250px }
@@ -49,11 +31,6 @@ body {
 .btn-link.btn-warning { color: #8a6d3b }
 .btn-link.btn-danger { color: #a94442 }
 
-.mission-status-icon .glyphicon {
-	vertical-align: baseline;
-	font-size: 80%;
-}
-
 .mission-stars {
 	padding-left: 10px;
 }
@@ -64,37 +41,9 @@ body {
 	color: #FFD800;
 }
 
-.panel-mission-status {
-	color: white;
-	text-align: center;
-	vertical-align: middle;
-}
-
-.panel-status-success .panel-mission-status { background-color: #5cb85c; }
-.panel-status-open .panel-mission-status { background-color: #d9534f; }
-.panel-status-locked .panel-mission-status { background-color: #aaa; }
-
-.panel-status-success, .panel-status-locked { opacity: 0.50 }
-.panel-status-success:hover, .panel-status-locked:hover { opacity: 1 }
-
-.panel-mission-status h4 {
-	font-weight: bold;
-	margin: 10px 0 0 0;
-}
-
-.panel-mission-status h4.title { margin: 0; }
 .panel-mission-control h4 { margin: 0 0 5px 0}
-
-.panel-mission-status .glyphicon {
-	color: white;
-}
-
 .panel-mission-control .glyphicon {
 	margin-right: 5px;
-}
-
-.panel-mission-control {
-	vertical-align: bottom;
 }
 
 .panel-mission-control .btn {
@@ -154,14 +103,12 @@ body {
  * Achievements
  */
 
-.achievement .panel-middle { vertical-align: top }
-
-.achievement .panel-left .glyphicon {
+.achievement-icon {
 	font-size: 300%;
 	margin: 10px;
 }
 
-.achievement .panel-left .badge {
+.achievement-badge {
 	position: absolute;
 	margin: -20px 0 0 20px;
 }

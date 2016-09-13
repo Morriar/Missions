@@ -1,9 +1,9 @@
 <div>
 	<div class='col-xs-12 col-md-6' ng-init='initCodeMirror()'>
-		<div class='panel panel-default'>
+		<div class='card'>
 			<form ng-submit='submit()'>
 				<textarea id='source' ng-model="source"></textarea>
-				<div class='panel-footer text-right'>
+				<div class='card-footer text-right'>
 					<input type='submit' value='Try code' class='btn btn-primary' />
 				</div>
 			</form>
@@ -11,27 +11,31 @@
 	</div>
 	<div class='col-xs-12 col-md-6' ng-if='result'>
 		<!-- Mission success -->
-		<div class='panel panel-success' ng-if='result.status == "success"'>
-			<div class='panel-body text-success text-center'>
+		<div class='card' ng-if='result.status == "success"'>
+			<div class='card-body bg-dark bg-success text-center'>
+				<span/>
 				<h1>
-					MISSION ACCOMPLISHED
+					<b>MISSION ACCOMPLISHED</b>
 					<br/><br/>
 					<span class='glyphicon glyphicon-ok' />
 					<br/><br/>
 				</h1>
 				<p class='lead'>Congratulations, you accomplished this mission.</p>
-				<a ng-href='/tracks/{{missionSubmitCtrl.mission.track.id}}'
+				<p>
+					<a ng-href='/tracks/{{missionSubmitCtrl.mission.track.id}}'
 					class='btn btn-success'>Go back to track</a>
+				</p>
+				<span/>
 			</div>
 		</div>
 
 		<!-- Compilation error -->
-		<div class='panel panel-danger' ng-if='result.compilation_failed'>
-			<div class='panel-body'>
-				<h3 class='text-danger mission-status-icon title'>
-					<span class='glyphicon glyphicon-remove' />
-					Compile time error
-				</h3>
+		<div class='card' ng-if='result.compilation_failed'>
+			<div class='card-left text-center bg-dark bg-danger'>
+				<h4><span class='glyphicon glyphicon-remove' /></h4>
+			</div>
+			<div class='card-body'>
+				<h3 class='text-danger'>Compile time error</h3>
 				<pre><code>{{result.compilation_messages}}</code></pre>
 			</div>
 		</div>
@@ -39,10 +43,12 @@
 		<!-- Error: loop testcases -->
 		<div ng-if='result.results'>
 			<div ng-repeat = '(index, testRes) in result.results.__items'>
-				<div class='panel panel-danger' ng-if='testRes.error'>
-					<div class='panel-body'>
-						<h3 class='text-danger mission-status-icon title'>
-							<span class='glyphicon glyphicon-remove' />
+				<div class='card' ng-if='testRes.error'>
+					<div class='card-left text-center bg-dark bg-danger'>
+						<h4><span class='glyphicon glyphicon-remove' /></h4>
+					</div>
+					<div class='card-body'>
+						<h3>
 							<a data-toggle='collapse' data-target='#testcase_{{index}}' href='#' class='text-danger'>
 								Test {{index + 1}}
 							</a>
@@ -55,10 +61,12 @@
 						</div>
 					</div>
 				</div>
-				<div class='panel panel-success' ng-if='!testRes.error'>
-					<div class='panel-body'>
-						<h3 class='text-success mission-status-icon title'>
-							<span class='glyphicon glyphicon-ok' />
+				<div class='card' ng-if='!testRes.error'>
+					<div class='card-left text-center bg-dark bg-success'>
+						<h4><span class='glyphicon glyphicon-ok' /></h4>
+					</div>
+					<div class='card-body'>
+						<h3>
 							<a data-toggle='collapse' data-target='#testcase_{{index}}' href='#' class='text-success'>
 								Test {{index + 1}}
 							</a>

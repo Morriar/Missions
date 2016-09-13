@@ -1,15 +1,17 @@
-<div class='panel panel-default achievement'>
-	<div class='panel-left'>
-		<span class='glyphicon glyphicon-{{achievement.icon}} text-muted' />
-		<span class='badge badge-success'>+ {{achievement.reward}}</span>
+<div class='card'>
+	<div class='card-left'>
+		<span class='glyphicon glyphicon-{{achievement.icon}} text-muted achievement-icon' />
+		<span class='badge badge-success achievement-badge'>+ {{achievement.reward}}</span>
 	</div>
-	<div class='panel-middle'>
-		<a href='/achievements/{{achievement.key}}'><b>{{achievement.title}}</b></a><br>
-		{{achievement.desc}}
+	<div class='card-body align-top'>
+		<h4>
+			<a href='/achievements/{{achievement.key}}'>{{achievement.title}}</a>
+		</h4>
+		<p>{{achievement.desc}}</p>
 		<p>
-		<small class='text-muted'>
-			unlocked on {{achievement.timestamp * 1000 | date: 'dd, MMM, yyyy HH:MM:ss a'}}
-		</small>
-</p>
+			<small class='text-muted'>
+				unlocked on {{achievement.timestamp * 1000 | date: 'dd, MMM, yyyy HH:MM:ss a'}}
+			</small>
+		</p>
 	</div>
 </div>

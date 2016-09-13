@@ -1,0 +1,53 @@
+/* Display */
+
+.card {
+	display: table;
+	width: 100%;
+    margin-bottom: 20px;
+    border-radius: 1px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+	border: 1px solid #ddd;
+	background-color: #fff;
+}
+
+.card-body, .card-left, .card-right {
+	display: table-cell;
+    padding: 15px;
+}
+
+.card-body {
+	width: 100%
+}
+
+.card-body *:first-child {
+    margin-top: 0;
+}
+
+.card-body *:last-child {
+    margin-bottom: 0;
+}
+
+.card-footer {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+}
+
+/* Alignement */
+
+.align-top { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* Colors */
+
+.bg-dark { color: white; }
+.bg-dark .glyphicon { color: white; }
+
+.bg-success { background-color: #5cb85c; }
+.bg-danger { background-color: #d9534f; }
+
+.bg-open { background-color: #d9534f; }
+.bg-locked { background-color: #aaaaaa; }
