@@ -1,4 +1,2 @@
-<span
-	class='mission-star glyphicon'
-	title='{{starCtrl.star.title}} ({{starCtrl.star.reward}} pts)'
-	ng-class='starCtrl.isSuccess() ? "glyphicon-star text-success": "glyphicon-star-empty"' />
+<span class='mission-star' ng-class='{"active": starCtrl.isSuccess()}'
+	title='{{starCtrl.star.title}} ({{starCtrl.star.reward}} pts)' />
