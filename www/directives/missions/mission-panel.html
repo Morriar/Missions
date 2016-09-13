@@ -1,17 +1,18 @@
-<div class='panel panel-default' ng-class='missionCtrl.missionStatus ? "panel-status-{{missionCtrl.missionStatus.status}}" : "panel-status-locked"'>
-	<div class='panel-left panel-mission-status'>
-		<h4 class='title'>{{missionCtrl.index}}</h4>
+<div class='card'>
+	<div class='card-left text-center bg-dark'
+		ng-class='missionCtrl.missionStatus ? "bg-{{missionCtrl.missionStatus.status}}" : "bg-locked"'>
+		<h4><b>{{missionCtrl.index}}</b></h4>
 		<h4>
 			<mission-status mission='missionCtrl.mission' mission-status='missionCtrl.missionStatus' />
 		</h4>
 	</div>
-	<div class='panel-middle'>
-		<h4 class='title'>
+	<div class='card-body'>
+		<h4>
 			<a href='/missions/{{missionCtrl.mission._id}}'>{{missionCtrl.mission.title}}</a>
 		</h4>
-		<b><span class='text-muted'>Reward</span>: {{missionCtrl.mission.reward}} pts</b>
+		<p><b class='text-muted'>Reward</span>: {{missionCtrl.mission.reward}} pts</b></p>
 	</div>
-	<div class='panel-right panel-mission-control'>
+	<div class='card-right panel-mission-control'>
 		<h4 class='text-center'>
 			<mission-stars mission='missionCtrl.mission' mission-status='missionCtrl.missionStatus' />
 			<span ng-if='missionCtrl.mission.stars.__items.length == 0'>&nbsp;</span>

@@ -1,11 +1,9 @@
-<div class='panel panel-default'>
-	<div class='panel-middle' style='vertical-align: top'>
-		<h4 class='title'>
-			<a href='/tracks/{{trackCtrl.track._id}}'>{{trackCtrl.track.title}}</a>
-		</h4>
-		<span class='text-muted' ng-bind-html='trackCtrl.track.desc'></span>
+<div class='card'>
+	<div class='card-body'>
+		<h4><a href='/tracks/{{trackCtrl.track._id}}'>{{trackCtrl.track.title}}</a></h4>
+		<p class='text-muted' ng-bind-html='trackCtrl.track.desc'></p>
 	</div>
-	<div class='panel-right' ng-if='trackCtrl.trackStatus'>
+	<div class='card-right' ng-if='trackCtrl.trackStatus'>
 		<missions-progress style='width: 200px; margin-bottom:10px'
 			track='trackCtrl.track' track-status='trackCtrl.trackStatus' />
 		<stars-progress style='width: 200px;'
