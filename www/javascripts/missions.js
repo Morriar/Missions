@@ -182,7 +182,7 @@
 
 			$scope.submit = function () {
 				var data = {
-					source: $ctrl.codeMirror.doc.getValue(),
+					source: btoa($ctrl.codeMirror.doc.getValue()),
 					lang: $ctrl.lang,
 					engine: $ctrl.engine
 				};
