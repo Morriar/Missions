@@ -83,11 +83,11 @@
 			return {
 				scope: {},
 				bindToController: {
-					playerId: '='
+					player: '='
 				},
 				controller: ['Errors', 'Players', function (Errors, Players) {
 					$playerAchsCtrl = this;
-					Players.getAchievements(this.playerId,
+					Players.getAchievements(this.player._id,
 						function(data) {
 							$playerAchsCtrl.achievements = data;
 						}, Errors.handleError);
