@@ -62,7 +62,9 @@
 						Players.getPlayer(vm.playerId,
 							function(data) {
 								vm.player = data;
-							}, Errors.handleError);
+							}, function(err) {
+								vm.error = err;
+							});
 					};
 
 					this.loadPlayer();

@@ -73,7 +73,9 @@
 					Tracks.getTrack(this.trackId,
 						function(data) {
 							$ctrl.track = data;
-						}, Errors.handleError);
+						}, function(err) {
+							$ctrl.error = err;
+						});
 
 					Tracks.getTrackMissions(this.trackId,
 						function(data) {
