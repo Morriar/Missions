@@ -20,8 +20,12 @@ private import shibuqam
 
 redef class AuthRouter
 	redef init do
-		use("/shiblogin", new ShibLogin(config))
-		use("/shiblogin/callback", new ShibCallback(config))
+		super
+		if config.auth_method == "shib" then
+			use("/shiblogin", new ShibLogin(config))
+			use("/shiblogin/callback", new ShibCallback(config))
+			use("/logout", new Logout)
+		end
 	end
 end
 

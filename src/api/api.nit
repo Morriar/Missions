@@ -14,11 +14,16 @@
 
 module api
 
-import api::api_auth
+import api::api_auth_github
+import api::api_auth_shibuqam
 import api::api_players
 import api::api_tracks
 import api::api_missions
 import api::api_achievements
+
+redef class AuthRouter
+	redef init do super # FIXME avoid linearization conflit
+end
 
 redef class APIRouter
 	redef init do

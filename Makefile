@@ -29,7 +29,10 @@ populate:
 	bin/db_loader $(level)
 
 run:
-	bin/app
+	bin/app --auth shib
+
+run-gh:
+	bin/app --auth github
 
 check:
 	nitunit .

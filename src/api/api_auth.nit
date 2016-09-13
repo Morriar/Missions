@@ -16,16 +16,44 @@ module api_auth
 
 import api_base
 
+redef class AppConfig
+
+	# Authentification method used
+	#
+	# At this point can be either `github` or `shib`, see the clients modules.
+	var auth_method: String is lazy do return value_or_default("auth", default_auth_method)
+
+	# Default authentification method used
+	#
+	# Will be refined based on what auth method we implement.
+	fun default_auth_method: String is abstract
+
+	redef init from_options(opts) do
+		super
+		var auth_method = opts.opt_auth_method.value
+		if auth_method != null then self["auth"] = auth_method
+	end
+end
+
+redef class AppOptions
+
+	# Authentification to use
+	#
+	# Can be either `github` or `shib`.
+	var opt_auth_method = new OptionString("Authentification service to use. Can be `github` (default) or `shib`", "--auth")
+
+	init do
+		super
+		add_option(opt_auth_method)
+	end
+end
+
 # The common auth router
 # Specific auth method can refine the class and plug additional handler
 class AuthRouter
 	super Router
 
 	var config: AppConfig
-
-	init do
-		use("/logout", new Logout)
-	end
 end
 
 redef class Session
