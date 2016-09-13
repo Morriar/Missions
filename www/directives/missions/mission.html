@@ -1,37 +1,41 @@
 <div>
-	<!-- Mission header -->
-	<div class='col-xs-12'>
+	<panel-404 ng-if='missionCtrl.error' />
 
-		<!-- Mission stars -->
-		<h1 class='pull-right mission-stars'>
-			<small>
-				<mission-stars mission='missionCtrl.mission' mission-status='missionCtrl.missionStatus' />
-			</small>
-		</h1>
+	<div ng-if='missionCtrl.mission'>
+		<!-- Mission header -->
+		<div class='col-xs-12'>
 
-		<!-- Mission reward -->
-		<h1 class='pull-right'>
-			<small>{{missionCtrl.mission.reward}} pts</small>
-		</h1>
+			<!-- Mission stars -->
+			<h1 class='pull-right mission-stars'>
+				<small>
+					<mission-stars mission='missionCtrl.mission' mission-status='missionCtrl.missionStatus' />
+				</small>
+			</h1>
 
-		<h1>
-			<mission-status mission-status='missionCtrl.missionStatus' />
-			{{missionCtrl.mission.title}}
-		</h1>
-	</div>
+			<!-- Mission reward -->
+			<h1 class='pull-right'>
+				<small>{{missionCtrl.mission.reward}} pts</small>
+			</h1>
 
-	<!-- Mission body -->
-	<div class='col-xs-12'>
-		<div class='panel panel-default'>
-			<div class='panel-body'>
-				<div ng-bind-html='missionCtrl.mission.desc' />
-			</div>
+			<h1>
+				<mission-status mission-status='missionCtrl.missionStatus' />
+				{{missionCtrl.mission.title}}
+			</h1>
 		</div>
-		<!-- Mission is locked -->
-			<div class='container' ng-if='!missionCtrl.playerId || missionCtrl.missionStatus.is_locked'>
-				<mission-locked />
+
+		<!-- Mission body -->
+		<div class='col-xs-12'>
+			<div class='panel panel-default'>
+				<div class='panel-body'>
+					<div ng-bind-html='missionCtrl.mission.desc' />
+				</div>
 			</div>
+			<!-- Mission is locked -->
+				<div class='container' ng-if='!missionCtrl.playerId || missionCtrl.missionStatus.is_locked'>
+					<mission-locked />
+				</div>
+		</div>
+		<mission-submit mission='missionCtrl.mission'
+			ng-if='missionCtrl.playerId && !missionCtrl.missionStatus.is_locked' />
 	</div>
-	<mission-submit mission='missionCtrl.mission'
-		ng-if='missionCtrl.playerId && !missionCtrl.missionStatus.is_locked' />
 </div>

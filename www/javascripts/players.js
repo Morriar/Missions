@@ -48,6 +48,34 @@
 			};
 		}])
 
+		.directive('player', [function() {
+			return {
+				scope: {},
+				bindToController: {
+					session: '=',
+					playerId: '='
+				},
+				controller: ['Errors', 'Players', function(Errors, Players) {
+					var vm = this;
+
+					this.loadPlayer = function() {
+						Players.getPlayer(vm.playerId,
+							function(data) {
+								vm.player = data;
+							}, function(err) {
+								vm.error = err;
+							});
+					};
+
+					this.loadPlayer();
+				}],
+				controllerAs: 'playerCtrl',
+				restrict: 'E',
+				replace: true,
+				templateUrl: '/directives/player/player.html'
+			};
+		}])
+
 		.directive('playerMenu', ['Errors', 'Auth', '$rootScope', function(Errors, Auth, $rootScope) {
 			return {
 				scope: {},
@@ -77,36 +105,33 @@
 			};
 		}])
 
-		.controller('SidebarCtrl', ['Errors', 'Players', function(Errors, Players) {
-			$sidebarCtrl = this;
-
-			this.loadStats = function() {
-				Players.getStats(this.playerId,
-					function(data) {
-						$sidebarCtrl.stats = data;
-					}, Errors.handleError);
-			};
-
-			this.hasFriend = function() {
-				return this.session.friends.__items.indexOf(this.playerId) >= 0
-			};
-
-			this.loadStats();
-		}])
-
 		.directive('playerSidebar', [function() {
 			return {
 				scope: {},
 				bindToController: {
 					session: '=',
-					playerId: '='
+					player: '='
 				},
-				controller: 'SidebarCtrl',
+				controller: ['Errors', 'Players', function(Errors, Players) {
+					var vm = this;
+
+					this.loadStats = function() {
+						Players.getStats(this.player._id,
+							function(data) {
+								vm.stats = data;
+							}, Errors.handleError);
+					};
+
+					this.hasFriend = function() {
+						return this.session.friends.__items.indexOf(this.playerId) >= 0
+					};
+
+					this.loadStats();
+				}],
 				controllerAs: 'sidebarCtrl',
 				restrict: 'E',
 				replace: true,
-				templateUrl: '/directives/player/sidebar.html',
-				scope: { session: '=', stats: '=' }
+				templateUrl: '/directives/player/sidebar.html'
 			};
 		}])
 

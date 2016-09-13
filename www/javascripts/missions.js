@@ -51,7 +51,9 @@
 
 					Missions.getMission(this.missionId, function(data) {
 						$ctrl.mission = data;
-					}, function(err) {});
+					}, function(err) {
+						$ctrl.error = err;
+					});
 					this.getMissionStatus();
 				}],
 				controllerAs: 'missionCtrl',
