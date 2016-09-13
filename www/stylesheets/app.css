@@ -98,7 +98,7 @@ body {
  */
 
 .notifications {
-	min-width: 350px;
+	min-width: 500px;
 	background-color: #e7e7e7;
 	padding: 10px;
 }
@@ -107,8 +107,8 @@ body {
     margin-right: 6px;
 }
 
-.notification.media:first-child {
-	margin-top: 5px;
+.notifications .card {
+	margin: 2px;
 }
 
 .notifications-icon {
@@ -140,19 +140,6 @@ body {
   to {
     transform: rotate(10deg);
   }
-}
-
-.notification {
-	background-color: #fff;
-	padding: 5px 5px 10px 15px;
-	margin-top: 5px;
-    -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,.2),inset 0 -1px 0 rgba(0,0,0,.3);
-    box-shadow: inset 1px 1px 0 rgba(0,0,0,.2),inset 0 -1px 0 rgba(0,0,0,.3);
-}
-
-.notification h5 {
-	font-weight: bold;
-	margin-bottom: 3px;
 }
 
 /*
