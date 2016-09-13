@@ -99,8 +99,14 @@ class Submission
 			end
 			mission_status.status = "success"
 			for star in mission.stars do star.check(self, mission_status)
-		end
 
+			# Unlock next missions
+			for mission in mission.load_children(config) do
+				var cstatus = player.mission_status(config, mission)
+				cstatus.status = "open"
+				config.missions_status.save(cstatus)
+			end
+		end
 
 		config.missions_status.save(mission_status)
 	end
