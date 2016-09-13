@@ -98,8 +98,8 @@ class Submission
 				events.add solve
 			end
 			mission_status.status = "success"
+			for star in mission.stars do star.check(self, mission_status)
 		end
-		for star in mission.stars do star.check(self, mission_status)
 
 
 		config.missions_status.save(mission_status)
