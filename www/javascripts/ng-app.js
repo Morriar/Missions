@@ -60,5 +60,14 @@
 				templateUrl: 'views/404.html',
 			});
 		$locationProvider.html5Mode(true);
-	});
+	})
+
+	.directive('panel404', function() {
+		return {
+			scope: {},
+			templateUrl: '/directives/404-panel.html',
+			restrict: 'E',
+			replace: true
+		};
+	})
 })();
