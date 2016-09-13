@@ -1,25 +1,30 @@
 <div class='container-fluid'>
-	<div class='col-xs-3 col-md-2'>
-		<player-sidebar player='playerCtrl.player' session='session' />
-	</div>
-	<div class='col-xs-9 col-md-10'>
-		<ul class='nav nav-tabs'>
-			<li role='presentation'>
-				<a href='#' data-toggle='tab' data-target='#tracks'>
-					<span class='glyphicon glyphicon-tasks' /> Tracks</a>
-			</li>
-			<li role='presentation'>
-				<a href='#' data-toggle='tab' data-target='#achievements'>
-					<span class='glyphicon glyphicon-check' /> Achievements</a>
-			</li>
-		</ul>
-		<div class='tab-content'>
-			<div role='tabpanel' class='tab-pane active' id='tracks'>
-				<h3>Overall progress</h3>
-				<tracks player='playerCtrl.player' />
-			</div>
-			<div role='tabpanel' class='tab-pane' id='achievements'>
-				<player-achievements player='playerCtrl.player' />
+	<panel-404 ng-if='!playerCtrl.player' />
+
+	<div ng-if='playerCtrl.player'>
+
+		<div class='col-xs-3 col-md-2'>
+			<player-sidebar player='playerCtrl.player' session='session' />
+		</div>
+		<div class='col-xs-9 col-md-10'>
+			<ul class='nav nav-tabs'>
+				<li role='presentation'>
+					<a href='#' data-toggle='tab' data-target='#tracks'>
+						<span class='glyphicon glyphicon-tasks' /> Tracks</a>
+				</li>
+				<li role='presentation'>
+					<a href='#' data-toggle='tab' data-target='#achievements'>
+						<span class='glyphicon glyphicon-check' /> Achievements</a>
+				</li>
+			</ul>
+			<div class='tab-content'>
+				<div role='tabpanel' class='tab-pane active' id='tracks'>
+					<h3>Overall progress</h3>
+					<tracks player='playerCtrl.player' />
+				</div>
+				<div role='tabpanel' class='tab-pane' id='achievements'>
+					<player-achievements player='playerCtrl.player' />
+				</div>
 			</div>
 		</div>
 	</div>
