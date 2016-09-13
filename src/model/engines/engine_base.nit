@@ -14,6 +14,7 @@
 module engine_base
 
 import submissions
+import base64
 
 # Environment used for the execution of a test
 class TestEnvironment
@@ -146,7 +147,7 @@ class Engine
 
 	# Prepare workspace and target file for compilation
 	fun prepare_compilation(submission: Submission): Bool do
-		var source = submission.source
+		var source = submission.source.decode_base64
 
 		var ws = make_workspace
 		if ws == null then
