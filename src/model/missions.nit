@@ -74,6 +74,24 @@ class Mission
 		end
 		return parents
 	end
+
+	# Load mission parents from DB
+	fun load_children(config: AppConfig): Array[Mission] do
+		var children = new Array[Mission]
+
+		var track = self.track
+		if track == null then return children
+
+		for mission in track.missions(config) do
+			for parent_id in mission.parents do
+				if parent_id != self.id then continue
+				var child = config.missions.find_by_id(mission.id)
+				if child == null then continue
+				children.add child
+			end
+		end
+		return children
+	end
 end
 
 class MissionRepo
