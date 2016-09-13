@@ -63,7 +63,7 @@ class Submission
 	# Total execution time.
 	#
 	# Use only if status == "success".
-	var time_score: Int = 0 is writable
+	var time_score: nullable Int = null is writable
 
 	# Compilation messages
 	#
@@ -87,23 +87,19 @@ class Submission
 
 	# Update status of `self` in DB
 	fun update_status(config: AppConfig) do
-		var mission_status = config.missions_status.find_by_mission_and_player(mission, player)
-		if mission_status == null then
-			mission_status = new MissionStatus(mission, player)
-		end
-
+		var mission_status = player.mission_status(config, mission)
 		self.mission_status = mission_status
 
 		# Update/unlock stars
 		if successful then
-			if mission_status.status != status then
+			if mission_status.status != "success" then
 				# new solve
 				var solve = new Solve(mission)
 				events.add solve
 			end
 			mission_status.status = "success"
+			for star in mission.stars do star.check(self, mission_status)
 		end
-		for star in mission.stars do star.check(self, mission_status)
 
 
 		config.missions_status.save(mission_status)
