@@ -1,26 +1,38 @@
 <ul class='nav navbar-nav navbar-right'>
-	<li class="dropdown" ng-if='!player'>
-		<a class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+	<li class='dropdown' ng-if='!playerMenuCtrl.player'>
+		<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>
 			Login
 		</a>
-		<ul class="dropdown-menu dropdown-menu-right">
+		<ul class='dropdown-menu dropdown-menu-right'>
 			<li>
-				<a href="/login"><span class="octicon octicon-mark-github" /> Github... </a>
+				<a ng-click='playerMenuCtrl.ghLogin()' href='#'>
+					<span class='octicon octicon-mark-github' /> Github...
+				</a>
 			</li>
 			<li>
-				<a href="/shiblogin"><span class="glyphicon glyphicon-user" /> UQÀM... </a>
+				<a ng-click='playerMenuCtrl.shLogin()' href='#'>
+					<span class='glyphicon glyphicon-user' /> UQÀM...
+				</a>
 			</li>
 		</ul>
 	</li>
-	<li class="dropdown" ng-if='player'>
-		<a class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
-			{{player.name}}
-			<img class='avatar avatar-icon' ng-src='{{player.avatar_url}}' />
+	<li class='dropdown' ng-if='playerMenuCtrl.player'>
+		<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>
+			{{playerMenuCtrl.player.name}}
+			<img class='avatar avatar-icon' ng-src='{{playerMenuCtrl.player.avatar_url}}' />
 		</a>
-		<ul class="dropdown-menu dropdown-menu-right">
-			<li><a href="/player"><span class='glyphicon glyphicon-user' /> Profile</a></li>
-			<li role="separator" class="divider"></li>
-			<li><a href="/logout"><span class='glyphicon glyphicon-log-out' /> Logout</a></li>
+		<ul class='dropdown-menu dropdown-menu-right'>
+			<li>
+				<a href='/player'>
+					<span class='glyphicon glyphicon-user' /> Profile
+				</a>
+			</li>
+			<li role='separator' class='divider'></li>
+			<li>
+				<a ng-click='playerMenuCtrl.logout()' href='#'>
+					<span class='glyphicon glyphicon-log-out' /> Logout
+				</a>
+			</li>
 		</ul>
 	</li>
 </ul>
