@@ -93,9 +93,9 @@ class Submission
 				var solve = new Solve(self)
 				print solve
 			end
+			mission_status.status = "success"
 		end
 		for star in mission.stars do star.check(self, mission_status)
-		mission_status.status = status
 
 		config.missions_status.save(mission_status)
 	end
