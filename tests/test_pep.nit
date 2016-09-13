@@ -67,7 +67,7 @@ STOP
 		var sub = new Submission(player, mission, source)
 		var runner = config.engine_map["pep8term"]
 		runner.run(sub, config)
-		print "** {sub.status} errors={sub.test_errors}/{sub.results.length} size={sub.size_score or else "-"} time={sub.time_score}"
+		print "** {sub.status} errors={sub.test_errors}/{sub.results.length} size={sub.size_score or else "-"} time={sub.time_score or else "-"}"
 		var msg = sub.compilation_messages
 		if msg != "" then print "{msg}"
 		for res in sub.results do

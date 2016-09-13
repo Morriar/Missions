@@ -63,7 +63,7 @@ class Submission
 	# Total execution time.
 	#
 	# Use only if status == "success".
-	var time_score: Int = 0 is writable
+	var time_score: nullable Int = null is writable
 
 	# Compilation messages
 	#
