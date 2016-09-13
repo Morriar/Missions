@@ -1,20 +1,13 @@
 <ul class='nav navbar-nav navbar-right'>
-	<li class='dropdown' ng-if='!playerMenuCtrl.player'>
-		<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>
-			Login
+	<li ng-if='!playerMenuCtrl.player && playerMenuCtrl.auth_method == "github"'>
+		<a ng-click='playerMenuCtrl.login()' href='#'>
+			<span class='octicon octicon-mark-github' /> Login with GitHub
 		</a>
-		<ul class='dropdown-menu dropdown-menu-right'>
-			<li>
-				<a ng-click='playerMenuCtrl.ghLogin()' href='#'>
-					<span class='octicon octicon-mark-github' /> Github...
-				</a>
-			</li>
-			<li>
-				<a ng-click='playerMenuCtrl.shLogin()' href='#'>
-					<span class='glyphicon glyphicon-user' /> UQÀM...
-				</a>
-			</li>
-		</ul>
+	</li>
+	<li ng-if='!playerMenuCtrl.player && playerMenuCtrl.auth_method == "shib"'>
+		<a ng-click='playerMenuCtrl.login()' href='#'>
+			<span class='glyphicon glyphicon-user' /> Login with UQÀM
+		</a>
 	</li>
 	<li class='dropdown' ng-if='playerMenuCtrl.player'>
 		<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>

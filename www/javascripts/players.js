@@ -48,25 +48,27 @@
 			};
 		}])
 
-		.directive('playerMenu', ['$rootScope', function($rootScope) {
+		.directive('playerMenu', ['Errors', 'Auth', '$rootScope', function(Errors, Auth, $rootScope) {
 			return {
 				scope: {},
 				bindToController: {
 					player: '='
 				},
 				controller: ['$location', function ($location) {
-					this.ghLogin = function() {
-						window.location.replace('/auth/login?next=' + $location.absUrl());
-					}
+					var vm = this;
 
-					this.shLogin = function() {
-						window.location.replace('/auth/shiblogin?next=' + $location.absUrl());
+					this.login = function() {
+						window.location.replace('/auth/login?next=' + $location.absUrl());
 					}
 
 					this.logout = function() {
 						$rootScope.player = null;
 						window.location.replace('/auth/logout');
 					}
+
+					Auth.getAuthMethod(function(data) {
+						vm.auth_method = data.auth_method;
+					}, Errors.handleError)
 				}],
 				controllerAs: 'playerMenuCtrl',
 				templateUrl: '/directives/player/menu.html',
