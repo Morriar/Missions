@@ -28,6 +28,10 @@
 				$scope.playerId = $rootScope.session._id;
 			}
 			$scope.notifId = $routeParams.nid;
+
+			$rootScope.track = null;
+			$rootScope.mission = null;
+			$rootScope.player = null;
 		}])
 
 		.factory('Errors', ['$rootScope', function($rootScope) {
@@ -48,7 +52,7 @@
 			};
 		}])
 
-		.directive('player', [function() {
+		.directive('player', ['$rootScope', function($rootScope) {
 			return {
 				scope: {},
 				bindToController: {
@@ -62,6 +66,8 @@
 						Players.getPlayer(vm.playerId,
 							function(data) {
 								vm.player = data;
+								// Set breadcrumbs
+								$rootScope.player = data;
 							}, function(err) {
 								vm.error = err;
 							});

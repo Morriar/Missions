@@ -70,4 +70,12 @@
 			replace: true
 		};
 	})
+
+	.directive('breadcrumbs', function() {
+		return {
+			templateUrl: '/directives/breadcrumbs.html',
+			restrict: 'E',
+			replace: true
+		};
+	})
 })();

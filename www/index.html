@@ -30,8 +30,18 @@
 			<div class='container-fluid'>
 				<div class='col-xs-8'>
 					<div class='navbar-header dropdown'>
-						<a class='navbar-brand' ng-href='/'>Missions</a>
+						<a class='navbar-brand' ng-href='/'>
+							<span class='glyphicon glyphicon-flag' />
+						</a>
+						<a class='navbar-brand' ng-href='/'>
+							Tracks
+						</a>
 					</div>
+					<ul class='nav navbar-nav'>
+						<li>
+							<breadcrumbs />
+						<li>
+					</ul>
 				</div>
 				<div class='col-xs-4' ng-controller='AuthCtrl as authCtrl' ng-init='authCtrl.loadSession()'>
 					<player-menu player='session'></player-menu>
