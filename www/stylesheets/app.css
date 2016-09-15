@@ -31,16 +31,6 @@ body {
 .btn-link.btn-warning { color: #8a6d3b }
 .btn-link.btn-danger { color: #a94442 }
 
-.mission-stars {
-	padding-left: 10px;
-}
-.mission-stars .glyphicon {
-	padding-left: 10px;
-}
-.mission-stars .glyphicon.text-success {
-	color: #FFD800;
-}
-
 .panel-mission-control h4 { margin: 0 0 5px 0}
 .panel-mission-control .glyphicon {
 	margin-right: 5px;
@@ -49,6 +39,30 @@ body {
 .panel-mission-control .btn {
 	width: 100px;
 }
+
+/*
+ * Stars
+ */
+
+.mission-star {
+	color: #777;
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font-family: 'Glyphicons Halflings';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.mission-star:before { content: "\e007"; }
+.mission-star.active { color: #fbca04; }
+.mission-star.active:before { content: "\e006"; }
+
+.mission-stars .mission-star { margin-left: 10px; }
+.mission-stars .mission-star:first-child { margin-left: 0; }
 
 /*
  * Users
@@ -189,10 +203,6 @@ body {
 .mission-tip.locked h3 { color: #777; }
 .mission-tip.locked .tip-status { color: #777; }
 .mission-tip .tip-reward { color: green; }
-
-.mission-icon {
-	width: 100%;
-}
 
 /*
  * Podium

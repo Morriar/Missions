@@ -132,6 +132,12 @@
 						return this.starStatus && this.starStatus.is_unlocked;
 					}
 				},
+				link: function($scope, $elem) {
+					$scope.$watch('starCtrl.star', function(star) {
+						$elem.attr('title',  star.title + ' (' + star.reward + ' pts)');
+						$elem.tooltip();
+					})
+				},
 				controllerAs: 'starCtrl',
 				restrict: 'E',
 				replace: true,
