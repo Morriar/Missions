@@ -63,6 +63,35 @@ class Mission
 	# and maybe simplify the serialization/API.
 	# If a mission has no test-case, an empty array should be enough for now.
 	var testsuite = new Array[TestCase]
+
+	# Load mission parents from DB
+	fun load_parents(config: AppConfig): Array[Mission] do
+		var parents = new Array[Mission]
+		for parent_id in self.parents do
+			var parent = config.missions.find_by_id(parent_id)
+			if parent == null then continue
+			parents.add parent
+		end
+		return parents
+	end
+
+	# Load mission parents from DB
+	fun load_children(config: AppConfig): Array[Mission] do
+		var children = new Array[Mission]
+
+		var track = self.track
+		if track == null then return children
+
+		for mission in track.missions(config) do
+			for parent_id in mission.parents do
+				if parent_id != self.id then continue
+				var child = config.missions.find_by_id(mission.id)
+				if child == null then continue
+				children.add child
+			end
+		end
+		return children
+	end
 end
 
 class MissionRepo

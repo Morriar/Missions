@@ -64,9 +64,7 @@ redef class Mission
 	# Is a mission available for a player depending on the mission parents status
 	fun is_unlocked_for_player(config: AppConfig, player: Player): Bool do
 		if parents.is_empty then return true
-		for parent_id in parents do
-			var parent = config.missions.find_by_id(parent_id)
-			if parent == null then continue
+		for parent in load_parents(config) do
 			var status = player.mission_status(config, parent)
 			if not status.is_success then return false
 		end
