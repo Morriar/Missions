@@ -1,8 +1,8 @@
-<div class='media notification'>
-	<div class='media-left media-middle'>
-		<span class='glyphicon glyphicon-{{notification.icon}} text-muted' />
+<div class='card'>
+	<div class='card-left bg-dark bg-success'>
+		<span class='glyphicon glyphicon-{{notification.icon}}' />
 	</div>
-	<div class='media-body'>
+	<div class='card-body'>
 		<h5>{{notification.object}}</h5>
 		<p class='text-muted'>
 			{{notification.timestamp * 1000 | date: 'dd, MMM, yyyy HH:MM:ss a'}}
@@ -12,8 +12,8 @@
 			accepted your friend request
 		</p>
 	</div>
-	<div class="media-right">
-		<a href="#" class='text-muted' ng-click='notifsCtrl.clearNotification(notification._id)'>
+	<div class='card-right'>
+		<a href='#' class='text-muted' ng-click='notifsCtrl.clearNotification(notification._id)'>
 			<span class='glyphicon glyphicon-remove' />
 		</a>
 	</div>
