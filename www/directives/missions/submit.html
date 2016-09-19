@@ -58,13 +58,13 @@
 		<event-panel event='event' ng-repeat='event in result.events.__items' />
 
 		<!-- Compilation error -->
-		<div class='card' ng-if='result.compilation_failed'>
+		<div class='card' ng-if='result.compilation.is_error'>
 			<div class='card-left text-center bg-dark bg-danger'>
 				<h4><span class='glyphicon glyphicon-thumbs-down' /></h4>
 			</div>
 			<div class='card-body'>
-				<h3 class='text-danger'>Compile time error</h3>
-				<pre><code>{{result.compilation_messages}}</code></pre>
+				<h3 class='text-danger'>{{result.compilation.title}}</h3>
+				<pre><code>{{result.compilation.message}}</code></pre>
 			</div>
 		</div>
 
