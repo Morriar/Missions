@@ -68,11 +68,11 @@ STOP
 		var runner = config.engine_map["pep8term"]
 		runner.run(sub, config)
 		print "** {sub.status} errors={sub.test_errors}/{sub.results.length} size={sub.size_score or else "-"} time={sub.time_score or else "-"}"
-		var msg = sub.compilation_messages
-		if msg != "" then print "{msg}"
+		var msg = sub.compilation.message
+		if msg != null then print "{msg}"
 		for res in sub.results do
 			var msg_test = res.error
-			if msg_test != null then print "{msg_test}"
+			if msg_test != null then print "test {res.testcase.number}. {msg_test}"
 		end
 		for e in sub.events do
 			print e

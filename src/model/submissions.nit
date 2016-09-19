@@ -41,6 +41,9 @@ class Submission
 	# Unlocked missions if success and if any
 	var next_missions: nullable Array[Mission] = null
 
+	# All information about the compilation
+	var compilation = new CompilationResult
+
 	# Individual results for each test case
 	#
 	# Filled by `check`
@@ -68,19 +71,11 @@ class Submission
 	# Use only if status == "success".
 	var time_score: nullable Int = null is writable
 
-	# Compilation messages
-	#
-	# Is the empty string if no message was produced.
-	var compilation_messages: String = "" is writable
-
-	# Has compilation succeeded ?
-	var compilation_failed: Bool = false is writable
-
 	# Number of failed test-cases
 	var test_errors: Int = 0 is writable
 
 	# Was the run successful?
-	fun successful: Bool do return not compilation_failed and test_errors == 0
+	fun successful: Bool do return not compilation.is_error and test_errors == 0
 
 	# The aggregated mission status after the submission
 	var mission_status: nullable MissionStatus = null
@@ -200,6 +195,21 @@ redef class SizeStar
 
 	redef fun score(submission) do return submission.size_score
 	redef var submission_key = "size_score"
+end
+
+# The specific information about compilation (or any internal affair)
+class CompilationResult
+	super Entity
+	serialize
+
+	# The title of the box
+	var title = "Compilation" is writable
+
+	# The compilation message, if any
+	var message: nullable String = null is writable
+
+	# The compilation failed, for some reason
+	var is_error = false is writable
 end
 
 # A specific execution of a test case by a submission

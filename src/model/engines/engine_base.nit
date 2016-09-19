@@ -37,15 +37,17 @@ class Engine
 		var ok = prepare_workspace(submission)
 		if not ok then
 			submission.status = "error"
+			submission.compilation.is_error = true
 			submission.results.clear
 			submission.update_status(config)
 			return
 		end
 
 		ok = execute(submission)
-		submission.compilation_failed = not ok
+		submission.compilation.is_error = not ok
 		if not ok then
 			submission.status = "error"
+			submission.compilation.is_error = true
 			submission.results.clear
 			submission.update_status(config)
 			return
@@ -130,8 +132,8 @@ class Engine
 
 		var ws = make_workspace
 		if ws == null then
-			submission.compilation_failed = true
-			submission.compilation_messages = "Unable to make workspace for the submission"
+			submission.compilation.title = "Internal Error"
+			submission.compilation.message = "Unable to make workspace for the submission.\nPlease contact an administrator."
 			return false
 		end
 		submission.workspace = ws
