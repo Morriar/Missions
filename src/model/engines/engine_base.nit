@@ -39,28 +39,35 @@ class Engine
 	fun extension: String is abstract
 
 	# Compile and run the tests for `submission`
+	#
+	# The job of the function is to:
+	#
+	# * prepare the compilation and execution environment
+	# * run the compilation&execution in a sanboxed environment
+	# * retrieve the results
 	fun run(submission: Submission, config: AppConfig) do
 		submission.status = "pending"
-		var can_compile = prepare_compilation(submission)
-		if not can_compile then
+
+		var ok = prepare_workspace(submission)
+		if not ok then
 			submission.status = "error"
 			submission.update_status(config)
 			return
 		end
-		var runnable = compile(submission)
-		submission.compilation_failed = not runnable
-		if not runnable then
+
+		ok = execute(submission)
+		submission.compilation_failed = not ok
+		if not ok then
 			submission.status = "error"
 			submission.update_status(config)
 			return
 		end
-		var tests = submission.mission.testsuite
+
 		var errors = 0
 		var time = 0
-		for i in tests do
-			var res = run_test(submission, i)
+		for res in submission.results do
+			check_test_result(submission, res)
 			time += res.time_score
-			submission.results.add res
 			if res.error != null then errors += 1
 		end
 		if errors != 0 then
@@ -73,50 +80,34 @@ class Engine
 		submission.update_status(config)
 	end
 
-	# Compile `submission` and check for errors and warnings
-	fun compile(submission: Submission): Bool is abstract
+	# Execute the compilation and test in a sandboxed environment
+	# Return `false` if there is a compilation error that prevent the execution on the tests
+	fun execute(submission: Submission): Bool is abstract
 
-	# Run `test` for `submission`
-	fun run_test(submission: Submission, test: TestCase): TestResult do
-		var res = new TestResult(test)
+	# Check a test `test` for `submission`
+	fun check_test_result(submission: Submission, res: TestResult) do
+		var test = res.testcase
+		var ts = res.testspace
+		if ts == null then
+			print_error "No test_space"
+			return
+		end
 
-		var tdir = "test{submission.results.length + 1}"
-		# We get a subdirectory (a testspace) for each test case
-		#
-		# NOTE: The `as(not null)` is actually safe since `prepare_compilation` needs to be
-		# called before running tests and will fail should the workspace fail to be created,
-		# therefore returning a failure to the client.
-		var ws = submission.workspace.as(not null)
-		var ts = ws / tdir
-		ts.mkdir
-
-		# Prepare the input/output
-		var ifile = ts / "input.txt"
-		test.provided_input.write_to_file(ifile)
+		# Prepare the sav for diffing
 		var ofile = ts / "output.txt"
 		var sfile = ts / "sav.txt"
 		test.expected_output.write_to_file(sfile)
 
-		var env = new TestEnvironment(ws, ifile, ofile, sfile, tdir)
-
-		execute_test(submission, res, env)
-
 		# Compare the result with diff
 		# TODO: some HTML-rich diff? Maybe client-side?
 		res.produced_output = ofile.to_path.read_all
-		var r = system("cd {ws} && diff -u {tdir}/sav.txt {tdir}/output.txt > {tdir}/diff.txt")
+		var r = system("cd {ts} && diff -u sav.txt output.txt > diff.txt")
 		if r != 0 then
 			var out = (ts/"diff.txt").to_path.read_all
 			res.error = "Error: the result is not the expected one"
 			res.diff = out
-			return res
 		end
-
-		return res
 	end
-
-	# Executes a test on `submission`
-	fun execute_test(submission: Submission, res: TestResult, env: TestEnvironment) is abstract
 
 	# Make a workspace for the submission
 	fun make_workspace: nullable String do
@@ -145,8 +136,8 @@ class Engine
 		return ws
 	end
 
-	# Prepare workspace and target file for compilation
-	fun prepare_compilation(submission: Submission): Bool do
+	# Prepare workspace and copy files for compilation and tests
+	fun prepare_workspace(submission: Submission): Bool do
 		var source = submission.source
 
 		var ws = make_workspace
@@ -157,10 +148,38 @@ class Engine
 		end
 		submission.workspace = ws
 
+		print "ws: {ws}"
+
 		# Copy source
 		var sourcefile = ws / "source.{extension}"
 		source.write_to_file(sourcefile)
 
+		# Copy each test input
+		var tests = submission.mission.testsuite
+		var i = 0
+		for test in tests do
+			# Prepare a new test result for the test case
+			var res = new TestResult(test)
+			submission.results.add res
+
+			# We get a subdirectory (a testspace) for each test case
+			i += 1
+			var tdir = "test{i}"
+			var ts = ws / tdir
+			ts.mkdir
+			res.testspace = ts
+
+			# Copy the input-file
+			var ifile = ts / "input.txt"
+			test.provided_input.write_to_file(ifile)
+			# We do not copy the expected result yet, to avoid leaks
+		end
+
 		return true
 	end
+end
+
+redef class TestResult
+	# The directory where the test is saved
+	var testspace: nullable String = null
 end

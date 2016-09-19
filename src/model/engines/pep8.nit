@@ -43,58 +43,35 @@ class Pep8Engine
 
 	redef fun extension do return "pep"
 
-	redef fun compile(program)
+	redef fun execute(submission)
 	do
-		var ws = program.workspace
+		var ws = submission.workspace
 		if ws == null then return false
 
-		# Try to compile
-		system("cp {pep8term("trap")} {pep8term("pep8os.pepo")} {ws} && cd {ws} && {pep8term("asem8")} source.pep 2> cmperr.txt")
+		# Copy scripts and requirements
+		system("cp {pep8term("trap")} {pep8term("pep8os.pepo")} {pep8term("asem8")} {pep8term("pep8")} share/peprun.sh {ws}")
+
+		# Run the payload
+		system("share/saferun.sh {ws} ./peprun.sh")
+
+		# Retrieve information
 		var objfile = ws / "source.pepo"
 		if not objfile.file_exists then
 			var err = (ws/"cmperr.txt").to_path.read_all
-			program.compilation_messages = "compilation error: {err}"
+			submission.compilation_messages = "compilation error: {err}"
 			return false
 		end
 
 		# Compilation OK: get some score
-		program.size_score = objfile.to_path.read_all.split(" ").length - 1
+		submission.size_score = objfile.to_path.read_all.split(" ").length - 1
 
-		return true
-	end
-
-	redef fun execute_test(submission, res, env) do
-		var tdir = env.temporary_dir
-		var ws = env.workspace
-		var ts = ws / tdir
-		# Prepare the execution command
-		# Because `pep8` is interactive.
-		var canned_command = """
-l
-source
-i
-f
-{{{tdir}}}/input.txt
-o
-f
-{{{tdir}}}/output.txt
-x
-q
-"""
-		canned_command.write_to_file(ts/"canned_command")
-
-		# Try to execute the program on the test input
-		# TODO: some time/space limit!
-		var r = system("cd {ws} && {pep8term("pep8")} < {tdir}/canned_command > /dev/null 2> {tdir}/execerr.txt")
-		if r != 0 then
-			var out = (ts/"execerr.txt").to_path.read_all
-			res.error = "Execution error, contact the administrator: {out}"
-			return
+		for res in submission.results do
+			var ts = res.testspace
+			if ts == null then return false
+			var instr_cpt = (ts/"timescore.txt").to_path.read_all.trim
+			if instr_cpt.is_int then res.time_score = instr_cpt.to_i
 		end
 
-		system("echo '' >> {env.output_file}")
-
-		var instr_cpt = (ts/"execerr.txt").to_path.read_all.trim
-		res.time_score = instr_cpt.to_i
+		return true
 	end
 end
