@@ -34,6 +34,16 @@ class Engine
 	fun run(submission: Submission, config: AppConfig) do
 		submission.status = "pending"
 
+		# Not yet completed mission.
+		if submission.mission.testsuite.is_empty then
+			submission.status = "error"
+			submission.compilation.title = "Work in progress"
+			submission.compilation.message = "There is no tests for the mission yet.\nPlease try again later."
+			submission.compilation.is_error = true
+			submission.update_status(config)
+			return
+		end
+
 		var ok = prepare_workspace(submission)
 		if not ok then
 			submission.status = "error"
