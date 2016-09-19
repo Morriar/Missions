@@ -60,7 +60,7 @@
 		<!-- Compilation error -->
 		<div class='card' ng-if='result.compilation_failed'>
 			<div class='card-left text-center bg-dark bg-danger'>
-				<h4><span class='glyphicon glyphicon-remove' /></h4>
+				<h4><span class='glyphicon glyphicon-thumbs-down' /></h4>
 			</div>
 			<div class='card-body'>
 				<h3 class='text-danger'>Compile time error</h3>
@@ -73,7 +73,7 @@
 			<div ng-repeat = '(index, testRes) in result.results.__items'>
 				<div class='card' ng-if='testRes.error'>
 					<div class='card-left text-center bg-dark bg-danger'>
-						<h4><span class='glyphicon glyphicon-remove' /></h4>
+						<h4><span class='glyphicon glyphicon-thumbs-down' /></h4>
 					</div>
 					<div class='card-body'>
 						<h3>
@@ -91,7 +91,7 @@
 				</div>
 				<div class='card' ng-if='!testRes.error'>
 					<div class='card-left text-center bg-dark bg-success'>
-						<h4><span class='glyphicon glyphicon-ok' /></h4>
+						<h4><span class='glyphicon glyphicon-thumbs-up' /></h4>
 					</div>
 					<div class='card-body'>
 						<h3>
