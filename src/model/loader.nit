@@ -157,9 +157,11 @@ redef class Track
 				var lines = tf.to_path.read_lines
 				if lines.first == "===" then lines.shift
 				lines.add "==="
+				var n = 0
 				for l in lines do
 					if l == "===" then
-						var t = new TestCase(i, o)
+						n += 1
+						var t = new TestCase(n, i, o)
 						m.testsuite.add t
 						i = ""
 						o = ""

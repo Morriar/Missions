@@ -109,6 +109,9 @@ end
 class TestCase
 	serialize
 
+	# The number of the test in the test-suite (starting with 1)
+	var number: Int
+
 	# The input that is feed to the tested program.
 	var provided_input: String
 

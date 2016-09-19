@@ -156,15 +156,13 @@ class Engine
 
 		# Copy each test input
 		var tests = submission.mission.testsuite
-		var i = 0
 		for test in tests do
 			# Prepare a new test result for the test case
 			var res = new TestResult(test)
 			submission.results.add res
 
 			# We get a subdirectory (a testspace) for each test case
-			i += 1
-			var tdir = "test{i}"
+			var tdir = "test{test.number}"
 			var ts = ws / tdir
 			ts.mkdir
 			res.testspace = ts
