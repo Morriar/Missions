@@ -16,20 +16,6 @@ module engine_base
 import submissions
 import base64
 
-# Environment used for the execution of a test
-class TestEnvironment
-	# Workspace for the test
-	var workspace: String
-	# Input file path
-	var input_file: String
-	# Output file path
-	var output_file: String
-	# Expected result file path
-	var save_file: String
-	# Temporary directory in which the files are stored
-	var temporary_dir: String
-end
-
 # Any class capable of running some code in a defined language
 class Engine
 	# Which language is supported by the engine?
