@@ -37,6 +37,7 @@ class Engine
 		var ok = prepare_workspace(submission)
 		if not ok then
 			submission.status = "error"
+			submission.results.clear
 			submission.update_status(config)
 			return
 		end
@@ -45,6 +46,7 @@ class Engine
 		submission.compilation_failed = not ok
 		if not ok then
 			submission.status = "error"
+			submission.results.clear
 			submission.update_status(config)
 			return
 		end
