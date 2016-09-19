@@ -147,7 +147,7 @@ class Engine
 
 	# Prepare workspace and target file for compilation
 	fun prepare_compilation(submission: Submission): Bool do
-		var source = submission.source.decode_base64
+		var source = submission.source
 
 		var ws = make_workspace
 		if ws == null then

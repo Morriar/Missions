@@ -54,7 +54,7 @@ class APIMission
 			return
 		end
 		var runner = config.engine_map[submission_form.engine]
-		var submission = new Submission(player, mission, submission_form.source)
+		var submission = new Submission(player, mission, submission_form.source.decode_base64.to_s)
 		runner.run(submission, config)
 
 		res.json submission
