@@ -24,10 +24,24 @@ class NitcEngine
 
 	redef fun extension do return "nit"
 
-	redef fun compile(submission) do
+	redef fun execute(submission) do
 		var ws = submission.workspace
 		if ws == null then return false
 
+		# Copy scripts and requirements
+		system("cp share/nitcrun.sh {ws}")
+
+		# Run the payload
+		var ok = system("share/saferun.sh {ws} ./nitcrun.sh")
+
+		# Check compilation errors
+		if ok != 0 then
+			var err = (ws/"cmperr.txt").to_path.read_all
+			submission.compilation_messages = "compilation error: {err}"
+			return false
+		end
+
+		# Get the size score
 		var file_stat = (ws / "source.nit").to_path.stat
 		if file_stat == null then
 			print "Error: cannot stat source file"
@@ -35,35 +49,13 @@ class NitcEngine
 		end
 		submission.size_score = file_stat.size
 
-		# Try to compile
-		system("mkdir -p {ws}/bin && nitc {ws}/source.nit -o {ws}/bin/source 2> {ws}/cmperr.txt")
-
-		if not "{ws}/bin/source".file_exists then
-			var err = (ws/"cmperr.txt").to_path.read_all
-			submission.compilation_messages = "compilation error: {err}"
-			return false
+		for res in submission.results do
+			var ts = res.testspace
+			if ts == null then return false
+			var instr_cpt = (ts/"timescore.txt").to_path.read_all.trim
+			if instr_cpt.is_int then res.time_score = instr_cpt.to_i
 		end
 
 		return true
-	end
-
-	redef fun execute_test(submission, res, env) do
-		var ws = env.workspace
-		var tdir = env.temporary_dir
-		var ts = ws / tdir
-		# Try to execute the submission on the test input
-		# TODO: some time/space limit!
-		var time = new Timespec.monotonic_now
-		var ms_start = time.millisec
-		#print "./{ws}/bin/source < {env.input_file} 2> {ts}/execerr.txt 1> {env.output_file}"
-		var r = system("./{ws}/bin/source < {env.input_file} 2> {ts}/execerr.txt 1> {env.output_file}")
-		time.update
-		var ms_end = time.millisec
-		res.time_score = ms_end - ms_start
-		if r != 0 then
-			var out = (ts/"execerr.txt").to_path.read_all
-			res.error = "Execution error, contact the administrator: {out}"
-			return
-		end
 	end
 end

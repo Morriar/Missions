@@ -31,13 +31,16 @@ for source in [
 """
 """,
 """
+echo Hello, World!
+""",
+"""
 print "hello world"
 """,
 """
 class Hello
 	fun hi: String do return "Hello, World!"
 end
-print (new Hello).hi
+print((new Hello).hi)
 """,
 """
 print "Hello, World!"
@@ -47,12 +50,15 @@ print "Hello, World!"
 	var prog = new Submission(player, mission, source)
 	var runner = config.engine_map["nitc"]
 	runner.run(prog, config)
-	print "** {prog.status} errors={prog.test_errors}/{prog.results.length} size={prog.size_score or else "-"} time={prog.time_score}"
+	print "** {prog.status} errors={prog.test_errors}/{prog.results.length} size={prog.size_score or else "-"} time={prog.time_score or else "-"}"
 	var msg = prog.compilation_messages
 	if msg != "" then print "{msg}"
-	for tc, res in prog.results do
+	for res in prog.results do
 		var msg_test = res.error
 		if msg_test != null then print "{msg_test}"
+	end
+	for e in prog.events do
+		print e
 	end
 	i += 1
 end
