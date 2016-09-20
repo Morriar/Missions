@@ -70,22 +70,22 @@
 
 		<!-- Error: loop testcases -->
 		<div ng-if='result.results'>
-			<div ng-repeat = '(index, testRes) in result.results.__items'>
+			<div ng-repeat = 'testRes in result.results.__items'>
 				<div class='card' ng-if='testRes.error'>
 					<div class='card-left text-center bg-dark bg-danger'>
 						<h4><span class='glyphicon glyphicon-thumbs-down' /></h4>
 					</div>
 					<div class='card-body'>
 						<h3>
-							<a data-toggle='collapse' data-target='#testcase_{{index}}' href='#' class='text-danger'>
-								Test {{index + 1}}
+							<a data-toggle='collapse' data-target='#testcase_{{testRes.testcase.number}}' href='#' class='text-danger'>
+								Test {{testRes.testcase.number}}
 							</a>
 						</h3>
-						<div class='collapse in' id='testcase_{{index}}'>
+						<div class='collapse in' id='testcase_{{testRes.testcase.number}}'>
 							<p><b>{{testRes.error}}</b></p>
 							<b>Input</b>
 							<pre><code>{{testRes.testcase.provided_input}}</code></pre>
-							<testcase-diff diff-id='testcase_diff_{{index}}' diff-string='{{testRes.diff}}'/>
+							<testcase-diff diff-id='testcase_diff_{{testRes.testcase.number}}' diff-string='{{testRes.diff}}'/>
 						</div>
 					</div>
 				</div>
@@ -95,11 +95,11 @@
 					</div>
 					<div class='card-body'>
 						<h3>
-							<a data-toggle='collapse' data-target='#testcase_{{index}}' href='#' class='text-success'>
-								Test {{index + 1}}
+							<a data-toggle='collapse' data-target='#testcase_{{testRes.testcase.number}}' href='#' class='text-success'>
+								Test {{testRes.testcase.number}}
 							</a>
 						</h3>
-						<div class='collapse' id='testcase_{{index}}'>
+						<div class='collapse' id='testcase_{{testRes.testcase.number}}'>
 							<p class='text-success'><b>Congratulations, you passed this test!</b></p>
 							<b>Input</b>
 							<pre><code>{{testRes.testcase.provided_input}}</code></pre>
