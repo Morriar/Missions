@@ -78,6 +78,9 @@ redef class AppConfig
 			print_error "Track without languages: {track}"
 		end
 
+		var r = ini.get_i("reward")
+		if r != null then track.default_reward = r
+
 		self.tracks.save track
 		track.load_missions(self, path)
 		return track
@@ -126,10 +129,7 @@ redef class Track
 				m.parents.add r
 			end
 
-			var r = ini.get_i("reward")
-			if r != null then
-				m.solve_reward = r.to_i
-			end
+			m.solve_reward = ini.get_i("reward") or else default_reward
 
 			var tg = ini.get_i("star.time.goal")
 			if tg != null then
@@ -212,6 +212,9 @@ redef class Track
 
 	# List of default allowed languages
 	var default_languages = new Array[String]
+
+	# Default reward for a solved mission
+	var default_reward = 10
 end
 
 class DescDecorator
