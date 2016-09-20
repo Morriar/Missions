@@ -72,7 +72,7 @@ redef class AppConfig
 		if ls != null then
 			for l in ls.split(",") do
 				l = l.trim
-				track.languages.add l
+				track.default_languages.add l
 			end
 		else
 			print_error "Track without languages: {track}"
@@ -150,7 +150,7 @@ redef class Track
 				end
 			else
 				# Defaults to the track list, if any
-				m.languages.add_all self.languages
+				m.languages.add_all self.default_languages
 			end
 
 
@@ -211,7 +211,7 @@ redef class Track
 	end
 
 	# List of default allowed languages
-	var languages = new Array[String]
+	var default_languages = new Array[String]
 end
 
 class DescDecorator
