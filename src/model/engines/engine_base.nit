@@ -37,7 +37,7 @@ class Engine
 		# Not yet completed mission.
 		if submission.mission.testsuite.is_empty then
 			submission.compilation.title = "Work in progress"
-			submission.compilation.message = "There is no tests for the mission yet.\nPlease try again later."
+			submission.compilation.message = "There is no test for this mission yet.\nPlease try again later."
 			set_compilation_error(config, submission)
 			return
 		end
@@ -72,8 +72,7 @@ class Engine
 	end
 
 	# Mark the `submission` as an error, and save it in the `config`
-	fun set_compilation_error(config: AppConfig, submission: Submission)
-	do
+	fun set_compilation_error(config: AppConfig, submission: Submission) do
 		submission.status = "error"
 		submission.compilation.is_error = true
 		submission.results.clear
