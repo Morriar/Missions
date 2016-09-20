@@ -19,6 +19,15 @@ private import md5
 
 private import poset
 
+redef class ConfigTree
+	# Get a key as an Int, if any
+	fun get_i(key: String): nullable Int do
+		var value = self[key]
+		if value == null then return null
+		return value.to_i
+	end
+end
+
 redef class AppConfig
 	# Load all tracks that are subdirectories of `path`.
 	fun load_tracks(path: String) do
@@ -117,17 +126,17 @@ redef class Track
 				m.parents.add r
 			end
 
-			var r = ini["reward"]
+			var r = ini.get_i("reward")
 			if r != null then
 				m.solve_reward = r.to_i
 			end
 
-			var tg = ini["star.time_goal"]
+			var tg = ini.get_i("star.time.goal")
 			if tg != null then
 				var star = new TimeStar("Instruction CPU", 10, tg.to_i)
 				m.add_star star
 			end
-			var sg = ini["star.size_goal"]
+			var sg = ini.get_i("star.size_goal")
 			if sg != null then
 				var star = new SizeStar("Taille du code machine", 10, sg.to_i)
 				m.add_star star
