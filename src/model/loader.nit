@@ -80,6 +80,14 @@ redef class AppConfig
 
 		var r = ini.get_i("reward")
 		if r != null then track.default_reward = r
+		var td = ini["star.time.desc"]
+		if td != null then track.default_time_desc = td
+		var ts = ini.get_i("star.time.reward")
+		if ts != null then track.default_time_score = ts
+		var sd = ini["star.size.desc"]
+		if sd != null then track.default_size_desc = sd
+		var ss = ini.get_i("star.size.reward")
+		if ss != null then track.default_size_score = ss
 
 		self.tracks.save track
 		track.load_missions(self, path)
@@ -133,12 +141,16 @@ redef class Track
 
 			var tg = ini.get_i("star.time.goal")
 			if tg != null then
-				var star = new TimeStar("Instruction CPU", 10, tg.to_i)
+				var td = ini["star.time.desc"] or else default_time_desc
+				var ts = ini.get_i("star.time.reward") or else default_time_score
+				var star = new TimeStar(td, ts, tg)
 				m.add_star star
 			end
 			var sg = ini.get_i("star.size_goal")
 			if sg != null then
-				var star = new SizeStar("Taille du code machine", 10, sg.to_i)
+				var sd = ini["star.size.desc"] or else default_size_desc
+				var ss = ini.get_i("star.size.reward") or else default_size_score
+				var star = new SizeStar(sd, ss, sg)
 				m.add_star star
 			end
 			var ls = ini["languages"]
@@ -215,6 +227,18 @@ redef class Track
 
 	# Default reward for a solved mission
 	var default_reward = 10
+
+	# Default description of a time star
+	var default_time_desc = "Instruction CPU"
+
+	# Default reward for a time star
+	var default_time_score = 10
+
+	# Default description of a size star
+	var default_size_desc = "Taille du code machine"
+
+	# Default reward for a size star
+	var default_size_score = 10
 end
 
 class DescDecorator
