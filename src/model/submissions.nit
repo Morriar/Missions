@@ -82,6 +82,9 @@ class Submission
 	# Was the run successful?
 	fun successful: Bool do return not compilation_failed and test_errors == 0
 
+	# Was the run the first solve?
+	var is_first_solve = false
+
 	# The aggregated mission status after the submission
 	var mission_status: nullable MissionStatus = null
 
@@ -96,6 +99,7 @@ class Submission
 		# Update/unlock stars
 		if successful then
 			if mission_status.status != "success" then
+				is_first_solve = true
 			end
 			mission_status.status = "success"
 			for star in mission.stars do star.check(self, mission_status)
