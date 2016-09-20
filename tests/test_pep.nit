@@ -74,7 +74,7 @@ STOP
 			var msg_test = res.error
 			if msg_test != null then print "{msg_test}"
 		end
-		for e in sub.events do
+		for e in sub.star_results do
 			print e
 		end
 		i += 1

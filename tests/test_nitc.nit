@@ -57,7 +57,7 @@ print "Hello, World!"
 		var msg_test = res.error
 		if msg_test != null then print "{msg_test}"
 	end
-	for e in prog.events do
+	for e in prog.star_results do
 		print e
 	end
 	i += 1
