@@ -58,7 +58,7 @@ class Pep8Engine
 		var objfile = ws / "source.pepo"
 		if not objfile.file_exists then
 			var err = (ws/"cmperr.txt").to_path.read_all
-			submission.compilation_messages = "compilation error: {err}"
+			submission.compilation.message = "compilation error: {err}"
 			return false
 		end
 

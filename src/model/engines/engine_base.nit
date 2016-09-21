@@ -16,20 +16,6 @@ module engine_base
 import submissions
 import base64
 
-# Environment used for the execution of a test
-class TestEnvironment
-	# Workspace for the test
-	var workspace: String
-	# Input file path
-	var input_file: String
-	# Output file path
-	var output_file: String
-	# Expected result file path
-	var save_file: String
-	# Temporary directory in which the files are stored
-	var temporary_dir: String
-end
-
 # Any class capable of running some code in a defined language
 class Engine
 	# Which language is supported by the engine?
@@ -48,18 +34,23 @@ class Engine
 	fun run(submission: Submission, config: AppConfig) do
 		submission.status = "pending"
 
+		# Not yet completed mission.
+		if submission.mission.testsuite.is_empty then
+			submission.compilation.title = "Work in progress"
+			submission.compilation.message = "There is no test for this mission yet.\nPlease try again later."
+			set_compilation_error(config, submission)
+			return
+		end
+
 		var ok = prepare_workspace(submission)
 		if not ok then
-			submission.status = "error"
-			submission.update_status(config)
+			set_compilation_error(config, submission)
 			return
 		end
 
 		ok = execute(submission)
-		submission.compilation_failed = not ok
 		if not ok then
-			submission.status = "error"
-			submission.update_status(config)
+			set_compilation_error(config, submission)
 			return
 		end
 
@@ -77,6 +68,14 @@ class Engine
 		end
 		submission.time_score = time
 		submission.test_errors = errors
+		submission.update_status(config)
+	end
+
+	# Mark the `submission` as an error, and save it in the `config`
+	fun set_compilation_error(config: AppConfig, submission: Submission) do
+		submission.status = "error"
+		submission.compilation.is_error = true
+		submission.results.clear
 		submission.update_status(config)
 	end
 
@@ -142,8 +141,8 @@ class Engine
 
 		var ws = make_workspace
 		if ws == null then
-			submission.compilation_failed = true
-			submission.compilation_messages = "Unable to make workspace for the submission"
+			submission.compilation.title = "Internal Error"
+			submission.compilation.message = "Unable to make workspace for the submission.\nPlease contact an administrator."
 			return false
 		end
 		submission.workspace = ws
@@ -156,15 +155,13 @@ class Engine
 
 		# Copy each test input
 		var tests = submission.mission.testsuite
-		var i = 0
 		for test in tests do
 			# Prepare a new test result for the test case
 			var res = new TestResult(test)
 			submission.results.add res
 
 			# We get a subdirectory (a testspace) for each test case
-			i += 1
-			var tdir = "test{i}"
+			var tdir = "test{test.number}"
 			var ts = ws / tdir
 			ts.mkdir
 			res.testspace = ts

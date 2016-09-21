@@ -37,7 +37,7 @@ class NitcEngine
 		# Check compilation errors
 		if ok != 0 then
 			var err = (ws/"cmperr.txt").to_path.read_all
-			submission.compilation_messages = "compilation error: {err}"
+			submission.compilation.message = "compilation error: {err}"
 			return false
 		end
 

@@ -51,11 +51,11 @@ print "Hello, World!"
 	var runner = config.engine_map["nitc"]
 	runner.run(prog, config)
 	print "** {prog.status} errors={prog.test_errors}/{prog.results.length} size={prog.size_score or else "-"} time={prog.time_score or else "-"}"
-	var msg = prog.compilation_messages
-	if msg != "" then print "{msg}"
+	var msg = prog.compilation.message
+	if msg != null then print "{msg}"
 	for res in prog.results do
 		var msg_test = res.error
-		if msg_test != null then print "{msg_test}"
+		if msg_test != null then print "test {res.testcase.number}: {msg_test}"
 	end
 	for e in prog.events do
 		print e
