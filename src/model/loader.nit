@@ -146,7 +146,7 @@ redef class Track
 				var star = new TimeStar(td, ts, tg)
 				m.add_star star
 			end
-			var sg = ini.get_i("star.size_goal")
+			var sg = ini.get_i("star.size.goal")
 			if sg != null then
 				var sd = ini["star.size.desc"] or else default_size_desc
 				var ss = ini.get_i("star.size.reward") or else default_size_score
