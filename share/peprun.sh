@@ -21,7 +21,13 @@
 # Try to compile
 compile() {
 	# Try to compile
+	(
+	ulimit -t 2 # 2s CPU time
+	ulimit -f 1 # 1kB written files
 	./asem8 source.pep 2> cmperr.txt
+	) || {
+		return 1
+	}
 
 	# Compilation failed. Exit
 	test -f source.pepo || return 1
@@ -48,7 +54,13 @@ q
 EOF
 
 	# Try to execute the program on the test input
-	./pep8 < $t/canned_command > /dev/null 2> $t/execerr.txt || return 1
+	(
+	ulimit -t 2 # 2s CPU time
+	ulimit -f 1 # 1kB written files
+	./pep8 < $t/canned_command > /dev/null 2> $t/execerr.txt
+	) || {
+		return 1
+	}
 
 	# Add a mandatory EOL at EOF to simplify diffing
 	echo >> $t/output.txt
@@ -62,3 +74,4 @@ EOF
 # Main
 compile || exit 1
 for t in test*; do runtest "$t"; done
+exit 0
