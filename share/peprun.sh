@@ -18,6 +18,28 @@
 # To avoid the submission to look at the expected results or to temper them, the script just compile and run.
 # The evaluation of the results has to be done by the caller.
 
+# Transform a bash return value caused by ulimit into a message for a human.
+# Not really portable :(
+ulimitmsg() {
+	code=$1
+	file=$2
+	# 128+n = signal n
+	case "$code" in
+		137)
+			# 128+9 = KILL = time out
+			echo "CPU time limit exceeded" > "$file"
+			;;
+		153)
+			# 128+25 = XFSZ = file limit
+			echo "File size limit exceeded" > "$file"
+			;;
+		*)
+			# Error but empty file. Just say something.
+			test -s "$file" || echo "Command failed with error $code" > "$file"
+	esac
+	cat "$file"
+}
+
 # Try to compile
 compile() {
 	# Try to compile
@@ -26,6 +48,7 @@ compile() {
 	ulimit -f 1 # 1kB written files
 	./asem8 source.pep 2> cmperr.txt
 	) || {
+		ulimitmsg "$?" cmperr.txt
 		return 1
 	}
 
@@ -59,6 +82,7 @@ EOF
 	ulimit -f 1 # 1kB written files
 	./pep8 < $t/canned_command > /dev/null 2> $t/execerr.txt
 	) || {
+		ulimitmsg "$?" $t/execerr.txt
 		return 1
 	}
 
