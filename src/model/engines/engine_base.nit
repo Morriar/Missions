@@ -95,6 +95,14 @@ class Engine
 		# Prepare the sav for diffing
 		var ofile = ts / "output.txt"
 		var sfile = ts / "sav.txt"
+		var errfile = ts / "execerr.txt"
+
+		var err = errfile.to_path.read_all
+		if err != "" then
+			res.error = err
+			return
+		end
+
 		test.expected_output.write_to_file(sfile)
 
 		# Compare the result with diff
