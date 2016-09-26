@@ -52,11 +52,11 @@ class Pep8Engine
 		system("cp {pep8term("trap")} {pep8term("pep8os.pepo")} {pep8term("asem8")} {pep8term("pep8")} share/peprun.sh {ws}")
 
 		# Run the payload
-		system("share/saferun.sh {ws} ./peprun.sh")
+		var r = system("share/saferun.sh {ws} ./peprun.sh")
 
 		# Retrieve information
 		var objfile = ws / "source.pepo"
-		if not objfile.file_exists then
+		if not objfile.file_exists or r != 0 then
 			var err = (ws/"cmperr.txt").to_path.read_all
 			submission.compilation.message = "compilation error: {err}"
 			return false
