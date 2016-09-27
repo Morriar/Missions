@@ -11,7 +11,6 @@ body {
 	background-color: #0955A0;
 	border-color: #0955A0;
 	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.4);
-	color: white;
 }
 
 .navbar-primary .navbar-brand, .navbar-primary .navbar-nav>li>a, .navbar-primary .breadcrumb a {
