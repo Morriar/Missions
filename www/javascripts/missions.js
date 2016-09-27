@@ -207,7 +207,7 @@
 			$scope.initCodeMirror = function() {
 				$ctrl.codeMirror = CodeMirror.fromTextArea(
 					document.getElementById('source'), {
-					mode:  "javascript",
+					mode:  "pep8",
 					lineNumbers: true,
 				});
 				$ctrl.codeMirror.doc.setValue($ctrl.source);
