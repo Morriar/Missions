@@ -24,14 +24,14 @@
 				<p ng-if='result.next_missions && result.next_missions.__items.length > 0'>
 					<span ng-repeat='(index, mission) in result.next_missions.__items'>
 						<span ng-if='index > 0'>&nbsp;&nbsp;</span>
-						<a ng-href='/missions/{{mission.id}}' class='btn btn-success'>
+						<a ui-sref="track.mission({tid: track._id, mid: mission._id})" class='btn btn-success'>
 							Next mission: {{mission.title}}
 						</a>
 					</span>
 				</p>
 				<p>
-					<a ng-href='/tracks/{{missionSubmitCtrl.mission.track.id}}'
-					class='btn btn-success'>Go back to track</a>
+					<a ui-sref="track({tid: missionSubmitCtrl.mission.track.id})"
+						class='btn btn-success'>Go back to track</a>
 				</p>
 				<span/>
 			</div>

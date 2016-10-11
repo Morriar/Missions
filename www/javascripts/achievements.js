@@ -29,8 +29,8 @@
 			};
 		}])
 
-		.controller('AchCtrl', ['Errors', 'Achievements', '$routeParams',
-			function(Errors, Achievements, $routeParams) {
+		.controller('AchCtrl', ['Errors', 'Achievements', '$stateParams',
+			function(Errors, Achievements, $stateParams) {
 			$achCtrl = this;
 
 			this.loadAchievement = function() {
@@ -47,7 +47,7 @@
 					}, Errors.handleError);
 			};
 
-			this.achievementId = $routeParams.aid;
+			this.achievementId = $stateParams.aid;
 			this.loadAchievement();
 			this.loadAchievementPlayers();
 		}])

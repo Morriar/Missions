@@ -15,51 +15,65 @@
  */
 
 (function() {
-	angular.module('ng-app', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'tracks', 'missions', 'players', 'notifications', 'friends', 'achievements'])
+	angular.module('ng-app', ['ui.router', 'ngSanitize', 'angular-loading-bar', 'tracks', 'missions', 'players', 'notifications', 'friends', 'achievements'])
 
 	.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 		cfpLoadingBarProvider.includeSpinner = false;
 	}])
 
-	.config(function($routeProvider, $locationProvider) {
-		$routeProvider
-			.when('/', {
-				templateUrl: 'views/index.html',
-				controller : 'PlayerAuth'
-			})
-			.when('/player/', {
-				templateUrl: 'views/player.html',
-				controller : 'PlayerAuth'
-			})
-			.when('/player/tracks/:tid', {
-				templateUrl: 'views/player/track.html',
-				controller : 'PlayerAuth'
-			})
-			.when('/player/missions/:mid', {
-				templateUrl: 'views/player/mission.html',
-				controller : 'PlayerAuth'
-			})
-			.when('/players/:login', {
-				templateUrl: 'views/player.html',
-				controller : 'PlayerHome'
-			})
-			.when('/achievements/:aid', {
-				templateUrl: 'views/achievement.html',
-				controller : 'AchCtrl',
-				controllerAs : 'achCtrl'
-			})
-			.when('/tracks/:tid', {
-				templateUrl: 'views/track.html',
-				controller : 'TrackHome'
-			})
-			.when('/missions/:mid', {
-				templateUrl: 'views/mission.html',
-				controller : 'MissionHome'
-			})
-			.otherwise({
-				templateUrl: 'views/404.html',
-			});
+	.config(function ($stateProvider, $locationProvider) {
 		$locationProvider.html5Mode(true);
+		$stateProvider
+			.state({
+				name: "home",
+				url: "/",
+				templateUrl: "/views/index.html",
+			})
+			.state({
+				name: "login",
+				url: "",
+				controller: function () {
+					window.location.replace('/auth/login');
+				},
+				template: "<div></div>"
+			})
+			.state({
+				name: "logout",
+				url: "/auth/logout",
+				controller: function () {
+					window.location.replace('/auth/logout');
+				},
+				template: "<div></div>"
+			})
+			.state({
+				name: "track",
+				url: "/track/{tid}",
+				templateUrl: "/views/track.html",
+				controller: "TrackHome",
+				controllerAs: "vm"
+			})
+			.state({
+				name: "track.mission",
+				url: "/{mid}",
+				views: {
+					"@": {
+						templateUrl: '/views/mission.html',
+						controller: 'MissionHome'
+					}
+				}
+			})
+			.state({
+				name: "player",
+				url: "/players/{login}",
+				templateUrl: 'views/player.html',
+				controller : 'PlayerHome',
+				controllerAs: "vm"
+			})
+			.state({
+				name: "otherwise",
+				url: "*path",
+				template: "<panel404 />"
+			})
 	})
 
 	.directive('panel404', function() {
@@ -77,5 +91,5 @@
 			restrict: 'E',
 			replace: true
 		};
-	})
+	});
 })();

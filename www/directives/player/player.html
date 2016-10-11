@@ -1,10 +1,10 @@
 <div class='container-fluid'>
-	<panel-404 ng-if='playerCtrl.error' />
+	<panel-404 ng-if='vm.error' />
 
-	<div ng-if='playerCtrl.player'>
+	<div ng-if='vm.player'>
 
 		<div class='col-xs-3 col-md-2'>
-			<player-sidebar player='playerCtrl.player' session='session' />
+			<player-sidebar player='vm.player' session='session' />
 		</div>
 		<div class='col-xs-9 col-md-10'>
 			<ul class='nav nav-tabs'>
@@ -20,10 +20,10 @@
 			<div class='tab-content'>
 				<div role='tabpanel' class='tab-pane active' id='tracks'>
 					<h3>Overall progress</h3>
-					<tracks player='playerCtrl.player' />
+					<track-list player='vm.player' />
 				</div>
 				<div role='tabpanel' class='tab-pane' id='achievements'>
-					<player-achievements player='playerCtrl.player' />
+					<player-achievements player='vm.player' />
 				</div>
 			</div>
 		</div>

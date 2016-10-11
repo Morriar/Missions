@@ -18,16 +18,16 @@
 	angular
 		.module('players', ['ngSanitize', 'model'])
 
-		.controller('PlayerHome', ['$routeParams', '$scope', function($routeParams, $scope) {
-			$scope.playerId = $routeParams.login;
+		.controller('PlayerHome', ['$stateParams', '$scope', function($stateParams, $scope) {
+			$scope.playerId = $stateParams.login;
 		}])
 
-		.controller('PlayerAuth', ['$routeParams', '$rootScope', '$scope', function($routeParams, $rootScope, $scope) {
+		.controller('PlayerAuth', ['$stateParams', '$rootScope', '$scope', function($stateParams, $rootScope, $scope) {
 
 			if($rootScope.session) {
 				$scope.playerId = $rootScope.session._id;
 			}
-			$scope.notifId = $routeParams.nid;
+			$scope.notifId = $stateParams.nid;
 
 			$rootScope.track = null;
 			$rootScope.mission = null;
@@ -75,7 +75,7 @@
 
 					this.loadPlayer();
 				}],
-				controllerAs: 'playerCtrl',
+				controllerAs: 'vm',
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/player/player.html'
