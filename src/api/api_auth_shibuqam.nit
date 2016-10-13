@@ -22,8 +22,8 @@ redef class AuthRouter
 	redef init do
 		super
 		if config.auth_method == "shib" then
-			use("/login", new ShibLogin(config))
-			use("/login/oauth", new ShibCallback(config))
+			use("/shib/login", new ShibLogin(config))
+			use("/shib/login/oauth", new ShibCallback(config))
 		end
 	end
 end

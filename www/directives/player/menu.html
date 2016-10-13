@@ -1,11 +1,11 @@
 <ul class='nav navbar-nav navbar-right'>
 	<li ng-if='!playerMenuCtrl.player && playerMenuCtrl.auth_method == "github"'>
-		<a ng-click='playerMenuCtrl.login()' href='#'>
+		<a ng-click='playerMenuCtrl.login("github")' href='#'>
 			<span class='octicon octicon-mark-github' /> Login with GitHub
 		</a>
 	</li>
 	<li ng-if='!playerMenuCtrl.player && playerMenuCtrl.auth_method == "shib"'>
-		<a ng-click='playerMenuCtrl.login()' href='#'>
+		<a ng-click='playerMenuCtrl.login("shib")' href='#'>
 			<span class='glyphicon glyphicon-user' /> Login with UQÀM
 		</a>
 	</li>
