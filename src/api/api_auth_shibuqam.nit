@@ -24,7 +24,6 @@ redef class AuthRouter
 		if config.auth_method == "shib" then
 			use("/login", new ShibLogin(config))
 			use("/login/oauth", new ShibCallback(config))
-			use("/logout", new Logout)
 		end
 	end
 end

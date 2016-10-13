@@ -57,6 +57,7 @@ class AuthRouter
 
 	init do
 		use("/auth_method", new AuthMethodHandler(config))
+		use("/logout", new Logout)
 	end
 end
 

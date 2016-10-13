@@ -27,7 +27,6 @@ redef class AuthRouter
 		if config.auth_method == "github" then
 			use("/login", new MissionsGithubLogin(config))
 			use("/oauth", new MissionsGithubOAuthCallBack(config))
-			use("/logout", new MissionsGithubLogout)
 		end
 	end
 end
@@ -79,13 +78,10 @@ class MissionsGithubOAuthCallBack
 	end
 end
 
-class MissionsGithubLogout
-	super Logout
-
+redef class Logout
 	redef fun get(req, res) do
 		var session = req.session
-		if session == null then return
-		session.user = null
+		if session != null then session.user = null
 		super
 	end
 end
