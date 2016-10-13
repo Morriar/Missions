@@ -24,7 +24,7 @@ end
 redef class AuthRouter
 	redef init do
 		super
-		if config.auth_method == "github" then
+		if config.auth_methods.has("github") then
 			use("/github/login", new MissionsGithubLogin(config))
 			use("/github/oauth", new MissionsGithubOAuthCallBack(config))
 		end

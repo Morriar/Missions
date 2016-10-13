@@ -101,7 +101,7 @@
 					}
 
 					Auth.getAuthMethod(function(data) {
-						vm.auth_method = data.auth_method;
+						vm.auth_method = data;
 					}, Errors.handleError)
 				}],
 				controllerAs: 'playerMenuCtrl',
