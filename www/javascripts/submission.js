@@ -19,32 +19,32 @@
 		.module('submission', ['ngSanitize', 'model'])
 
 		.controller('MissionSubmitCtrl', ['Missions', '$scope', function (Missions, $scope) {
-			var $ctrl = this;
-			$ctrl.source = "; enter your code here\n\n.END";
-			$ctrl.lang = "pep8";
-			$ctrl.engine = "pep8term";
+			var vm = this;
+			vm.source = "; enter your code here\n\n.END";
+			vm.lang = "pep8";
+			vm.engine = "pep8term";
 
 			$scope.submit = function () {
 				var data = {
-					source: btoa($ctrl.codeMirror.doc.getValue()),
-					lang: $ctrl.lang,
-					engine: $ctrl.engine
+					source: btoa(vm.codeMirror.doc.getValue()),
+					lang: vm.lang,
+					engine: vm.engine
 				};
-				Missions.sendMissionSubmission(data, $ctrl.mission._id, function (data) {
+				Missions.sendMissionSubmission(data, vm.mission._id, function (data) {
 					$scope.result = data;
 					$scope.$emit('mission_submission', 'success');
 				}, function () {
-					console.log("err");
+					console.log("Error sending submission data.");
 				});
 			};
 
 			$scope.initCodeMirror = function() {
-				$ctrl.codeMirror = CodeMirror.fromTextArea(
+				vm.codeMirror = CodeMirror.fromTextArea(
 					document.getElementById('source'), {
 					mode:  "pep8",
 					lineNumbers: true,
 				});
-				$ctrl.codeMirror.doc.setValue($ctrl.source);
+				vm.codeMirror.doc.setValue(vm.source);
 			};
 		}])
 
@@ -78,7 +78,7 @@
 					mission: '='
 				},
 				controller: 'MissionSubmitCtrl',
-				controllerAs: 'missionSubmitCtrl',
+				controllerAs: 'vm',
 				restrict: 'E',
 				templateUrl: '/directives/missions/submit.html'
 			};
