@@ -18,33 +18,36 @@
 	angular
 		.module('tracks', ['ngSanitize', 'model'])
 
-		.controller('TrackHome', ['$routeParams', '$rootScope', '$scope', function($routeParams, $rootScope, $scope) {
+		.controller('TrackHome', ['$stateParams', '$rootScope', '$scope', function($stateParams, $rootScope, $scope) {
 			if($rootScope.session) {
 				$scope.playerId = $rootScope.session._id;
 			}
-			$scope.trackId = $routeParams.tid;
+			$scope.trackId = $stateParams.tid;
 		}])
 
-		.directive('tracks', [function() {
+		.controller('trackListCtrl', ['Errors', 'Tracks', 'Players', function (Errors, Tracks, Players) {
+			var vm = this;
+
+			if(vm.playerId) {
+				Players.getTracksStatus(vm.playerId, function(data) {
+					vm.tracksStatus = data;
+				}, Errors.handleError);
+			}
+
+			Tracks.getTracks(function(data) {
+				vm.tracks = data;
+			}, Errors.handleError);
+
+		}])
+
+		.directive('trackList', [function() {
 			return {
 				scope: {},
 				bindToController: {
 					playerId: '=' // optional
 				},
-				controller: ['Errors', 'Tracks', 'Players', function (Errors, Tracks, Players) {
-					var $ctrl = this;
-
-					if(this.playerId) {
-						Players.getTracksStatus(this.playerId, function(data) {
-							$ctrl.tracksStatus = data;
-						}, Errors.handleError);
-					}
-
-					Tracks.getTracks(function(data) {
-						$ctrl.tracks = data;
-					}, Errors.handleError);
-				}],
-				controllerAs: 'tracksCtrl',
+				controller: 'trackListCtrl',
+				controllerAs: 'vm',
 				restrict: 'E',
 				replace: true,
 				templateUrl: '/directives/tracks/tracks.html',
@@ -60,7 +63,7 @@
 					trackId: '=',
 					playerId: '=' // optional
 				},
-				controller: ['Errors', 'Tracks', 'Players', function (Errors, Tracks, Players) {
+				controller: ['Errors', 'Tracks', 'Players', '$stateParams', function (Errors, Tracks, Players, $stateParams) {
 					var $ctrl = this;
 
 					if(this.playerId) {

@@ -18,11 +18,11 @@
 	angular
 		.module('missions', ['ngSanitize', 'model'])
 
-		.controller('MissionHome', ['$routeParams', '$rootScope', '$scope', function($routeParams, $rootScope, $scope) {
+		.controller('MissionHome', ['$stateParams', '$rootScope', '$scope', function($stateParams, $rootScope, $scope) {
 			if($rootScope.session) {
 				$scope.playerId = $rootScope.session._id;
 			}
-			$scope.missionId = $routeParams.mid;
+			$scope.missionId = $stateParams.mid;
 			$scope.mid = $scope.missionId;
 		}])
 

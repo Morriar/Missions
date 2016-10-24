@@ -8,7 +8,7 @@
 	</div>
 	<div class='card-body'>
 		<h4>
-			<a href='/missions/{{missionCtrl.mission._id}}'>{{missionCtrl.mission.title}}</a>
+			<a ui-sref=".mission({ mid: missionCtrl.mission._id })">{{missionCtrl.mission.title}}</a>
 		</h4>
 		<p><b class='text-muted'>Reward</span>: {{missionCtrl.mission.reward}} pts</b></p>
 	</div>
