@@ -31,6 +31,10 @@
 					engine: vm.engine
 				};
 				Missions.sendMissionSubmission(data, vm.mission._id, function (data) {
+					// Only launch fireworks on new success
+					if (vm.missionStatus.status !== "success" && data.status === "success") {
+						launchFireworks();
+					}
 					$scope.result = data;
 					$scope.$emit('mission_submission', 'success');
 				}, function () {
@@ -75,7 +79,8 @@
 				transclude: true,
 				scope: {},
 				bindToController: {
-					mission: '='
+					mission: '=',
+					missionStatus: '='
 				},
 				controller: 'MissionSubmitCtrl',
 				controllerAs: 'vm',
