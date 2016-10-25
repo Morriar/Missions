@@ -163,6 +163,7 @@ var launchSingleFirework = function () {
 };
 
 var launchFireworks = function () {
+	$("body").animate({scrollTop: 0}, "slow");
 	var count = getRandIntRange(4, 10);
 	var delay = 500;
 
