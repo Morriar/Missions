@@ -12,20 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-build:
+build: build-populate
 	mkdir -p bin
 	#nitserial src/app.nit -o src/app_serial.nit
 	nitc src/app.nit -m src/app_serial.nit -o bin/app
 
-debug:
+debug: build-populate
 	mkdir -p bin
 	nitc src/app_debug.nit -m src/app_serial.nit -o bin/app
 
-populate:
-	# There are levels to this... try: `make populate level=2`
+build-populate: bin/db_loader
+
+bin/db_loader:
 	mkdir -p bin
 	nitserial src/db_loader.nit -o src/db_loader_serial.nit
 	nitc src/db_loader.nit -m src/db_loader_serial.nit -o bin/db_loader
+
+populate: bin/db_loader
+	# There are levels to this... try: `make populate level=2`
 	bin/db_loader $(level)
 
 run:
