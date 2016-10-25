@@ -18,10 +18,15 @@
 	angular
 		.module('tracks', ['ngSanitize', 'model'])
 
-		.controller('TrackHome', ['$stateParams', '$rootScope', '$scope', function($stateParams, $rootScope, $scope) {
+		.controller('TrackHome', ['$stateParams', '$state', '$rootScope', '$scope', function($stateParams, $state, $rootScope, $scope) {
 			if($rootScope.session) {
 				$scope.playerId = $rootScope.session._id;
 			}
+
+			if($stateParams.tid == "" || !!$stateParams.tid === false) {
+				$state.go("home");
+			}
+
 			$scope.trackId = $stateParams.tid;
 		}])
 
