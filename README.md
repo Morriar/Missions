@@ -38,7 +38,11 @@ make populate
 3. run `docker-compose up` in the root directory; (ctrl-C to close)
 4. open http://localhost:3000
 
-See `Dockerfile` and `docker-compose.yml` for detail
+By default, a localhost server with shib authentication is used.
+Specific configuration should be provided in `app.ini`.
+Unless such a specific file, `app.docker.ini` is used.
+
+See `Dockerfile`, `docker-compose.yml` and `app.docker.ini` for details.
 
 ## Contributing
 
