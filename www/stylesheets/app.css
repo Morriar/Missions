@@ -1,3 +1,7 @@
+/* Custom Text colors */
+.text-success { color: #5cb85c; }
+.text-info { color: #0955A0; }
+
 /* Body */
 
 body {
