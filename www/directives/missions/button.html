@@ -2,7 +2,7 @@
 	<a ng-switch-when='open' ui-sref=".mission({mid: mission._id})" class='btn btn-success'>
 		Try mission
 	</a>
-	<a ng-switch-when='success' ui-sref=".mission({mission._id})" class='btn btn-default'>
+	<a ng-switch-when='success' ui-sref=".mission({mid: mission._id})" class='btn btn-default'>
 		Retry
 	</a>
 	<a ng-switch-default ui-sref=".mission({mid: mission._id})" class='btn btn-default' disabled>
