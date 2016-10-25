@@ -21,7 +21,7 @@ redef class AppConfig
 	# Authentification method used
 	#
 	# At this point can be either `github` or `shib`, see the clients modules.
-	var auth_method: String is lazy do return value_or_default("auth", default_auth_method)
+	var auth_methods: Array[String] is lazy do return value_or_default("auth", default_auth_method).split(",")
 
 	# Default authentification method used
 	#
@@ -30,8 +30,10 @@ redef class AppConfig
 
 	redef init from_options(opts) do
 		super
-		var auth_method = opts.opt_auth_method.value
-		if auth_method != null then self["auth"] = auth_method
+		var auth_methods = opts.opt_auth_method.value
+		if not auth_methods.is_empty then
+			self["auth"] = auth_methods.join(",")
+		end
 	end
 end
 
@@ -40,7 +42,7 @@ redef class AppOptions
 	# Authentification to use
 	#
 	# Can be either `github` or `shib`.
-	var opt_auth_method = new OptionString("Authentification service to use. Can be `github` (default) or `shib`", "--auth")
+	var opt_auth_method = new OptionArray("Authentification service to use. Can be `github` (default) and/or `shib`", "--auth")
 
 	init do
 		super
@@ -57,6 +59,7 @@ class AuthRouter
 
 	init do
 		use("/auth_method", new AuthMethodHandler(config))
+		use("/logout", new Logout)
 	end
 end
 
@@ -159,7 +162,9 @@ class AuthMethodHandler
 
 	redef fun get(req, res) do
 		var obj = new JsonObject
-		obj["auth_method"] = config.auth_method
+		for am in config.auth_methods do
+			obj[am] = true
+		end
 		res.json obj
 	end
 end

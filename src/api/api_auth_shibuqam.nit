@@ -21,10 +21,9 @@ private import md5
 redef class AuthRouter
 	redef init do
 		super
-		if config.auth_method == "shib" then
-			use("/login", new ShibLogin(config))
-			use("/login/oauth", new ShibCallback(config))
-			use("/logout", new Logout)
+		if config.auth_methods.has("shib") then
+			use("/shib/login", new ShibLogin(config))
+			use("/shib/login/oauth", new ShibCallback(config))
 		end
 	end
 end

@@ -91,8 +91,8 @@
 				controller: ['$location', function ($location) {
 					var vm = this;
 
-					this.login = function() {
-						window.location.replace('/auth/login?next=' + $location.absUrl());
+					this.login = function(auth) {
+						window.location.replace('/auth/' + auth + '/login?next=' + $location.absUrl());
 					}
 
 					this.logout = function() {
@@ -101,7 +101,7 @@
 					}
 
 					Auth.getAuthMethod(function(data) {
-						vm.auth_method = data.auth_method;
+						vm.auth_method = data;
 					}, Errors.handleError)
 				}],
 				controllerAs: 'playerMenuCtrl',
