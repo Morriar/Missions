@@ -193,8 +193,8 @@ body {
 
 .track-tree .node.open rect,
 .track-tree .edgePath.open path {
-	fill: #d9534f;
-	stroke: #d9534f;
+	fill: #0955A0;
+	stroke: #0955A0;
 }
 
 .track-tree .node.locked rect,
