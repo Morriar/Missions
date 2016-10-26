@@ -46,6 +46,9 @@ class Mission
 	# Number of points to solve the mission (excluding stars)
 	var solve_reward: Int = 1 is writable
 
+	# Template for the source code
+	var template: nullable String = null is writable
+
 	fun add_star(star: MissionStar) do stars.add star
 
 	# Total number of points for the mission (including stars)

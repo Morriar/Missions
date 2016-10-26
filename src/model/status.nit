@@ -98,6 +98,13 @@ class MissionStatus
 	var player: Player
 	var track: nullable Track
 
+	# The last submission, if any
+	#
+	# So the player do not lost its work-in-progress
+	#
+	# TODO: save more than the last one
+	var last_submission: nullable String = null is writable
+
 	# Unlocked stars
 	fun unlocked_stars: Array[MissionStar] do
 		var stars = new Array[MissionStar]

@@ -91,6 +91,8 @@ class Submission
 		var mission_status = player.mission_status(config, mission)
 		self.mission_status = mission_status
 
+		mission_status.last_submission = source
+
 		# Update/unlock stars
 		if successful then
 			if mission_status.status != "success" then

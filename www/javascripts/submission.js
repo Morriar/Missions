@@ -20,7 +20,9 @@
 
 		.controller('MissionSubmitCtrl', ['Missions', '$scope', function (Missions, $scope) {
 			var vm = this;
-			vm.source = "; enter your code here\n\n.END";
+			if (vm.missionStatus) vm.source = vm.missionStatus.last_submission;
+			if (!vm.source) vm.source = vm.mission.template;
+			if (!vm.source) vm.source = "";
 			vm.lang = "pep8";
 			vm.engine = "pep8term";
 
