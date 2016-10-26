@@ -15,7 +15,7 @@
  */
 
 (function() {
-	angular.module('ng-app', ['ui.router', 'ngSanitize', 'angular-loading-bar', 'tracks', 'missions', 'players', 'notifications', 'friends', 'achievements'])
+	angular.module('ng-app', ['ui.router', 'ngSanitize', 'angular-loading-bar', 'tracks', 'missions', 'submission', 'players', 'notifications', 'friends', 'achievements'])
 
 	.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 		cfpLoadingBarProvider.includeSpinner = false;
