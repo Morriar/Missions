@@ -282,7 +282,14 @@
 								}
 							});
 							$("svg .node").click(function() {
-								window.location.href = "/missions/" + this.id;
+								var trackId;
+								var clickedMission = this;
+								missions.forEach(function(m) {
+									if(m.id === clickedMission.id) {
+										trackId = m.track.id;
+									}
+								});
+								window.location.href = "/track/" + trackId + "/" + this.id;
 							});
 
 							// Zoom and scale to fit
