@@ -89,6 +89,9 @@ redef class AppConfig
 		var ss = ini.get_i("star.size.reward")
 		if ss != null then track.default_size_score = ss
 
+		var tmpl = (path / "template").to_path.read_all
+		if not tmpl.is_empty then track.default_template = tmpl
+
 		self.tracks.save track
 		track.load_missions(self, path)
 		return track
@@ -165,6 +168,10 @@ redef class Track
 				m.languages.add_all self.default_languages
 			end
 
+			var tmpl
+			tmpl = (ff / "template").to_path.read_all
+			if tmpl.is_empty then tmpl = self.default_template
+			m.template = tmpl
 
 			# Load tests, if any.
 			# This assume the Oto test file format:
@@ -241,6 +248,9 @@ redef class Track
 
 	# Default reward for a size star
 	var default_size_score = 10
+
+	# Default template for the source code
+	var default_template: nullable String = null
 end
 
 class DescDecorator
