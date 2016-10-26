@@ -15,6 +15,13 @@
 import api
 
 var opts = new AppOptions.from_args(args)
+
+if opts.opt_help.value then
+    print("Usage: app [Options]\nOptions:")
+    opts.usage
+    return
+end
+
 var config = new AppConfig.from_options(opts)
 var app = new App
 
