@@ -1,0 +1,9 @@
+main: 	deci x, d
+	deci y, d
+	; Ajoutez votre routine d'appel ici
+	STOP
+
+x: 	.WORD 0
+y: 	.WORD 0
+
+add:	; Implémentez le sous-programme
