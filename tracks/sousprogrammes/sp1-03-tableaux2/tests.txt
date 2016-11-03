@@ -29,4 +29,3 @@ Done.
 Please enter 5 numbers:
 Done.
 1, 2, 3, 4, 5
-===

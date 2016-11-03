@@ -7,4 +7,3 @@
 ---
 Please enter 5 numbers:
 Done.
-===
