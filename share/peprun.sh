@@ -45,7 +45,7 @@ compile() {
 	# Try to compile
 	(
 	ulimit -t 2 # 2s CPU time
-	ulimit -f 1 # 1kB written files
+	ulimit -f 128 # 1kB written files
 	./asem8 source.pep 2> cmperr.txt
 	) || {
 		ulimitmsg "$?" cmperr.txt
@@ -79,7 +79,7 @@ EOF
 	# Try to execute the program on the test input
 	(
 	ulimit -t 2 # 2s CPU time
-	ulimit -f 1 # 1kB written files
+	ulimit -f 128 # 1kB written files
 	./pep8 < $t/canned_command > /dev/null 2> $t/execerr.txt
 	) || {
 		ulimitmsg "$?" $t/execerr.txt
