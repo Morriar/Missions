@@ -14,7 +14,7 @@ En d'autres mots, l'instruction `CALL` s'utilise comme un branchement inconditio
 
 NOTE: Il est possible de passer autre chose que 0 comme paramètre à `RET`, en effet, `RET` peut être appelé avec des valeurs de `0` à `7`, on discutera de pourquoi plus tard dans le cours.
 
-Pour passer des paramètres, on se contentera pour le moment de passer tout via des registres ou des variables globales. Par conséquent, la récursion est présentement impossible!
+Pour passer des paramètres, on se contentera pour le moment de passer tout via des registres ou des variables globales.
 
 ### Exemple:
 
