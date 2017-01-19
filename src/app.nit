@@ -14,15 +14,15 @@
 
 import api
 
-var opts = new AppOptions.from_args(args)
+var config = new AppConfig
+config.parse_options(args)
 
-if opts.opt_help.value then
-    print("Usage: app [Options]\nOptions:")
-    opts.usage
-    return
+if config.help then
+	config.usage
+	exit 0
 end
 
-var config = new AppConfig.from_options(opts)
+
 var app = new App
 
 app.use_before("/*", new SessionInit)

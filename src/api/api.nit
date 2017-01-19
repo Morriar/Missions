@@ -21,6 +21,10 @@ import api::api_tracks
 import api::api_missions
 import api::api_achievements
 
+redef class AppConfig
+	redef init do super # FIXME avoid linearization conflit
+end
+
 redef class AuthRouter
 	redef init do super # FIXME avoid linearization conflit
 end
