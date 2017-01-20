@@ -1,0 +1,52 @@
+===
+a
+---
+It is a letter
+===
+o
+---
+It is a letter
+===
+z
+---
+It is a letter
+===
+A
+---
+It is a letter
+===
+T
+---
+It is a letter
+===
+Z
+---
+It is a letter
+===
+@
+---
+Not a letter
+===
+1
+---
+Not a letter
+===
+[
+---
+Not a letter
+===
+]
+---
+Not a letter
+===
+`
+---
+Not a letter
+===
+{
+---
+Not a letter
+===
+}
+---
+Not a letter
