@@ -21,5 +21,6 @@ redef class AppConfig
 
 	init do
 		engine_map["pep8term"] = new Pep8Engine
+		engine_map["use-ocl"] = new UseOclEngine
 	end
 end
