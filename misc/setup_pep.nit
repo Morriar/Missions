@@ -10,8 +10,8 @@ import model::loader
 import submissions
 import api
 
-var opts = new AppOptions.from_args(args)
-var config = new AppConfig.from_options(opts)
+var config = new AppConfig
+config.parse_options(args)
 
 # clean bd
 config.db.drop
@@ -31,7 +31,7 @@ for mission in config.missions.find_all do
 		print "  no path. skip"
 		continue
 	end
-	
+
 	# Get a potential solution
 	var f = (path / "solution.pep").to_path
 	var source = f.read_all
@@ -44,9 +44,9 @@ for mission in config.missions.find_all do
 	var sub = new Submission(player, mission, source)
 	var runner = config.engine_map["pep8term"]
 	runner.run(sub, config)
-	print "** {sub.status} errors={sub.test_errors}/{sub.results.length} size={sub.size_score or else "-"} time={sub.time_score} in {sub.workspace or else "?"}"
-	var msg = sub.compilation_messages
-	if msg != "" then print "{msg}"
+	print "** {sub.status} errors={sub.test_errors}/{sub.results.length} size={sub.size_score or else "-"} time={sub.time_score or else "?"} in {sub.workspace or else "?"}"
+	var msg = sub.compilation.message
+	if msg != null then print msg
 	for res in sub.results do
 		var msg_test = res.error
 		if msg_test != null then print "{res.testcase.provided_input} {msg_test}"

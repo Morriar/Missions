@@ -16,8 +16,8 @@ import model
 import model::loader
 import api
 
-var opts = new AppOptions.from_args(args)
-var config = new AppConfig.from_options(opts)
+var config = new AppConfig
+config.parse_options(args)
 
 
 # Use level 0 to disable debug things

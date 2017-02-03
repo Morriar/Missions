@@ -9,8 +9,8 @@ import submissions
 import api
 import debug
 
-var opts = new AppOptions.from_args(args)
-var config = new AppConfig.from_options(opts)
+var config = new AppConfig
+config.parse_options(args)
 
 # clean bd
 config.db.drop

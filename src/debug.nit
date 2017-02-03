@@ -2,7 +2,7 @@ import api
 
 redef class AppConfig
 	# The default player, if any, that will be logged on a new session
-	var debug_player: String is lazy do return value_or_default("app.debug.player", "John")
+	var debug_player: String is lazy do return ini["app.debug.player"] or else "John"
 
 	init do
 		engine_map["nitc"] = new NitcEngine
