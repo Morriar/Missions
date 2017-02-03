@@ -86,12 +86,10 @@ class Mission
 		if track == null then return children
 
 		for mission in track.missions(config) do
-			for parent_id in mission.parents do
-				if parent_id != self.id then continue
-				var child = config.missions.find_by_id(mission.id)
-				if child == null then continue
-				children.add child
-			end
+			if not mission.parents.has(id) then continue
+			var child = config.missions.find_by_id(mission.id)
+			if child == null then continue
+			children.add child
 		end
 		return children
 	end
