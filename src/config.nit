@@ -19,6 +19,8 @@ import popcorn::pop_repos
 
 redef class AppConfig
 
+	redef var default_db_name = "missions"
+
 	# --gh-client-id
 	var opt_gh_client_id = new OptionString("Github OAuth client id", "--gh-client-id")
 
