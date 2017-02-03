@@ -106,7 +106,6 @@ class Engine
 		test.expected_output.write_to_file(sfile)
 
 		# Compare the result with diff
-		# TODO: some HTML-rich diff? Maybe client-side?
 		res.produced_output = ofile.to_path.read_all
 		var r = system("cd {ts} && diff -u sav.txt output.txt > diff.txt")
 		if r != 0 then
