@@ -1,0 +1,21 @@
+model SpaceZ
+
+class Objet
+	attributes
+    	poids: Integer
+end
+
+class Vaisseau < Objet
+	attributes
+    	capacite: Integer
+    operations
+    	charger(objet: Objet)
+    	equiper(arme: Arme)
+end
+
+class Arme < Objet
+	attributes
+    	puissance: Integer
+end
+
+-- Entrez votre code ici

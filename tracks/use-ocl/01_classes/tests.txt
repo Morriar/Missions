@@ -1,0 +1,17 @@
+===
+!create v: VaisseauCargo
+!set v.poids := 10000
+!set v.capacite := 5000
+!openter v charger(10)
+---
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.
+===
+!create v: VaisseauCombat
+!set v.poids := 10000
+!openter v attaquer(v)
+---
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.

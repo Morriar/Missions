@@ -1,0 +1,40 @@
+===
+!create o: Arme
+!set o.poids := 10
+
+!create v: Vaisseau
+!set v.poids := 1000
+
+!insert(v, o) into contient
+!insert(v, o) into equipe
+---
+checking structure...
+checking invariants...
+checking invariant (1) `Objet::c1': OK.
+checking invariant (2) `Vaisseau::c2': OK.
+checked 2 invariants, 0 failures.
+===
+!create o: Objet
+!set o.poids := -10
+---
+checking structure...
+checking invariants...
+checking invariant (1) `Objet::c1': FAILED.
+  -> false : Boolean
+checking invariant (2) `Vaisseau::c2': OK.
+checked 2 invariants, 1 failure.
+===
+!create o: Arme
+!set o.poids := 10
+
+!create v: Vaisseau
+!set v.poids := 1000
+
+!insert(v, o) into equipe
+---
+checking structure...
+checking invariants...
+checking invariant (1) `Objet::c1': OK.
+checking invariant (2) `Vaisseau::c2': FAILED.
+  -> false : Boolean
+checked 2 invariants, 1 failure.

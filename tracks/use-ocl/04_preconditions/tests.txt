@@ -1,0 +1,49 @@
+===
+!create o: Objet
+!set o.poids := 10
+
+!create v: Vaisseau
+!set v.poids := 10000
+!set v.capacite := 5000
+
+!openter v charger(o)
+---
+precondition `c1' is true
+precondition `c2' is true
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.
+===
+!create o: Objet
+!set o.poids := 10
+
+!create v: Vaisseau
+!set v.poids := 10000
+!set v.capacite := 5000
+
+!insert(v, o) into contient
+
+!openter v charger(o)
+---
+precondition `c1' is false
+precondition `c2' is true
+Error: precondition false in operation call `Vaisseau::charger(self:v, objet:o)'.
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.
+===
+!create o: Objet
+!set o.poids := 100000
+
+!create v: Vaisseau
+!set v.poids := 10000
+!set v.capacite := 5000
+
+!openter v charger(o)
+---
+precondition `c1' is true
+precondition `c2' is false
+Error: precondition false in operation call `Vaisseau::charger(self:v, objet:o)'.
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.

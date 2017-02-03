@@ -1,0 +1,24 @@
+===
+!create o: Objet
+!set o.poids := 10
+
+!create v: Vaisseau
+!set v.poids := 10000
+!set v.capacite := 5000
+!insert(v, o) into contient
+---
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.
+===
+!create a: Arme
+!set a.poids := 100
+
+!create v: Vaisseau
+!set v.poids := 10000
+!set v.capacite := 5000
+!insert(v, a) into equipe
+---
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.

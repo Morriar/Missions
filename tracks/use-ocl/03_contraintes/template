@@ -1,0 +1,33 @@
+model SpaceZ
+
+class Objet
+	attributes
+    	poids: Integer
+end
+
+class Vaisseau < Objet
+	attributes
+    	capacite: Integer
+    operations
+    	charger(objet: Objet)
+    	equiper(arme: Arme)
+end
+
+class Arme < Objet
+	attributes
+    	puissance: Integer
+end
+
+association contient between
+	Vaisseau [0..1] role cargo
+	Objet [*] role objets
+end
+
+association equipe between
+	Vaisseau [0..1] role vaisseau
+	Arme [*] role armes
+end
+
+constraints
+
+-- Entrez vos contraintes ici

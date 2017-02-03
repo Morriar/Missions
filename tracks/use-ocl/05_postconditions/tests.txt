@@ -1,0 +1,66 @@
+===
+!create o: Objet
+!set o.poids := 10
+
+!create v: Vaisseau
+!set v.poids := 10000
+!set v.capacite := 5000
+
+!openter v charger(o)
+!set v.capacite := v.capacite - o.poids
+!insert(v, o) into contient
+!opexit
+---
+postcondition `c1' is true
+postcondition `c2' is true
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.
+===
+!create o: Objet
+!set o.poids := 10
+
+!create v: Vaisseau
+!set v.poids := 10000
+!set v.capacite := 5000
+
+!openter v charger(o)
+!insert(v, o) into contient
+!opexit
+---
+postcondition `c1' is false
+  self : Vaisseau = v
+  self.capacite : Integer = 5000
+  self : Vaisseau = v
+  self.capacite@pre : Integer = 5000
+  objet : Objet = o
+  objet.poids : Integer = 10
+  (self.capacite@pre - objet.poids) : Integer = 4990
+  (self.capacite = (self.capacite@pre - objet.poids)) : Boolean = false
+postcondition `c2' is true
+Error: postcondition false in operation call `Vaisseau::charger(self:v, objet:o)'.
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.
+===
+!create o: Objet
+!set o.poids := 10
+
+!create v: Vaisseau
+!set v.poids := 10000
+!set v.capacite := 5000
+
+!openter v charger(o)
+!set v.capacite := v.capacite - o.poids
+!opexit
+---
+postcondition `c1' is true
+postcondition `c2' is false
+  self : Vaisseau = v
+  self.objets : Set(Objet) = Set{}
+  objet : Objet = o
+  self.objets->includes(objet) : Boolean = false
+Error: postcondition false in operation call `Vaisseau::charger(self:v, objet:o)'.
+checking structure...
+checking invariants...
+checked 0 invariants, 0 failures.

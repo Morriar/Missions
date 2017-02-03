@@ -1,0 +1,47 @@
+model SpaceZ
+
+class Objet
+	attributes
+    	poids: Integer
+end
+
+class Vaisseau < Objet
+	attributes
+    	capacite: Integer
+    operations
+    	charger(objet: Objet)
+    	equiper(arme: Arme)
+end
+
+class Arme < Objet
+	attributes
+    	puissance: Integer
+end
+
+association contient between
+	Vaisseau [0..1] role cargo
+	Objet [*] role objets
+end
+
+association equipe between
+	Vaisseau [0..1] role vaisseau
+	Arme [*] role armes
+end
+
+constraints
+
+-- Entrez vos contraintes ici
+
+context Objet
+	inv c1: poids > 0
+
+context Vaisseau::charger(objet: Objet)
+	pre c2: objets->excludes(objet)
+	pre c3: objet.poids <= capacite
+	post c4: capacite = capacite@pre - objet.poids
+	post c5: objets->includes(objet)
+
+context Vaisseau::equiper(arme: Arme)
+	pre c6: objets->includes(arme)
+	pre c7: armes->excludes(arme)
+	post c8: armes->size() = armes@pre->size() + 1
