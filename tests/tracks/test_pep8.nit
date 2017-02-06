@@ -130,7 +130,8 @@ end
 redef fun before_module do
 	var config = new AppConfig
 	config.parse_options(new Array[String])
-	config.load_track("tracks/pep8")
+	var loader = new Loader(config)
+	loader.load_track("tracks/pep8")
 end
 
 redef fun after_module do super

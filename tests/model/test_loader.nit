@@ -20,22 +20,26 @@ import model::loader
 class LoaderTest
 	super TestBase
 
+	var loader: Loader is lazy do return new Loader(config)
+
 	fun test_load_tracks do
-		config.load_tracks("tracks/")
-		assert config.tracks.find_all.length == 3
+		loader.load_tracks("tracks/")
+		assert config.tracks.find_all.length == 4
 	end
 
 	fun test_load_track do
-		config.load_track("tracks/pep8")
+		loader.load_track("tracks/pep8")
 		var track = config.tracks.find_by_id("Pep8").as(not null)
 		assert track.title == "Pep8"
 		assert track.missions(config).length == 11
+		assert not track.desc.is_empty
 	end
 
 	fun test_load_mission do
-		config.load_track("tracks/pep8")
+		loader.load_track("tracks/pep8")
 		var mission = config.missions.find_by_id("Pep8:Addition_simple").as(not null)
 		assert mission.title == "Addition simple"
+		assert not mission.desc.is_empty
 		assert mission.testsuite.length == 4
 	end
 end
