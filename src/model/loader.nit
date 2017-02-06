@@ -89,25 +89,26 @@ class Loader
 		if ls != null then
 			for l in ls.split(",") do
 				l = l.trim
-				default_languages.add l
+				track.default_languages.add l
 			end
 		else
 			print_error "Track without languages: {track}"
 		end
 
 		var r = ini.get_i("reward")
-		if r != null then default_reward = r
+		if r != null then track.default_reward = r
 		var td = ini["star.time.desc"]
-		if td != null then default_time_desc = td
+		if td != null then track.default_time_desc = td
 		var ts = ini.get_i("star.time.reward")
-		if ts != null then default_time_score = ts
+		if ts != null then track.default_time_score = ts
 		var sd = ini["star.size.desc"]
-		if sd != null then default_size_desc = sd
+		if sd != null then track.default_size_desc = sd
 		var ss = ini.get_i("star.size.reward")
-		if ss != null then default_size_score = ss
+		if ss != null then track.default_size_score = ss
 
 		var tmpl = (path / "template").to_path.read_all
-		if not tmpl.is_empty then default_template = tmpl
+		if not tmpl.is_empty then track.default_template = tmpl
+		config.tracks.save track
 	end
 
 	# Load the missions from the directory `path`.
@@ -179,19 +180,19 @@ class Loader
 			m.parents.add r
 		end
 
-		m.solve_reward = ini.get_i("reward") or else default_reward
+		m.solve_reward = ini.get_i("reward") or else (if track != null then track.default_reward else 0)
 
 		var tg = ini.get_i("star.time.goal")
 		if tg != null then
-			var td = ini["star.time.desc"] or else default_time_desc
-			var ts = ini.get_i("star.time.reward") or else default_time_score
+			var td = ini["star.time.desc"] or else (if track != null then track.default_time_desc else "")
+			var ts = ini.get_i("star.time.reward") or else (if track != null then track.default_time_score else 0)
 			var star = new TimeStar(td, ts, tg)
 			m.add_star star
 		end
 		var sg = ini.get_i("star.size.goal")
 		if sg != null then
-			var sd = ini["star.size.desc"] or else default_size_desc
-			var ss = ini.get_i("star.size.reward") or else default_size_score
+			var sd = ini["star.size.desc"] or else (if track != null then track.default_size_desc else "")
+			var ss = ini.get_i("star.size.reward") or else (if track != null then track.default_size_score else 0)
 			var star = new SizeStar(sd, ss, sg)
 			m.add_star star
 		end
@@ -204,12 +205,12 @@ class Loader
 			end
 		else if track != null then
 			# Defaults to the track list, if any
-			m.languages.add_all self.default_languages
+			m.languages.add_all track.default_languages
 		end
 
 		var tmpl
 		tmpl = (path / "template").to_path.read_all
-		if tmpl.is_empty then tmpl = self.default_template
+		if tmpl.is_empty then tmpl = (if track != null then track.default_template else null)
 		m.template = tmpl
 
 		# Load tests, if any.
@@ -246,27 +247,6 @@ class Loader
 		print "{path}: got «{m}»; {m.testsuite.length} tests. languages={m.languages.join(",")}"
 		return m
 	end
-
-	# List of default allowed languages
-	var default_languages = new Array[String]
-
-	# Default reward for a solved mission
-	var default_reward = 10
-
-	# Default description of a time star
-	var default_time_desc = "Instruction CPU"
-
-	# Default reward for a time star
-	var default_time_score = 10
-
-	# Default description of a size star
-	var default_size_desc = "Taille du code machine"
-
-	# Default reward for a size star
-	var default_size_score = 10
-
-	# Default template for the source code
-	var default_template: nullable String = null
 end
 
 class DescDecorator

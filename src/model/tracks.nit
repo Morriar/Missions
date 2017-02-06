@@ -29,6 +29,33 @@ class Track
 	var desc: String
 
 	redef fun to_s do return title
+
+	# List of default allowed languages
+	var default_languages = new Array[String]
+
+	# Default reward for a solved mission
+	var default_reward = 0 is writable
+
+	# Default description of a time star
+	var default_time_desc = "Instruction CPU" is writable
+
+	# Default reward for a time star
+	var default_time_score = 10 is writable
+
+	# Default description of a size star
+	var default_size_desc = "Taille du code machine" is writable
+
+	# Default reward for a size star
+	var default_size_score = 10 is writable
+
+	# Default template for the source code
+	var default_template: nullable String = null is writable
+
+	# Default engine used to check submissions
+	var default_engine = "" is writable
+
+	# Default code editor used in frontend
+	var default_editor = "" is writable
 end
 
 class TrackRepo
