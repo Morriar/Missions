@@ -23,13 +23,11 @@
 			if (vm.missionStatus) vm.source = vm.missionStatus.last_submission;
 			if (!vm.source) vm.source = vm.mission.template;
 			if (!vm.source) vm.source = "";
-			vm.lang = "pep8";
 			vm.engine = "pep8term";
 
 			$scope.submit = function () {
 				var data = {
 					source: btoa(vm.codeMirror.doc.getValue()),
-					lang: vm.lang,
 					engine: vm.engine
 				};
 				Missions.sendMissionSubmission(data, vm.mission._id, function (data) {

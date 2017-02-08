@@ -127,8 +127,6 @@ class SubmissionForm
 	var source: String
 	# Engine or runner to be used
 	var engine: String
-	# Language in which the source code is writte
-	var lang: String
 end
 
 redef class MissionStar
