@@ -28,7 +28,20 @@ redef class ConfigTree
 	end
 end
 
-redef class AppConfig
+class Loader
+	var config: AppConfig
+
+	# Load the track description from `markdown_file` located in `path`
+	#
+	# Returns the description as HTML
+	fun load_description(path: String, markdown_file: String): String do
+		var content = (path / markdown_file).to_path.read_all
+		if content.is_empty then print_error "{path}: empty {markdown_file}"
+		var proc = new MarkdownProcessor
+		proc.emitter.decorator = new DescDecorator(path, "data")
+		return proc.process(content).write_to_string
+	end
+
 	# Load all tracks that are subdirectories of `path`.
 	fun load_tracks(path: String) do
 		# Process files
@@ -59,15 +72,19 @@ redef class AppConfig
 		end
 
 		var title_id = title.strip_id
-
-		var content = desc.to_path.read_all
-		if content.is_empty then print_error "{path}: empty {desc}"
-		var proc = new MarkdownProcessor
-		proc.emitter.decorator = new DescDecorator(path, "data")
-		var html = proc.process(content).write_to_string
+		var html = load_description(path, "track.md")
 
 		var track = new Track(title_id, title, html)
 
+		load_default_config(track, path, ini)
+		config.tracks.save track
+		load_missions(track, path)
+
+		return track
+	end
+
+	# Set `default_` vars from `ini` config
+	fun load_default_config(track: Track, path: String, ini: ConfigTree) do
 		var ls = ini["languages"]
 		if ls != null then
 			for l in ls.split(",") do
@@ -91,16 +108,11 @@ redef class AppConfig
 
 		var tmpl = (path / "template").to_path.read_all
 		if not tmpl.is_empty then track.default_template = tmpl
-
-		self.tracks.save track
-		track.load_missions(self, path)
-		return track
+		config.tracks.save track
 	end
-end
 
-redef class Track
 	# Load the missions from the directory `path`.
-	fun load_missions(config: AppConfig, path: String) do
+	fun load_missions(track: Track, path: String) do
 		var files = path.files.to_a
 		default_comparator.sort(files)
 
@@ -112,100 +124,8 @@ redef class Track
 			var ff = path / f
 			var mission = ff / "mission.md"
 			if not mission.file_exists then continue
-			var ini = new ConfigTree(ff / "config.ini")
-
-			var name = f.basename
-			var title = ini["title"]
-			if title == null then
-				print_error "{name}: no title in {ini}"
-				title = name
-			end
-
-			var content = mission.to_path.read_all
-			if content.is_empty then print_error "{name}: no {mission}"
-			var proc = new MarkdownProcessor
-			proc.emitter.decorator = new DescDecorator(ff, "data")
-			var html = proc.process(content).write_to_string
-
-			var title_id = self.id + ":" + title.strip_id
-
-			var m = new Mission(title_id, self, title, html)
-			mission_by_name[name] = m
-
-			m.path = ff
-
-			var reqs = ini["req"]
-			if reqs != null then for r in reqs.split(",") do
-				r = r.trim
-				m.parents.add r
-			end
-
-			m.solve_reward = ini.get_i("reward") or else default_reward
-
-			var tg = ini.get_i("star.time.goal")
-			if tg != null then
-				var td = ini["star.time.desc"] or else default_time_desc
-				var ts = ini.get_i("star.time.reward") or else default_time_score
-				var star = new TimeStar(td, ts, tg)
-				m.add_star star
-			end
-			var sg = ini.get_i("star.size.goal")
-			if sg != null then
-				var sd = ini["star.size.desc"] or else default_size_desc
-				var ss = ini.get_i("star.size.reward") or else default_size_score
-				var star = new SizeStar(sd, ss, sg)
-				m.add_star star
-			end
-			var ls = ini["languages"]
-			if ls != null then
-				# Get the list of languages
-				for l in ls.split(",") do
-					l = l.trim
-					m.languages.add l
-				end
-			else
-				# Defaults to the track list, if any
-				m.languages.add_all self.default_languages
-			end
-
-			var tmpl
-			tmpl = (ff / "template").to_path.read_all
-			if tmpl.is_empty then tmpl = self.default_template
-			m.template = tmpl
-
-			# Load tests, if any.
-			# This assume the Oto test file format:
-			# * Testcases start with the line `===`
-			# * input and output are separated  with the line `---`
-			var tf = ff / "tests.txt"
-			if tf.file_exists then
-				var i = ""
-				var o = ""
-				var in_input = true
-				var lines = tf.to_path.read_lines
-				if lines.first == "===" then lines.shift
-				lines.add "==="
-				var n = 0
-				for l in lines do
-					if l == "===" then
-						n += 1
-						var t = new TestCase(n, i, o)
-						m.testsuite.add t
-						i = ""
-						o = ""
-						in_input = true
-					else if l == "---" then
-						in_input = false
-					else if in_input then
-						i += l + "\n"
-					else
-						o += l + "\n"
-					end
-				end
-			end
-
-			print "{ff}: got «{m}»; {m.testsuite.length} tests. languages={m.languages.join(",")}"
-
+			var m = load_mission(path / f, track)
+			mission_by_name[f] = m
 			missions.add_node m
 		end
 
@@ -231,26 +151,102 @@ redef class Track
 		end
 	end
 
-	# List of default allowed languages
-	var default_languages = new Array[String]
+	# Load a single mission
+	fun load_mission(path: String, track: nullable Track): Mission do
+		var ini = new ConfigTree(path / "config.ini")
 
-	# Default reward for a solved mission
-	var default_reward = 10
+		var name = path.basename
+		var title = ini["title"]
+		if title == null then
+			print_error "{name}: no title in {ini}"
+			title = name
+		end
 
-	# Default description of a time star
-	var default_time_desc = "Instruction CPU"
+		var html = load_description(path, "mission.md")
 
-	# Default reward for a time star
-	var default_time_score = 10
+		var title_id
+		if track != null then
+			title_id = track.id + ":" + title.strip_id
+		else
+			title_id = title.strip_id
+		end
 
-	# Default description of a size star
-	var default_size_desc = "Taille du code machine"
+		var m = new Mission(title_id, track, title, html)
+		m.path = path
 
-	# Default reward for a size star
-	var default_size_score = 10
+		var reqs = ini["req"]
+		if reqs != null then for r in reqs.split(",") do
+			r = r.trim
+			m.parents.add r
+		end
 
-	# Default template for the source code
-	var default_template: nullable String = null
+		m.solve_reward = ini.get_i("reward") or else (if track != null then track.default_reward else 0)
+
+		var tg = ini.get_i("star.time.goal")
+		if tg != null then
+			var td = ini["star.time.desc"] or else (if track != null then track.default_time_desc else "")
+			var ts = ini.get_i("star.time.reward") or else (if track != null then track.default_time_score else 0)
+			var star = new TimeStar(td, ts, tg)
+			m.add_star star
+		end
+		var sg = ini.get_i("star.size.goal")
+		if sg != null then
+			var sd = ini["star.size.desc"] or else (if track != null then track.default_size_desc else "")
+			var ss = ini.get_i("star.size.reward") or else (if track != null then track.default_size_score else 0)
+			var star = new SizeStar(sd, ss, sg)
+			m.add_star star
+		end
+		var ls = ini["languages"]
+		if ls != null then
+			# Get the list of languages
+			for l in ls.split(",") do
+				l = l.trim
+				m.languages.add l
+			end
+		else if track != null then
+			# Defaults to the track list, if any
+			m.languages.add_all track.default_languages
+		end
+
+		var tmpl
+		tmpl = (path / "template").to_path.read_all
+		if tmpl.is_empty then tmpl = (if track != null then track.default_template else null)
+		m.template = tmpl
+
+		# Load tests, if any.
+		# This assume the Oto test file format:
+		# * Testcases start with the line `===`
+		# * input and output are separated  with the line `---`
+		var tf = path / "tests.txt"
+		if tf.file_exists then
+			var i = ""
+			var o = ""
+			var in_input = true
+			var lines = tf.to_path.read_lines
+			if lines.first == "===" then lines.shift
+			lines.add "==="
+			var n = 0
+			for l in lines do
+				if l == "===" then
+					n += 1
+					var t = new TestCase(n, i, o)
+					m.testsuite.add t
+					i = ""
+					o = ""
+					in_input = true
+				else if l == "---" then
+					in_input = false
+				else if in_input then
+					i += l + "\n"
+				else
+					o += l + "\n"
+				end
+			end
+		end
+
+		print "{path}: got «{m}»; {m.testsuite.length} tests. languages={m.languages.join(",")}"
+		return m
+	end
 end
 
 class DescDecorator

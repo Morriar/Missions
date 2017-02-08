@@ -39,7 +39,7 @@ run-gh:
 	bin/app --auth github
 
 check:
-	nitunit .
+	nitunit src/
 	$(MAKE) -C tests/
 
 clean:

@@ -129,7 +129,7 @@ class MissionStatus
 	var status: String = "locked" is writable
 
 	fun is_locked: Bool do return status == "locked"
-	fun is_open: Bool do return status == "open"
+	fun is_open: Bool do return is_success or status == "open"
 	fun is_success: Bool do return status == "success"
 end
 

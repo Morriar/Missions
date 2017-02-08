@@ -1,14 +1,8 @@
-all: test_pep test_nitc curl_me
+all: nitunit curl_me
 
-.PHONY: test_pep
-test_pep:
-	nitc test_pep.nit
-	cd .. && tests/test_pep
-
-.PHONY: test_nitc
-test_nitc:
-	nitc test_nitc.nit
-	cd .. && tests/test_nitc
+.PHONY: nitunit
+nitunit:
+	cd .. && nitunit tests/
 
 .PHONY: curl_me
 curl_me:

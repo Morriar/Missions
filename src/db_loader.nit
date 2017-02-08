@@ -33,10 +33,11 @@ config.tracks.clear
 config.missions.clear
 config.missions_status.clear
 
-config.load_tracks "tracks"
+var loader = new Loader(config)
+loader.load_tracks "tracks"
 
 if level >= 1 then
-	config.load_tracks "tracks-wip"
+	loader.load_tracks "tracks-wip"
 
 	# load some tracks and missions
 	var track_count = 5 * level

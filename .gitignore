@@ -7,3 +7,5 @@ db/
 data/
 pep8term
 app.ini
+nitunit.out
+nitunit.xml
