@@ -23,12 +23,10 @@
 			if (vm.missionStatus) vm.source = vm.missionStatus.last_submission;
 			if (!vm.source) vm.source = vm.mission.template;
 			if (!vm.source) vm.source = "";
-			vm.engine = "pep8term";
 
 			$scope.submit = function () {
 				var data = {
-					source: btoa(vm.codeMirror.doc.getValue()),
-					engine: vm.engine
+					source: btoa(vm.codeMirror.doc.getValue())
 				};
 				Missions.sendMissionSubmission(data, vm.mission._id, function (data) {
 					// Only launch fireworks on new success

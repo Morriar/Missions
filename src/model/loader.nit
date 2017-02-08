@@ -105,6 +105,8 @@ class Loader
 		if sd != null then track.default_size_desc = sd
 		var ss = ini.get_i("star.size.reward")
 		if ss != null then track.default_size_score = ss
+		var en = ini["engine"]
+		if en != null then track.default_engine = en
 
 		var tmpl = (path / "template").to_path.read_all
 		if not tmpl.is_empty then track.default_template = tmpl
@@ -171,7 +173,9 @@ class Loader
 			title_id = title.strip_id
 		end
 
-		var m = new Mission(title_id, track, title, html)
+		var engine = ini["engine"] or else (if track != null then track.default_engine else "")
+
+		var m = new Mission(title_id, track, title, html, engine)
 		m.path = path
 
 		var reqs = ini["req"]

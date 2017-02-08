@@ -36,6 +36,9 @@ class Mission
 	var title: String
 	var desc: String
 
+	# Engine used to check submissions
+	var engine: String is writable
+
 	# List of allowed languages
 	var languages = new Array[String]
 
