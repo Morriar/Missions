@@ -39,7 +39,7 @@ class TestBase
 	end
 
 	fun new_mission(track: nullable Track, id: String): Mission do
-		var mission = new Mission(id, track, "title_{id}", "desc_{id}", "engine_{id}")
+		var mission = new Mission(id, track, "title_{id}", "desc_{id}", "engine_{id}", "editor")
 		mission.solve_reward = 10
 		config.missions.save mission
 		return mission

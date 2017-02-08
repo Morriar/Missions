@@ -47,7 +47,7 @@ if level >= 1 then
 		var last_missions = new Array[Mission]
 		var mission_count = (10 * level).rand
 		for j in [1..mission_count] do
-			var mission = new Mission("track{i}:mission{j}", track, "Mission {i}-{j}", "desc {j}", "pep8term")
+			var mission = new Mission("track{i}:mission{j}", track, "Mission {i}-{j}", "desc {j}", "pep8term", "pep8")
 			if last_missions.not_empty then
 				if 100.rand > 75 then
 					mission.parents.add last_missions.last.id

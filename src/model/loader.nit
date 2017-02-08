@@ -107,6 +107,8 @@ class Loader
 		if ss != null then track.default_size_score = ss
 		var en = ini["engine"]
 		if en != null then track.default_engine = en
+		var ed = ini["editor"]
+		if ed != null then track.default_editor = ed
 
 		var tmpl = (path / "template").to_path.read_all
 		if not tmpl.is_empty then track.default_template = tmpl
@@ -175,7 +177,9 @@ class Loader
 
 		var engine = ini["engine"] or else (if track != null then track.default_engine else "")
 
-		var m = new Mission(title_id, track, title, html, engine)
+		var editor = ini["editor"] or else (if track != null then track.default_editor else "")
+
+		var m = new Mission(title_id, track, title, html, engine, editor)
 		m.path = path
 
 		var reqs = ini["req"]

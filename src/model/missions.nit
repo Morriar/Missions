@@ -39,6 +39,9 @@ class Mission
 	# Engine used to check submissions
 	var engine: String is writable
 
+	# Frontend code editor to use
+	var editor: String is writable
+
 	# List of allowed languages
 	var languages = new Array[String]
 

@@ -43,7 +43,7 @@
 			$scope.initCodeMirror = function() {
 				vm.codeMirror = CodeMirror.fromTextArea(
 					document.getElementById('source'), {
-					mode:  "pep8",
+					mode:  vm.mission.editor,
 					lineNumbers: true,
 				});
 				vm.codeMirror.doc.setValue(vm.source);
