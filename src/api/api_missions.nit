@@ -53,6 +53,11 @@ class APIMission
 			print "Error deserializing submitted mission: {post}"
 			return
 		end
+
+		if not config.engine_map.has_key(mission.engine) then
+			res.api_error("Engine {mission.engine} not found", 500)
+			return
+		end
 		var runner = config.engine_map[mission.engine]
 		var submission = new Submission(player, mission, submission_form.source.decode_base64.to_s)
 		runner.run(submission, config)
