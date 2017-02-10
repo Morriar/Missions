@@ -1,8 +1,0 @@
-DECI n,d
-LDA n,d
-ADDA ???,i ; FIXME combien?
-STA n,d
-DECO n,d
-STOP
-n: .BLOCK 2
-.END
