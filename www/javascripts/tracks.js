@@ -247,7 +247,7 @@
 									id: mission._id,
 									class: mission.status.status
 								});
-								mission.parents.__items.forEach(function(parent) {
+								mission.parents.forEach(function(parent) {
 									g.setEdge(parent, mission._id, {
 										class: map[parent].status
 									});
@@ -255,8 +255,8 @@
 							});
 
 							var hasStar = function(star, stars) {
-								for(var i = 0; i < stars.__items.length; i++) {
-									var s = stars.__items[i]
+								for(var i = 0; i < stars.length; i++) {
+									var s = stars[i]
 									if(s._id == star._id) return true;
 								}
 								return false;
@@ -274,8 +274,8 @@
 									html += "<div class='mission-tip " + status + "'>" +
 												"<h3>" + mission.title + "</h3>" +
 												"<p>" + mission.reward + " pts</p>"
-									for(var i in mission.stars.__items) {
-										var star = mission.stars.__items[i];
+									for(var i in mission.stars) {
+										var star = mission.stars[i];
 										if(hasStar(star, mission.status.stars_status)) {
 											html += "<span class='glyphicon glyphicon-star' />";
 										} else {
