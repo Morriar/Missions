@@ -21,7 +21,6 @@ import config
 #
 # All model entities are serializable to JSON.
 abstract class Entity
-	super Jsonable
 	serialize
 
 	# `self` unique id.
