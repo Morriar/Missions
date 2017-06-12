@@ -17,6 +17,7 @@ module api_base
 import model
 import config
 import popcorn
+import popcorn::pop_json
 
 abstract class APIHandler
 	super Handler
@@ -93,9 +94,6 @@ redef class HttpResponse
 	# { message: "Not found", status: 404 }
 	# ~~~
 	fun api_error(message: String, status: Int) do
-		var obj = new JsonObject
-		obj["status"] = status
-		obj["message"] = message
-		json_error(obj, status)
+		json_error(message, status)
 	end
 end
