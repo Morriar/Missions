@@ -38,7 +38,7 @@ class Loader
 		var content = (path / markdown_file).to_path.read_all
 		if content.is_empty then print_error "{path}: empty {markdown_file}"
 		var proc = new MarkdownProcessor
-		proc.emitter.decorator = new DescDecorator(path, "data")
+		proc.decorator = new DescDecorator(path, "data")
 		return proc.process(content).write_to_string
 	end
 
