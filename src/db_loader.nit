@@ -17,6 +17,12 @@ import model::loader
 import api
 
 var config = new AppConfig
+
+var usage = new Buffer
+usage.append "Usage: app [OPTION]... <json>\n"
+usage.append "Load Missions DB from JSON files."
+config.tool_description = usage.write_to_string
+
 config.parse_options(args)
 
 
