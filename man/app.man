@@ -1,0 +1,39 @@
+# NAME
+
+app - Missions web server.
+
+# SYNOPSIS
+
+app [OPTION]...
+
+# OPTIONS
+
+### `-h`, `-?`, `--help`
+Show this help message.
+
+### `--config`
+Path to config file.
+
+### `--host`
+Host to bind the server on.
+
+### `--port`
+Port number to use.
+
+### `--hostname`
+Displayed host name.
+
+### `--db-host`
+MongoDb host.
+
+### `--db-name`
+MongoDb database name.
+
+### `--gh-client-id`
+Github OAuth client id.
+
+### `--gh-client-secret`
+Github OAuth client secret.
+
+### `--auth`
+Authentification service to use. Can be `github` (default) and/or `shib`.
