@@ -15,6 +15,12 @@
 import api
 
 var config = new AppConfig
+
+var usage = new Buffer
+usage.append "Usage: app [OPTION]...\n"
+usage.append "Missions web server."
+config.tool_description = usage.write_to_string
+
 config.parse_options(args)
 
 if config.help then
