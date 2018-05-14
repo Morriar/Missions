@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-all: build pep8term
+all: bin/app pep8term
 
-build: build-populate
+bin/app: build-populate
 	mkdir -p bin
 	#nitserial src/app.nit -o src/app_serial.nit
 	nitc src/app.nit -m src/app_serial.nit -o bin/app
