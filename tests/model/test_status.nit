@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_status is test_suite
+module test_status is test
 
 import test_base
 
 class StatusTest
 	super TestBase
+	test
 
-	fun test_tracks_status do
+	fun test_tracks_status is test do
 		var t1 = new_track("t1")
 		var m1 = new_mission(t1, "m1")
 		var m2 = new_mission(t1, "m2")
@@ -35,7 +36,7 @@ class StatusTest
 		assert status.length == 2
 	end
 
-	fun test_track_status do
+	fun test_track_status is test do
 		var t1 = new_track("t3")
 		var m1 = new_mission(t1, "m6")
 		var m2 = new_mission(t1, "m7")
@@ -68,7 +69,7 @@ class StatusTest
 		assert status2.stars_unlocked == 0
 	end
 
-	fun test_mission_status do
+	fun test_mission_status is test do
 		var t1 = new_track("t3")
 		var m1 = new_mission(t1, "m6")
 		var m2 = new_mission(t1, "m7")

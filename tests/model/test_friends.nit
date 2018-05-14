@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_friends is test_suite
+module test_friends is test
 
 import test_base
 
 class FriendsTest
 	super TestBase
+	test
 
-	fun test_player_add_friend do
+	fun test_player_add_friend is test do
 		var p1 = new_player("p1")
 		var p2 = new_player("p2")
 		var p3 = new_player("p3")
@@ -36,7 +37,7 @@ class FriendsTest
 		assert p4.load_friends(config).is_empty
 	end
 
-	fun test_player_remove_friend do
+	fun test_player_remove_friend is test do
 		var p1 = new_player("p5")
 		var p2 = new_player("p6")
 
@@ -47,7 +48,7 @@ class FriendsTest
 		assert p1.load_friends(config).is_empty
 	end
 
-	fun test_player_ask_friend do
+	fun test_player_ask_friend is test do
 		var p1 = new_player("p7")
 		var p2 = new_player("p8")
 
@@ -61,7 +62,7 @@ class FriendsTest
 		assert p2.notifications(config).length == 1
 	end
 
-	fun test_player_accept_friend do
+	fun test_player_accept_friend is test do
 		var p1 = new_player("p9")
 		var p2 = new_player("p10")
 
@@ -76,7 +77,7 @@ class FriendsTest
 		assert p2.has_friend(p1)
 	end
 
-	fun test_player_decline_friend do
+	fun test_player_decline_friend is test do
 		var p1 = new_player("p11")
 		var p2 = new_player("p12")
 

@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_stats is test_suite
+module test_stats is test
 
 import test_achievements
 
 class StatsTest
 	super AchievementsTest
+	test
 
-	fun test_player_stats do
+	fun test_player_stats is test do
 		var t1 = new_track("t1")
 		var m1 = new_mission(t1, "m1")
 		var m2 = new_mission(t1, "m2")
@@ -61,7 +62,7 @@ class StatsTest
 		assert stats.achievements == 1
 	end
 
-	fun test_player_ranking do
+	fun test_player_ranking is test do
 		var t1 = new_track("t3")
 		var m1 = new_mission(t1, "m6")
 		m1.solve_reward = 10000
