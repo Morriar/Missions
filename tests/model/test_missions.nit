@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_missions is test_suite
+module test_missions is test
 
 import test_base
 
 class MissionsTest
 	super TestBase
+	test
 
-	fun test_track_missions do
+	fun test_track_missions is test do
 		var t1 = new_track("t1")
 		var t2 = new_track("t2")
 
@@ -31,7 +32,7 @@ class MissionsTest
 		assert t2.missions(config).has_all([m3])
 	end
 
-	fun test_mission_parents do
+	fun test_mission_parents is test do
 		var t1 = new_track("t3")
 
 		var m1 = new_mission(t1, "m4")
@@ -47,7 +48,7 @@ class MissionsTest
 		assert m3.load_parents(config).has_all([m1, m2])
 	end
 
-	fun test_mission_children do
+	fun test_mission_children is test do
 		var t1 = new_track("t4")
 
 		var m1 = new_mission(t1, "m7")

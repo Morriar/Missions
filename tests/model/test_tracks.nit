@@ -12,25 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_tracks is test_suite
+module test_tracks is test
 
 import test_base
 
 class TracksTest
 	super TestBase
+	test
 
-	fun test_find_all_1 do
+	fun test_find_all_1 is test do
 		var track = new_track("id1")
 		assert config.tracks.find_all.has(track)
 	end
 
-	fun test_find_all_2 do
+	fun test_find_all_2 is test do
 		var track1 = new_track("id2")
 		var track2 = new_track("id3")
 		assert config.tracks.find_all.has_all([track1, track2])
 	end
 
-	fun test_find_one do
+	fun test_find_one is test do
 		var track = new_track("id4")
 		assert config.tracks.find_by_id(track.id) == track
 	end

@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_notifications is test_suite
+module test_notifications is test
 
 import test_base
 
 class NotificationsTest
 	super TestBase
+	test
 
 	fun new_player_notification(player: Player, id: String): PlayerNotification do
 		var notif = new PlayerNotification(player, "obj", "desc")
@@ -25,7 +26,7 @@ class NotificationsTest
 		return notif
 	end
 
-	fun test_player_notifications do
+	fun test_player_notifications is test do
 		var player = new_player("p1")
 		player.add_notification(config, new_player_notification(player, "n1"))
 		player.add_notification(config, new_player_notification(player, "n2"))
@@ -38,7 +39,7 @@ class NotificationsTest
 		assert player2.notifications(config).length == 2
 	end
 
-	fun test_player_clear_notifications do
+	fun test_player_clear_notifications is test do
 		var player = new_player("p3")
 		player.add_notification(config, new_player_notification(player, "n6"))
 		player.add_notification(config, new_player_notification(player, "n7"))
@@ -54,7 +55,7 @@ class NotificationsTest
 		assert player2.notifications(config).length == 0
 	end
 
-	fun test_player_clear_notification do
+	fun test_player_clear_notification is test do
 		var player = new_player("p5")
 		var n1 = new_player_notification(player, "n11")
 		var n2 = new_player_notification(player, "n12")

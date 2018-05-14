@@ -17,7 +17,8 @@ config.parse_options(args)
 config.db.drop
 
 # Load pep8
-config.load_track("tracks/pep8")
+var loader = new Loader(config)
+loader.load_track("tracks/pep8")
 
 # Create a dummy user
 var player = new Player("John", "Doe")

@@ -12,25 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_players is test_suite
+module test_players is test
 
 import test_base
 
 class PlayersTest
 	super TestBase
+	test
 
-	fun test_find_all_1 do
+	fun test_find_all_1 is test do
 		var player = new_player("id1")
 		assert config.players.find_all.has(player)
 	end
 
-	fun test_find_all_2 do
+	fun test_find_all_2 is test do
 		var player1 = new_player("id2")
 		var player2 = new_player("id3")
 		assert config.players.find_all.has_all([player1, player2])
 	end
 
-	fun test_find_one do
+	fun test_find_one is test do
 		var player = new_player("id4")
 		assert config.players.find_by_id(player.id) == player
 	end

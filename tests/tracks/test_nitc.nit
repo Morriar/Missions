@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_nitc is test_suite
+module test_nitc is test
 
 import test_base
 import model::loader
@@ -20,14 +20,15 @@ import api::engine_configuration
 
 class NitcTest
 	super TestBase
+	test
 
-	fun test_track_load do
+	fun test_track_load is test do
 		var mission = config.missions.find_all.first
 		assert mission.title == "Hello, World!"
 		assert mission.testsuite.length == 1
 	end
 
-	fun test_empty do
+	fun test_empty is test do
 		var player = new_player("p1")
 		var source = ""
 		var mission = config.missions.find_all.first
@@ -40,7 +41,7 @@ class NitcTest
 		assert sub.results.first.error == "Error: the result is not the expected one"
 	end
 
-	fun test_compilation_error do
+	fun test_compilation_error is test do
 		var player = new_player("p2")
 		var source = "echo Hello, World!"
 		var mission = config.missions.find_all.first
@@ -52,7 +53,7 @@ class NitcTest
 		assert sub.results.length == 0
 	end
 
-	fun test_bad_input1 do
+	fun test_bad_input1 is test do
 		var player = new_player("p2")
 		var source = """print "hello world""""
 		var mission = config.missions.find_all.first
@@ -66,7 +67,7 @@ class NitcTest
 		assert sub.results.first.error == "Error: the result is not the expected one"
 	end
 
-	fun test_good_input1 do
+	fun test_good_input1 is test do
 		var player = new_player("p3")
 		var source = """
 class Hello
@@ -84,7 +85,7 @@ print((new Hello).hi)
 		assert sub.star_results.length == 1
 	end
 
-	fun test_good_input2 do
+	fun test_good_input2 is test do
 		var player = new_player("p4")
 		var source = """print "Hello, World!""""
 		var mission = config.missions.find_all.first
@@ -98,7 +99,7 @@ print((new Hello).hi)
 	end
 end
 
-redef fun before_module do
+fun before_module is before_all do
 	var config = new AppConfig
 	config.parse_options(new Array[String])
 	var loader = new Loader(config)

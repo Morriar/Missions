@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_base
+module test_base is test
 
-import test_suite
 import config
 import model
 
@@ -24,7 +23,7 @@ redef class AppConfig
 end
 
 class TestBase
-	super TestSuite
+	test
 
 	var config: AppConfig is lazy do
 		var config = new AppConfig
@@ -52,7 +51,7 @@ class TestBase
 	end
 end
 
-redef fun after_module do
+fun after_module is after_all do
 	var config = new AppConfig
 	config.parse_options(new Array[String])
 	config.db.drop

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_pep8 is test_suite
+module test_pep8 is test
 
 import test_base
 import model::loader
@@ -20,14 +20,15 @@ import api::engine_configuration
 
 class Pep8Test
 	super TestBase
+	test
 
-	fun test_track_load do
+	fun test_track_load is test do
 		var mission = config.missions.find_all.first
 		assert mission.title == "Addition simple"
 		assert mission.testsuite.length == 4
 	end
 
-	fun test_compilation_error do
+	fun test_compilation_error is test do
 		var player = new_player("p1")
 		var source = ""
 		var mission = config.missions.find_all.first
@@ -46,7 +47,7 @@ Error on line 2: Missing .END sentinal
 """
 	end
 
-	fun test_bad_input1 do
+	fun test_bad_input1 is test do
 		var player = new_player("p2")
 		var source = """
 DECO 10,i
@@ -61,7 +62,7 @@ DECO 10,i
 		assert sub.results.length == 4
 	end
 
-	fun test_good_input1 do
+	fun test_good_input1 is test do
 		var player = new_player("p2")
 		var source = """
 DECI n,d
@@ -83,7 +84,7 @@ n: .BLOCK 3
 		assert sub.star_results.length == 2
 	end
 
-	fun test_good_input2 do
+	fun test_good_input2 is test do
 		var player = new_player("p3")
 		var source = """
 DECI n,d
@@ -105,7 +106,7 @@ n: .BLOCK 2
 		assert sub.star_results.length == 2
 	end
 
-	fun test_good_input3 do
+	fun test_good_input3 is test do
 		var player = new_player("p4")
 		var source = """
 DECI 0,d
@@ -127,7 +128,7 @@ STOP
 	end
 end
 
-redef fun before_module do
+fun before_module is before_all do
 	var config = new AppConfig
 	config.parse_options(new Array[String])
 	var loader = new Loader(config)

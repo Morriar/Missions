@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module test_achievements is test_suite
+module test_achievements is test
 
 import test_base
 
@@ -23,12 +23,13 @@ end
 
 class AchievementsTest
 	super TestBase
+	test
 
 	fun new_achievement(player: Player, id: String): TestAchievement do
 		return new TestAchievement(id, player, "title_{id}", "desc_{id}", 10, "")
 	end
 
-	fun test_player_add_achievement do
+	fun test_player_add_achievement is test do
 		var p1 = new_player("p1")
 		var before = p1.notifications(config).length
 		var a1 = new_achievement(p1, "a1")
@@ -47,7 +48,7 @@ class AchievementsTest
 		assert p2.achievements(config).has_all([a4, a5])
 	end
 
-	fun test_player_has_achievement do
+	fun test_player_has_achievement is test do
 		var p1 = new_player("p3")
 		var a1 = new_achievement(p1, "a6")
 		p1.add_achievement(config, a1)
@@ -60,7 +61,7 @@ class AchievementsTest
 		assert not p2.has_achievement(config, a1)
 	end
 
-	fun test_achievement_players do
+	fun test_achievement_players is test do
 		var p1 = new_player("p5")
 		var a1 = new_achievement(p1, "a8")
 		p1.add_achievement(config, a1)
